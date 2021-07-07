@@ -83,6 +83,9 @@
     <Folder Include=".git\refs\tags\" />
     <Folder Include=".vs\PrüfungsProjekt\v16\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

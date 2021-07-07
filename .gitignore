@@ -1,5 +1,10 @@
 .vs
 .vscode
-.sln
-csproj
-user
+bin/
+obj\
+obj/
+
+.csproj
+
+/PrüfungsProjekt.sln
+/PrüfungsProjekt.csproj.user
