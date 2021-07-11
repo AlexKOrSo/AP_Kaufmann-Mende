@@ -45,4 +45,22 @@ class HTMLTools{
 +MakeResultsFile(Path: string): void
 }
 
+class ModelInput{
+    +Label:string
+    +ImageSource:string
+    +ModelInpu()
+}
+
+class ModelOutput{
+    +ModelOutput:string
+    +Score:float[]
+    +ModelOutput()
+}
+
+class ConsumeModel{
+    +ConsumeModel()
+    +Predict(input: ModelInput):ModelOutput
+    +CreatePredictionEngine()
+}
+
 CategorizedImage "N" -- "1" HTMLTools
