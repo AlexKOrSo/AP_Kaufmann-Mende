@@ -1,0 +1,48 @@
+class Dataset{
+    +PathIDs: string
+    +PathLabels: string
+    +MaxItems: ulong
+    +Label: string
+    +LabelName: string
+    
+    +findLabels(searchString: string):Dictionary<String,String>
+    +getIDs(searchString: string):List<String>
+    +Dataset()
+    +Dataset(PathIDs: string, PathLabels: string)
+    +Dataset(PathIDs: string, PathLabels: string,MaxItems: ulong)
+}
+class DownloadManager{
+    +{static} downloadAllFiles(IDs: List<string>,path: string):int
+    +{static} downloadFile(ID: string, path: string):int
+}
+
+class ModelBuilder{
+    
+}
+class CategorizedImage{
++LabeledAs: string
++Path: string
++FileName: string
+--
++CategorizedImage()
+}
+
+class HTMLTools{
++{static} ProcessedImages: List<CategorizedImage>
+--
++MakeResultsFile(Path: string): void
+}
+
+class ModelInput{
+   
+}
+
+class ModelOutput{
+    
+}
+
+class ConsumeModel{
+    
+}
+
+CategorizedImage "N" -- "1" HTMLTools
