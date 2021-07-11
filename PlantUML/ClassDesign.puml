@@ -1,0 +1,48 @@
+class Dataset{
+    +PathIDs: string
+    +PathLabels: string
+    +MaxItems: ulong
+    +Label: string
+    +LabelName: string
+    
+    +findLabels(searchString: string):Dictionary<String,String>
+    +getIDs(searchString: string):List<String>
+    +Dataset()
+    +Dataset(PathIDs: string, PathLabels: string)
+    +Dataset(PathIDs: string, PathLabels: string,MaxItems: ulong)
+}
+class DownloadManager{
+    +{static} downloadAllFiles(IDs: List<string>,path: string):int
+    +{static} downloadFile(ID: string, path: string):int
+}
+
+class ModelBuilder{
+    -mlContext: MLContext
+    -MODEL_FILEPATH: string
+    -TRAIN_DATA_FILEPATH: string
+    +BuildTrainingPipeline(mlContext: MLContext): IEstimator<ITransformer>
+    +CalculateConfidenceInterval95(values: IEnumerable<double>):double
+    +CalculateStandardDeviation(values: IEnumerable<double>):double
+    +CreateModel():void
+    -Evaluate(mlContext:MLContext, trainingDataView: IDataView, trainingPipeline: Iestimator<ITransformer>):void
+    +GetAbsolutePath(relativePath:string):string
+    +PrintMulticlassClassificationFoldsAverageMetrics(crossValResults: IEnumerable<TrainCatalogBase.CrossValidationResult<MulticlassClassificationMetrics>>):void
+    +PrintMulticlassClassificationMetrics(metrics: MutliclassClassificationMetrics):void
+    -SaveModel(mlContext:MLContext,mlModel:Itransformer,modelRelativePath:string,modelInputSchema:DataViewSchema):void
+    +TrainModel(mlContext: MLContext, trainingDataView:IDataView; trainingPipeline: IEstimator<ITransformer>):ITransformer
+}
+class CategorizedImage{
++LabeledAs: string
++Path: string
++FileName: string
+--
++CategorizedImage()
+}
+
+class HTMLTools{
++{static} ProcessedImages: List<CategorizedImage>
+--
++MakeResultsFile(Path: string): void
+}
+
+CategorizedImage "N" -- "1" HTMLTools
