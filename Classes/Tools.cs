@@ -14,7 +14,7 @@ namespace Tools
                 pressedKey = Console.ReadKey(false); 
                 //Leerzeile
                 Console.WriteLine();
-            } while (pressedKey.Key!= ConsoleKey.Y && key.Key!=ConsoleKey.N); //So oft nachgefragt, bis y oder n (bzw. Y oder N)
+            } while (pressedKey.Key!= ConsoleKey.Y && pressedKey.Key!=ConsoleKey.N); //So oft nachgefragt, bis y oder n (bzw. Y oder N)
 
             return (pressedKey.Key == ConsoleKey.Y); //Rückgabe Ergebnis
         }
