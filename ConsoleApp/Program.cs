@@ -10,7 +10,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Hello World!");
             PlaceHolder.PrintPlaceHolder(); //Check for succesful reference
-            Console.WriteLine(ConsoleTools.YesNoInput("Ja oder nein?bzuk<z"));
+            Console.WriteLine(ConsoleTools.YesNoInput("Ja oder nein?"));
         }
     }
 }
