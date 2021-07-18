@@ -10,11 +10,13 @@ namespace Tools
             do
             {
                 Console.Write(question + @" [y/n]");
-                key = Console.ReadKey(false);
+                //Abfangen des Keys, der angeschlagen wurden und Ausgabe auf Console.
+                key = Console.ReadKey(false); 
+                //Leerzeile
                 Console.WriteLine();
-            } while (key.Key!= ConsoleKey.Y && key.Key!=ConsoleKey.N);
+            } while (key.Key!= ConsoleKey.Y && key.Key!=ConsoleKey.N); //So oft nachgefragt, bis y oder n (bzw. Y oder N)
 
-            return (key.Key == ConsoleKey.Y);
+            return (key.Key == ConsoleKey.Y); //Rückgabe Ergebnis
         }
     }
 }
