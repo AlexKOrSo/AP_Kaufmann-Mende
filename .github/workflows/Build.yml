@@ -20,3 +20,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ConsoleApp/bin/Release/net5.0/
