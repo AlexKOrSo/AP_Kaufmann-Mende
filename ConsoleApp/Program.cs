@@ -8,7 +8,7 @@ namespace ConsoleApp
         {
             string OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
             Console.WriteLine("Willkommen in der Konsolen-App zur Bildklassifizierung auf Grundlage von Machine Learning");
-
+            
             bool IsValidKey = false;
             ConsoleKeyInfo Choice;
             char PressedKey = ' '; 

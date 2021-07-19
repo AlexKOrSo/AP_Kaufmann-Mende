@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using Classes.Properties; 
+using Classes.Properties;
 
 namespace Tools
 {
