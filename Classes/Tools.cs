@@ -9,7 +9,7 @@ namespace Tools
             ConsoleKeyInfo pressedKey;
             do
             {
-                Console.Write(question + @" [y/n]");
+                Console.Write(question + @" [y/n]: ");
                 //Abfangen des Keys, der angeschlagen wurden und Ausgabe auf Console.
                 pressedKey = Console.ReadKey(false); 
                 //Leerzeile
