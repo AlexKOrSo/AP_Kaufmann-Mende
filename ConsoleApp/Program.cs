@@ -1,6 +1,6 @@
 ﻿using System;
-using Classes; 
-
+using Classes;
+using Tools;
 namespace ConsoleApp
 {
     class Program
@@ -10,6 +10,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Hello World!");
             PlaceHolder.PrintPlaceHolder(); //Check for succesful reference
+            Console.WriteLine(ConsoleTools.YesNoInput("Ja oder nein?"));
         }
     }
 }
