@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
+using Classes.Properties; 
 
 namespace Tools
 {
@@ -17,6 +20,48 @@ namespace Tools
             } while (pressedKey.Key!= ConsoleKey.Y && pressedKey.Key!=ConsoleKey.N); //So oft nachgefragt, bis y oder n (bzw. Y oder N)
 
             return (pressedKey.Key == ConsoleKey.Y); //Rückgabe Ergebnis
+        }
+        public static bool IsValidInput(ConsoleKeyInfo RelatedKey, byte Option)
+        {
+            
+            char PressedKey = RelatedKey.KeyChar; 
+            switch (Option)
+            {
+                case 1: if (PressedKey == '1' || PressedKey == '2') return true; break; 
+                //weitere mögliche Cases
+                
+
+            }
+            return false; //äquivalent zu entsprechender default-Verzweigung im Switch-Block
+        }
+    }
+
+    public static class PathFinder
+    {
+        public static string FindOrigin()
+        {
+            //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts
+            string FileName = Resources.IndexFileName; 
+            string SearchPath = "";
+            bool FileFound = false;
+            string CurrentDir = AppDomain.CurrentDomain.BaseDirectory.ToString();
+
+            while (!FileFound)
+            {
+                SearchPath = Path.Combine(CurrentDir, FileName);
+                //Console.WriteLine($"Searching For: {SearchPath}");
+                if (File.Exists(SearchPath))
+                {
+                    //Console.WriteLine($"Index-File gefunden in {SearchPath}");
+                    FileFound = true; 
+                }
+                else
+                {
+                    //Thread.Sleep(1000);
+                    CurrentDir = Directory.GetParent(CurrentDir).ToString();
+                }
+            }
+            return SearchPath; 
         }
     }
 }
