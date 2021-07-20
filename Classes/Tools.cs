@@ -21,10 +21,10 @@ namespace Tools
 
             return (pressedKey.Key == ConsoleKey.Y); //Rückgabe Ergebnis
         }
-        public static bool IsValidInput(ConsoleKeyInfo RelatedKey, byte Option)
+        public static bool IsValidKey(ref char PressedKey, byte Option)
         {
-            
-            char PressedKey = RelatedKey.KeyChar; 
+            ConsoleKeyInfo Choice = Console.ReadKey(true);
+            PressedKey = Choice.KeyChar;
             switch (Option)
             {
                 case 1: if (PressedKey == '1' || PressedKey == '2') return true; break; 
