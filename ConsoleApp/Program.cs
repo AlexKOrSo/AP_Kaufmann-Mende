@@ -15,7 +15,7 @@ namespace ConsoleApp
             {
                 List<Dataset> labels;
                 Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
-                labels = Data.findLables(Console.ReadLine());
+                labels = Data.FindLables(Console.ReadLine());
                 foreach (Dataset item in labels)
                 {
                     Console.WriteLine("{0}: {1}: {2}",labels.IndexOf(item), item.Key,item.Label);

@@ -21,6 +21,7 @@ namespace MLData
             Console.WriteLine(ids.Count.ToString());
             RegionEndpoint reg = RegionEndpoint.USEast1;
             AmazonS3Client s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(180) });
+            Console.WriteLine("Download wird gestartet, Timeout beträgt 180 Sekunden.");
             var fileTransferUtility = new TransferUtility(s3Client);
 
             string temp;
@@ -36,13 +37,13 @@ namespace MLData
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Notfound");
+                    Console.WriteLine($"{temp} not found");
 
                 }
                 //await Task.Delay(100);
-                Console.WriteLine("Im here");
+                
             }
-            Console.WriteLine("now Im here");
+            
 
         }
 

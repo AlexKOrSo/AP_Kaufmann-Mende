@@ -8,12 +8,12 @@ namespace MLData
     {
         string PathIDs { get; set; } //Dateipfad zu CSV mit Bilder-IDs
         string PathLabels { get; set; } //Dateipfad zu CSV mit Schlüsseln für entsprechende Labels
-        uint MaxItems { get; set; } //Maximale Anzahl an Items, die heruntergeladen werden soll
+        int MaxItems { get; set; } //Maximale Anzahl an Items, die heruntergeladen werden soll
         public List<Dataset> Labels { get; set; } //Liste der DataSet (pro Label ein Dataset)
 
-        public List<Dataset> findLables(string searchstring)
+        public List<Dataset> FindLables(string searchstring)
         {
-            //neues Hashset, das die Suchergebnisse als jeweils eine neue Dataset-instanz enthält
+            //neue Liste, die Suchergebnisse als jeweils eine neue Dataset-instanz enthält
             List<Dataset> results = new List<Dataset>();
 
             try
@@ -32,8 +32,8 @@ namespace MLData
             }
             catch (Exception)
             {
-                throw;
                 Console.WriteLine("Dateifehler");
+                throw;
             }
             return results;
         }
@@ -77,12 +77,12 @@ namespace MLData
 
            
         }
-        public DataCollection(string path)
+        public DataCollection(string path, int maxItems)
         {
             //Pfade sind nur vorübergehend festgeschrieben, hier müssen noch methoden zur überprüfung hin, ob datei existiert...
             this.PathIDs = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-train-annotations-human-imagelabels.csv";
             this.PathLabels = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-class-descriptions.csv";
-            MaxItems = 0;
+            MaxItems = maxItems;
             Labels = new List<Dataset>();
         }
 
