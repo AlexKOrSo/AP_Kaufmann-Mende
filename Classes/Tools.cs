@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using Classes.Properties; 
+using Classes.Properties;
 
 namespace Tools
 {
@@ -33,6 +33,20 @@ namespace Tools
 
             }
             return false; //äquivalent zu entsprechender default-Verzweigung im Switch-Block
+        }
+    
+        public static int[] VarInput(string question)
+        {
+            Console.WriteLine(question);
+            string[] line = Console.ReadLine().Split(' ');
+            int[] input = new int[line.Length];
+            for (int i = 0; i < line.Length; i++)
+            {
+                string item = line[i];
+                int.TryParse(item, out input[i]);
+            }
+            
+            return input;
         }
     }
 
