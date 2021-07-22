@@ -75,7 +75,16 @@ namespace Tools
                     CurrentDir = Directory.GetParent(CurrentDir).ToString();
                 }
             }
-            return SearchPath; 
+            return Path.GetDirectoryName(SearchPath); 
         }
+
+        public  static DirectoryInfo  MakeDirectory(string DirName) { 
+            ///Erstellt Directory relativ zu Verzeichnis der .Index-Datei
+            ///
+
+            string FinalPath=Path.Combine(FindOrigin(), DirName);
+            DirectoryInfo NewDir=Directory.CreateDirectory(FinalPath); 
+            return NewDir; 
+            }
     }
 }

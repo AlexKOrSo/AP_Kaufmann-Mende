@@ -1,14 +1,16 @@
 ﻿using System;
 using Tools;
+using System.IO;
 using MLData;
 using System.Collections.Generic;
+
 namespace ConsoleApp
 {
     class Program
     {
         public static void Training(string path)
         {
-            DataCollection Data = new DataCollection(path);
+            DataCollection Data = new DataCollection(path,500);
             bool run = true;
             
             while (run)
@@ -46,7 +48,12 @@ namespace ConsoleApp
 
         static void Main(string[] args)
         {
-            string OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
+            Console.WriteLine("Before Exceptiom");
+            string OriginPath = null ;
+            try { 
+            OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
+                }
+            catch(Exception) {Console.WriteLine(@"Couldn't find .Index-File"); }
             Console.WriteLine("Willkommen in der Konsolen-App zur Bildklassifizierung auf Grundlage von Machine Learning");
             
             bool IsValidKey = false;
@@ -64,6 +71,8 @@ namespace ConsoleApp
                 Training(OriginPath);
             } //Überleitung zum Training
 
+            DirectoryInfo TrainingDir=PathFinder.MakeDirectory("TrainingModel");
+            Console.WriteLine(TrainingDir.FullName); 
         }
     }
 }

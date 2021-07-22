@@ -8,9 +8,17 @@ namespace Classes
 {
     public class CategorizedImage
     {
-        //Implizit als private deklariert
-        string LabeledAs;
-        string Path;
-        string FileName; 
+        public string LabeledAs { get; private set; }
+        public string Path { get; private set; }
+        public string FileName {get; private set; }
+
+        public CategorizedImage(string LabeledAs, string Path, string FileName)
+        {
+            this.LabeledAs = LabeledAs;
+            this.Path = Path;
+            this.FileName = FileName;
+
+            HTMLTools.ProcessedImages.Add(this); 
+        }
     }
 }
