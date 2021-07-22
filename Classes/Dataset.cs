@@ -19,7 +19,7 @@ namespace MLData
             string bucketName = "open-images-dataset";
             string filename;
             Console.WriteLine(ids.Count.ToString());
-            RegionEndpoint reg = RegionEndpoint.USEast1;
+            RegionEndpoint reg = RegionEndpoint.USEast1; 
             AmazonS3Client s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(180) });
             Console.WriteLine("Download wird gestartet, Timeout beträgt 180 Sekunden.");
             var fileTransferUtility = new TransferUtility(s3Client);

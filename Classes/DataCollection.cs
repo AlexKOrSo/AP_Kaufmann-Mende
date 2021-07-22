@@ -80,8 +80,10 @@ namespace MLData
         public DataCollection(string path, int maxItems)
         {
             //Pfade sind nur vorübergehend festgeschrieben, hier müssen noch methoden zur überprüfung hin, ob datei existiert...
-            this.PathIDs = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-train-annotations-human-imagelabels.csv";
-            this.PathLabels = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-class-descriptions.csv";
+            //this.PathIDs = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-train-annotations-human-imagelabels.csv";
+            //this.PathLabels = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-class-descriptions.csv";
+            this.PathIDs = Path.Combine(path, @"oidv6-train-annotations-human-imagelabels.csv");
+            this.PathLabels = Path.Combine(path, @"oidv6-class-descriptions.csv");
             MaxItems = maxItems;
             Labels = new List<Dataset>();
         }
