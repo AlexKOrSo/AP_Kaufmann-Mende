@@ -59,6 +59,7 @@ namespace MLData
             catch (Exception)
             {
                 Console.WriteLine("Dateifehler");
+                throw;
             }
         }
         public void downloadAllDatasets(string path)
@@ -67,16 +68,24 @@ namespace MLData
             findImageIds();
             foreach (Dataset item in Labels)
             {
-                string downloadpath = Path.Combine(path, "tmp", item.Label);
-                Console.WriteLine(downloadpath);
-                
-                if (!Directory.Exists(downloadpath))
+                try
                 {
-                    Directory.CreateDirectory(downloadpath);
-                }
-                item.downloadAll(downloadpath);
+                    string downloadpath = Path.Combine(path, "tmp", item.Label);
+                    Console.WriteLine(downloadpath);
 
-                Console.WriteLine("finished download");
+                    if (!Directory.Exists(downloadpath))
+                    {
+                        Directory.CreateDirectory(downloadpath);
+                    }
+                    item.downloadAll(downloadpath);
+
+                    Console.WriteLine("finished download");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Fehler");
+                    throw;
+                }
             }
 
            
@@ -90,14 +99,28 @@ namespace MLData
             this.PathLabels = Path.Combine(path, @"oidv6-class-descriptions.csv");
             MaxItems = maxItems;
             Labels = new List<Dataset>();
+            CheckFiles();
         }
 
-        public bool CheckFiles()
+        private void CheckFiles()
         {
+            try
+            {
+                StreamReader labels = new StreamReader(this.PathLabels);
+                StreamReader ids = new StreamReader(this.PathIDs);
+                
+                if (labels.ReadLine() != "LabelName,DisplayName"||ids.ReadLine()!= "ImageID,Source,LabelName,Confidence")
+                {
+                    Console.WriteLine("CSV-Dateien nicht gültig!");
+                    throw new Exception("Dateilfehler");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             
             
-            
-            return true;
 
         }
 

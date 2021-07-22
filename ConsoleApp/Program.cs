@@ -10,39 +10,54 @@ namespace ConsoleApp
     {
         public static void Training(string path)
         {
-            DataCollection Data = new DataCollection(path,500);
-            bool run = true;
-            
-            while (run)
+
+            try
             {
-                List<Dataset> labels;
-                Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
-                labels = Data.FindLables(Console.ReadLine());
-                foreach (Dataset item in labels)
-                {
-                    Console.WriteLine("{0}: {1}: {2}",labels.IndexOf(item), item.Key,item.Label);
-                }
-                int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
+                DataCollection Data = new DataCollection(path, 500);
+                bool run = true;
 
-                
-                foreach (var item in index)
+                while (run)
                 {
-                    if (item == -1)
+                    List<Dataset> labels;
+                    Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
+                    labels = Data.FindLables(Console.ReadLine());
+                    foreach (Dataset item in labels)
                     {
-                        break;
+                        Console.WriteLine("{0}: {1}: {2}", labels.IndexOf(item), item.Key, item.Label);
                     }
-                    else if(!Data.Labels.Contains(new Dataset(labels[item].Key,labels[item].Label)))
-                    {
-                        Data.Labels.Add(labels[item]);
-                    }
+                    int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
+                    Console.WriteLine(index.Length);
                     
-                    //labels.TryGetValue(item, out Dataset temp);
-                    //Data.Labels.Add(temp);
-                }
 
-                run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
-            }
+                    foreach (var item in index)
+                    {
+                        if (item == -1)
+                        {
+                            break;
+                        }
+                        else if (!Data.Labels.Contains(new Dataset(labels[item].Key, labels[item].Label)))
+                        {
+                            Data.Labels.Add(labels[item]);
+                        }
+
+                        //labels.TryGetValue(item, out Dataset temp);
+                        //Data.Labels.Add(temp);
+                    }
+
+                    run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
+                    
+                }
+                if (Data.Labels.Count < 2)
+                {
+                    throw new Exception("Zu wenig Kategorien ausgewählt");
+                }
                 Data.downloadAllDatasets(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Alles auf Anfang");
+            }
             //Löschen der Temporäeren Dateien fehlt noch, implementiere ich erst, wenn wir ganz sicher sind, dass auch der richtige dateipfad bei tools rauskommt ;)
         }
 
@@ -73,6 +88,8 @@ namespace ConsoleApp
 
             DirectoryInfo TrainingDir=PathFinder.MakeDirectory("TrainingModel");
             Console.WriteLine(TrainingDir.FullName); 
+            Exit:
+            Console.WriteLine("Beende Programm");
         }
     }
 }
