@@ -48,7 +48,7 @@ namespace MLData
                 {
                     foreach (Dataset item in Labels)
                     {
-                        if (line.Split(',')[2].Contains(item.Key))
+                        if (line.Split(',')[2].Contains(item.Key)&&line.Split(',')[3]=="1")
                         {
                             item.ids.Enqueue(line.Split(',')[0]);
                         } 
@@ -61,17 +61,21 @@ namespace MLData
                 Console.WriteLine("Dateifehler");
             }
         }
-        public void downloadAllDatasets()
+        public void downloadAllDatasets(string path)
         {
             Console.WriteLine("IM here");
             findImageIds();
             foreach (Dataset item in Labels)
             {
-                if (!Directory.Exists(@"R:\Transfer\Softwareentwicklung_Github\tmp\" + item.Label))
+                string downloadpath = Path.Combine(path, "tmp", item.Label);
+                Console.WriteLine(downloadpath);
+                
+                if (!Directory.Exists(downloadpath))
                 {
-                    Directory.CreateDirectory(@"R:\Transfer\Softwareentwicklung_Github\tmp\" + item.Label);
+                    Directory.CreateDirectory(downloadpath);
                 }
-                item.downloadAll(@"R:\Transfer\Softwareentwicklung_Github\tmp\" + item.Label);
+                item.downloadAll(downloadpath);
+
                 Console.WriteLine("finished download");
             }
 
@@ -88,6 +92,14 @@ namespace MLData
             Labels = new List<Dataset>();
         }
 
+        public bool CheckFiles()
+        {
+            
+            
+            
+            return true;
+
+        }
 
     }
 }

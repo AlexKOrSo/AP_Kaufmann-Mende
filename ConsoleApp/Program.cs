@@ -42,7 +42,7 @@ namespace ConsoleApp
 
                 run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
             }
-                Data.downloadAllDatasets();
+                Data.downloadAllDatasets(path);
             //Löschen der Temporäeren Dateien fehlt noch, implementiere ich erst, wenn wir ganz sicher sind, dass auch der richtige dateipfad bei tools rauskommt ;)
         }
 

@@ -7,3 +7,6 @@ obj/
 /.vs/VSWorkspaceState.json
 .vs/
 .vscode/
+.csv
+tmp/
+.csv
