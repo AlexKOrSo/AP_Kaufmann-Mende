@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Classes.Properties; 
+using System.Text; 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +18,24 @@ namespace Classes
         }
         public static void MakeResultsFile(string Path)
         {
-             //Schreibt HTML-Files für jedes Bild in ProcessedImages
+             foreach(var Image in ProcessedImages)
+            {
+                HTMLPrinter(Image, Path); 
+            }
         }
+
+        private static void HTMLPrinter(CategorizedImage Image, string ResultsPath)
+        {
+            /// <summary> Gibt für ein Bild dessen Kategorie und weiteres als HTML-Datei aus
+            /// </summary>
+            /// 
+
+            string Added = @"TestOrdner";
+            DirectoryInfo NewDir=Directory.CreateDirectory(Path.Combine(Resources.IndexFileName, Added));
+            //Platzhalter zum  Erstellen von einem txt-File: 
+            using (FileStream fs = File.Create(ResultsPath)); 
+            
+        }
+
     }
 }
