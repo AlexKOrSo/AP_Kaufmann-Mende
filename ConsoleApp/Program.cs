@@ -48,9 +48,10 @@ namespace ConsoleApp
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Before Exceptiom"); 
+            Console.WriteLine("Before Exceptiom");
+            string OriginPath = null ;
             try { 
-            string OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
+            OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
                 }
             catch(Exception) {Console.WriteLine(@"Couldn't find .Index-File"); }
             Console.WriteLine("Willkommen in der Konsolen-App zur Bildklassifizierung auf Grundlage von Machine Learning");
