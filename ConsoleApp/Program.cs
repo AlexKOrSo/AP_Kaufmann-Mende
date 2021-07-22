@@ -1,6 +1,6 @@
 ﻿using System;
 using Tools;
-
+using System.IO;
 using MLData;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace ConsoleApp
     {
         public static void Training(string path)
         {
-            DataCollection Data = new DataCollection(path);
+            DataCollection Data = new DataCollection(path,500);
             bool run = true;
             
             while (run)
