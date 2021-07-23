@@ -14,9 +14,11 @@ namespace Classes
     public class CustomBuilder
     {
         public static List<Dataset> Labels { get; private set; }
+        public static DataCollection Data { get; private set; } 
         static CustomBuilder()
         {
             Labels = new List<Dataset>();
+            
         }
         public static void Initialization(string path)
         {
@@ -24,9 +26,9 @@ namespace Classes
 
                 try
                 {
-                    DataCollection Data = new DataCollection(path, 500);
-                    bool run = true;
                     
+                    bool run = true;
+                    Data = new DataCollection(path, 500);
                     while (run)
                     {
                         //List<Dataset> labels;
@@ -76,7 +78,7 @@ namespace Classes
 
         public static IEnumerable<Image> ImageCollector()
         {
-            foreach (var Label in Labels)
+            foreach (var Label in Data.Labels)
             {
                 string LabelFolder = Path.Combine(PathFinder.ImageDir, Label.Label);
                 var TrainingImages = Directory.GetFiles(LabelFolder, "*.jpg");
