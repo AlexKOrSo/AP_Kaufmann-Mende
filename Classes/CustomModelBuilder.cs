@@ -64,6 +64,7 @@ namespace Classes
                     {
                         throw new Exception("Zu wenig Kategorien ausgewählt");
                     }
+
                     Data.DownloadAllDatasets(path);
                 }
                 catch (Exception e)
