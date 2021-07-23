@@ -56,6 +56,7 @@ namespace Tools
 
     public static class PathFinder
     {
+        public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); 
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts

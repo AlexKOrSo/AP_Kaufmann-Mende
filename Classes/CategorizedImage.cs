@@ -20,5 +20,6 @@ namespace Classes
 
             HTMLTools.ProcessedImages.Add(this); 
         }
+        public CategorizedImage() { }
     }
 }
