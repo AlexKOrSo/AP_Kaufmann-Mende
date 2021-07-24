@@ -32,7 +32,14 @@ namespace ConsoleApp
         }
         public static void ClassificationChoice(MLContext mlContext)
         {
-            DataViewSchema modelSchema; model = mlContext.Model.Load(@"R:\model.zip", out modelSchema);
+            Console.WriteLine("Wählen Sie bitte unter den folgenden Modellen aus: ");
+            string ChosenModel=CustomBuilder.GetModelNames();
+            string ModelPath = Path.Combine(PathFinder.ModelDir, ChosenModel); 
+
+
+
+            DataViewSchema TrainedModelSchema; 
+            ITransformer TrainedModel = mlContext.Model.Load(ModelPath, out TrainedModelSchema);
         }
         public static void ForceDeleteDirectory(string Dir)
         {
@@ -82,7 +89,7 @@ namespace ConsoleApp
             }
 
             if (PressedKey == '1') {
-
+                ClassificationChoice(myContext); 
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
