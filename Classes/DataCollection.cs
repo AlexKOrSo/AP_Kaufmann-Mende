@@ -66,7 +66,7 @@ namespace MLData
         }
         public void DownloadAllDatasets(string path)
         {
-            Console.WriteLine("IM here");
+            Console.WriteLine(nameof(DownloadAllDatasets));
             findImageIds();
             foreach (Dataset item in Labels)
             {
@@ -79,8 +79,8 @@ namespace MLData
                     {
                         Directory.CreateDirectory(downloadpath);
                     }
-                    
-                    item.downloadAll(downloadpath);
+
+                    item.downloadAll(downloadpath,MaxItems);
 
                     Console.WriteLine("finished download");
                 }
@@ -95,9 +95,6 @@ namespace MLData
         }
         public DataCollection(string path, int maxItems)
         {
-            //Pfade sind nur vorübergehend festgeschrieben, hier müssen noch methoden zur überprüfung hin, ob datei existiert...
-            //this.PathIDs = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-train-annotations-human-imagelabels.csv";
-            //this.PathLabels = @"R:\Transfer\Softwareentwicklung_Github\python\oidv6-class-descriptions.csv";
             this.PathIDs = Path.Combine(path, @"oidv6-train-annotations-human-imagelabels.csv");
             this.PathLabels = Path.Combine(path, @"oidv6-class-descriptions.csv");
             MaxItems = maxItems;

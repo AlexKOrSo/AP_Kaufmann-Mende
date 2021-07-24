@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
 using Tools;
@@ -18,11 +19,17 @@ namespace MLData
         public string Key { get; set; } //Schlüssel, der in Datenbank hinterlegt ist
         public ConcurrentQueue<string> ids; //Asynchrone Queue
 
-        async Task DownloadFilesAsync(string path)
+        public class counterHolder
+        {
+            public int Value;
+        }
+
+        async Task DownloadFilesAsync(string path, counterHolder counter)
         {
             
             string bucketName = "open-images-dataset";
             string filename;
+
             Console.WriteLine(ids.Count.ToString());
             RegionEndpoint reg = RegionEndpoint.USEast1;
             AmazonS3Client s3Client = null;
@@ -50,7 +57,11 @@ namespace MLData
 
                     
                     await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
-                 
+                    int currentCounter=Interlocked.Decrement(ref counter.Value);
+                    if (currentCounter<=0)
+                    {
+                        break;
+                    }
 
                 }
               catch (Exception)
@@ -65,8 +76,9 @@ namespace MLData
 
         }
 
-        public void downloadAll(string path)
+        public void downloadAll(string path,int maxItems)
         {
+            counterHolder counter = new counterHolder() { Value = maxItems };
 
             //getIDs(ref ids);
             try
@@ -86,7 +98,7 @@ namespace MLData
 
             for (int i = 0; i < downloadtasks.Length; i++)
             {
-                downloadtasks[i] = DownloadFilesAsync(path);
+                downloadtasks[i] = DownloadFilesAsync(path,counter);
             }
             Task.WaitAll(downloadtasks);
 

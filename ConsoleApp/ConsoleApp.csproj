@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Classes\Classes.csproj" />
+    <ProjectReference Include="..\HTMLTools\HTMLTools.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
