@@ -34,8 +34,12 @@ namespace CategorizingImages{
             }
             
             foreach (var item in Directory.GetFiles(PathFinder.OwnImagesDir))
-            {
-                input.Add(new Image{Path=item});
+            {   
+                if (item.Contains(@".jpg")||item.Contains(@".png"))
+                {
+                    input.Add(new Image{Path=item});
+                }
+
             }
             // Parsen der Bilder, rückgabe als Image
             return input;
