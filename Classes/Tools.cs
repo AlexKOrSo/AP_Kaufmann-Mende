@@ -116,6 +116,8 @@ namespace Tools
     {
         public static string ModelDir = Path.Combine(FindOrigin(), "TrainedModel"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
         public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
+
+        public static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts

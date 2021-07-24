@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Tools;
 using Microsoft.ML;
+using System.IO;
 using HTMLTools;
 using System.Threading.Tasks;
 
@@ -24,13 +25,20 @@ namespace CategorizingImages{
             return predictions;
         }
         public static List<Image> Initialization(){
+            
+            List<Image> input=new List<Image>();
             System.Console.WriteLine("..... Bilder kategorisieren");
-            while (!ConsoleTools.YesNoInput("Eigene Bilder in den Unterordner OwnImages eingefügt"))
+            while (!ConsoleTools.YesNoInput("Eigene Bilder in den Unterordner OwnImages eingefügt?"))
             {
                 
             }
+            
+            foreach (var item in Directory.GetFiles(PathFinder.OwnImagesDir))
+            {
+                input.Add(new Image{Path=item});
+            }
             // Parsen der Bilder, rückgabe als Image
-           return .....;
+            return input;
            
         }
     }
