@@ -5,6 +5,7 @@ using MLData;
 using System.Collections.Generic;
 using Microsoft.ML;
 using Classes;
+using HTMLTools;
 using Microsoft.ML.Data;
 using static Microsoft.ML.DataOperationsCatalog;
 using Microsoft.ML.Transforms;
@@ -59,8 +60,8 @@ namespace ConsoleApp
                 IsValidKey = ConsoleTools.IsValidKey(ref PressedKey, 1);
             }
 
-            if (PressedKey == '1') { 
-                
+            if (PressedKey == '1') {
+
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
