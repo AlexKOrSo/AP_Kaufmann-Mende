@@ -66,7 +66,7 @@ namespace Classes
                     }
 
                     Data.DownloadAllDatasets(path);
-                    TSVMaker.LogAllData(PathFinder.ImageDir, Data); 
+                    TSVMaker.LogAllData(PathFinder.ImageDir, Data.Labels); 
                 }
                 catch (Exception e)
                 {
@@ -81,81 +81,63 @@ namespace Classes
         public static ITransformer GenerateModel(MLContext mlContext)
         {
             string ModelLocation=Path.Combine(PathFinder.FindOrigin(), "Classes", "Model", "tensorflow_inception_graph.pb");
-            string TrainingTags = Path.Combine(PathFinder.ImageDir, "TrainingData.tsv");
-            string TestTags = Path.Combine(PathFinder.ImageDir, "TestData.tsv"); 
+            string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
+            string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData); 
             Console.WriteLine(nameof(Image.Path));
-            // <SnippetImageTransforms>
 
+            //Tranformationen der Eingaben für nachfolgende Verarbeitungsschritte
             IEstimator<ITransformer> pipeline = mlContext.Transforms.LoadImages(outputColumnName: "input", imageFolder: null, inputColumnName: nameof(Image.Path)) //_imagesFolder
                                                                                                                                                                             // The image transforms transform the images into the model's expected format.
                             .Append(mlContext.Transforms.ResizeImages(outputColumnName: "input", imageWidth: InceptionSettings.ImageWidth, imageHeight: InceptionSettings.ImageHeight, inputColumnName: "input"))
                             .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "input", interleavePixelColors: InceptionSettings.ChannelsLast, offsetImage: InceptionSettings.Mean))
-                            // </SnippetImageTransforms>
-                            // The ScoreTensorFlowModel transform scores the TensorFlow model and allows communication
-                            // <SnippetScoreTensorFlowModel>
                             .Append(mlContext.Model.LoadTensorFlowModel(ModelLocation).
-                                ScoreTensorFlowModel(outputColumnNames: new[] { "softmax2_pre_activation" }, inputColumnNames: new[] { "input" }, addBatchDimensionInput: true))
-                            // </SnippetScoreTensorFlowModel>
-                            // <SnippetMapValueToKey>
-                            .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "LabelKey", inputColumnName: "Label"))
-                            // </SnippetMapValueToKey>
-                            // <SnippetAddTrainer>
+                            ScoreTensorFlowModel(outputColumnNames: new[] { "softmax2_pre_activation" }, inputColumnNames: new[] { "input" }, addBatchDimensionInput: true))
+                            .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "LabelKey", inputColumnName: "LabeledAs"))
                             .Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy(labelColumnName: "LabelKey", featureColumnName: "softmax2_pre_activation"))
-                            // </SnippetAddTrainer>
-                            // <SnippetMapKeyToValue>
-                            .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabelValue", "PredictedLabel"))
+                            .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedImageLabel", "PredictedLabel"))
                             .AppendCacheCheckpoint(mlContext);
-            // </SnippetMapKeyToValue>
 
-            // <SnippetLoadData>
-            IDataView trainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, hasHeader: true, separatorChar: ';');
-            // </SnippetLoadData>
 
-            // Train the model
-            Console.WriteLine("=============== Training classification model ===============");
-            // Create and train the model
-            // <SnippetTrainModel>
-            ITransformer model = pipeline.Fit(trainingData);
-            // </SnippetTrainModel>
+            
+            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, hasHeader: false, separatorChar: ';');
 
-            // Generate predictions from the test data, to be evaluated
-            // <SnippetLoadAndTransformTestData>
-            IDataView testData = mlContext.Data.LoadFromTextFile<Image>(path: TestTags, hasHeader: true, separatorChar: ';');
-            IDataView predictions = model.Transform(testData);
+            Console.WriteLine("Training Gestartet\nDies kann je nach Anzahl der Bilder einige Zeit dauern!");
+            ITransformer TrainedModel = pipeline.Fit(TrainingData);
 
-            // Create an IEnumerable for the predictions for displaying results
-            IEnumerable<CategorizedImage> imagePredictionData = mlContext.Data.CreateEnumerable<CategorizedImage>(predictions, true);
-            DisplayResults(imagePredictionData);
-            // </SnippetLoadAndTransformTestData>
+            Console.WriteLine("Trainiertes Modell testen"); 
+            IDataView TestData = mlContext.Data.LoadFromTextFile<Image>(path: TestTags, separatorChar: ';');
+            IDataView TestPredictions = TrainedModel.Transform(TestData);
 
-            // Get performance metrics on the model using training data
-            Console.WriteLine("=============== Classification metrics ===============");
+            IEnumerable<CategorizedImage> ImagePredictionData = mlContext.Data.CreateEnumerable<CategorizedImage>(TestPredictions, true);
+            DisplayResults(ImagePredictionData);
 
-            // <SnippetEvaluate>
+            Console.WriteLine("Statistiken zum Training: ");
             MulticlassClassificationMetrics metrics =
-                mlContext.MulticlassClassification.Evaluate(predictions,
+                mlContext.MulticlassClassification.Evaluate(TestPredictions,
                   labelColumnName: "LabelKey",
-                  predictedLabelColumnName: "PredictedLabel");
-            // </SnippetEvaluate>
+                  predictedLabelColumnName: "PredictedImageLabel");
+            
+            Console.WriteLine($"LogLoss: {metrics.LogLoss}");
+            Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
+            mlContext.Model.Save(TrainedModel, TrainingData.Schema, PathFinder.ModelDir); 
 
-            //<SnippetDisplayMetrics>
-            Console.WriteLine($"LogLoss is: {metrics.LogLoss}");
-            Console.WriteLine($"PerClassLogLoss is: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
-            //</SnippetDisplayMetrics>
-
-            // <SnippetReturnModel>
-            return model;
-            // </SnippetReturnModel>
+            return TrainedModel;
         }
 
-        private static void DisplayResults(IEnumerable<CategorizedImage> imagePredictionData)
+        private static void DisplayResults(IEnumerable<CategorizedImage> PredictedData)
         {
-            // <SnippetDisplayPredictions>
-            foreach (CategorizedImage prediction in imagePredictionData)
+            foreach (CategorizedImage Result in PredictedData)
             {
-                Console.WriteLine($"Image: {Path.GetFileName(prediction.Path)} predicted as: {prediction.PredictedLabel} with score: {prediction.Score.Max()} ");
+
+                string Category = null ; 
+                for (int i=0; i < TSVMaker.LabelNames.Length; i++)
+                { 
+                    if (Result.Score.Max() == Result.Score[i]) Category = TSVMaker.LabelNames[i]; 
+                }
+
+                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()} ");
             }
-            // </SnippetDisplayPredictions>
+           
         }
 
         private struct InceptionSettings
