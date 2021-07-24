@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Classes
 {
+    
     public class CategorizedImage
     {
         public string LabeledAs { get; private set; }
@@ -20,5 +21,6 @@ namespace Classes
 
             HTMLTools.ProcessedImages.Add(this); 
         }
+        public CategorizedImage() { }
     }
 }

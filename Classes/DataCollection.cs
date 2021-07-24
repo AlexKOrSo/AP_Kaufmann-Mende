@@ -62,7 +62,7 @@ namespace MLData
                 throw;
             }
         }
-        public void downloadAllDatasets(string path)
+        public void DownloadAllDatasets(string path)
         {
             Console.WriteLine("IM here");
             findImageIds();

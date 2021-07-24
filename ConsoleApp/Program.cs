@@ -3,67 +3,48 @@ using Tools;
 using System.IO;
 using MLData;
 using System.Collections.Generic;
+using Microsoft.ML;
+using Classes;
+using Microsoft.ML.Data;
+using static Microsoft.ML.DataOperationsCatalog;
+using Microsoft.ML.Transforms;
+using Microsoft.ML.Vision;
+
 
 namespace ConsoleApp
 {
     class Program
     {
-        public static void Training(string path)
+
+
+        public static void TrainingChoice(MLContext mlContext)
         {
 
-            try
-            {
-                DataCollection Data = new DataCollection(path, 500);
-                bool run = true;
+           //DirectoryInfo PreviousData = Directory.CreateDirectory(assets); 
+          
+            CustomBuilder.Initialization(PathFinder.FindOrigin());
+            IEnumerable<Image> LoadedImages = CustomBuilder.ImageCollector();
+            //IDataView LoadedData = mlContext.Data.ShuffleRows(mlContext.Data.LoadFromEnumerable(LoadedImages));
+            //StreamWriter sw=new StreamWriter(Path.Combine(PathFinder.FindOrigin(), "test.tsv"));
+            //sw.WriteLine("Label,ImageSource");
+            //foreach (var item in LoadedImages)
+           // {
+            //    sw.WriteLine(item.Label + "," + item.Path);
+           // }
+            //sw.Dispose();
 
-                while (run)
-                {
-                    List<Dataset> labels;
-                    Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
-                    labels = Data.FindLables(Console.ReadLine());
-                    foreach (Dataset item in labels)
-                    {
-                        Console.WriteLine("{0}: {1}: {2}", labels.IndexOf(item), item.Key, item.Label);
-                    }
-                    int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
-                    Console.WriteLine(index.Length);
-                    
+           
 
-                    foreach (var item in index)
-                    {
-                        if (item == -1)
-                        {
-                            break;
-                        }
-                        else if (!Data.Labels.Contains(new Dataset(labels[item].Key, labels[item].Label)))
-                        {
-                            Data.Labels.Add(labels[item]);
-                        }
-
-                        //labels.TryGetValue(item, out Dataset temp);
-                        //Data.Labels.Add(temp);
-                    }
-
-                    run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
-                    
-                }
-                if (Data.Labels.Count < 2)
-                {
-                    throw new Exception("Zu wenig Kategorien ausgewählt");
-                }
-                Data.downloadAllDatasets(path);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Alles auf Anfang");
-            }
-            //Löschen der Temporäeren Dateien fehlt noch, implementiere ich erst, wenn wir ganz sicher sind, dass auch der richtige dateipfad bei tools rauskommt ;)
         }
+
+      
 
         static void Main(string[] args)
         {
+
+            MLContext myContext = new MLContext(); 
             Console.WriteLine("Before Exceptiom");
+       
             string OriginPath = null ;
             try { 
             OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
@@ -83,7 +64,7 @@ namespace ConsoleApp
                 
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
-                Training(OriginPath);
+                TrainingChoice(myContext);
             } //Überleitung zum Training
 
             DirectoryInfo TrainingDir=PathFinder.MakeDirectory("TrainingModel");
