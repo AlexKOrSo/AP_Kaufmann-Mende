@@ -11,7 +11,7 @@ namespace Classes
     {
         public static void OutputPrediction(CategorizedImage Prediction)
         {
-            Console.WriteLine($"Image: {Prediction.FileName} | Actual Label: {Prediction.LabeledAs} | Predicted Label: { Prediction.Path}");
+            Console.WriteLine($"Image: {Prediction.Path} | Actual Label: {Prediction.LabeledAs} | Predicted Label: { Prediction.Path}");
         }
 
         public static void ClassifySingleImg(MLContext mlContext, IDataView data, ITransformer trainedModel)

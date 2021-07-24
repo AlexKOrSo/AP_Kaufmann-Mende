@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.ML.DataView" Version="1.6.0" />
     <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="1.6.0" />
     <PackageReference Include="Microsoft.ML.TensorFlow" Version="1.6.0" />
+    <PackageReference Include="Microsoft.ML.Vision" Version="1.6.0" />
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.5.0" />
   </ItemGroup>
 
@@ -26,6 +27,28 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Model\imagenet.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Model\imagenet.tsv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Model\imagenet_comp_graph_label_strings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Model\LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Model\tensorflow_inception_graph.pb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

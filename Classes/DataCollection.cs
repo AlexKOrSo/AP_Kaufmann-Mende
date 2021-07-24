@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Tools; 
 
 namespace MLData
 {
@@ -10,11 +11,12 @@ namespace MLData
         string PathLabels { get; set; } //Dateipfad zu CSV mit Schlüsseln für entsprechende Labels
         int MaxItems { get; set; } //Maximale Anzahl an Items, die heruntergeladen werden soll
         public List<Dataset> Labels { get; set; } //Liste der DataSet (pro Label ein Dataset)
+        
 
         public List<Dataset> FindLables(string searchstring)
         {
             //neue Liste, die Suchergebnisse als jeweils eine neue Dataset-instanz enthält
-            List<Dataset> results = new List<Dataset>();
+            List<Dataset> results = new List<Dataset>(); 
 
             try
             {
@@ -77,6 +79,7 @@ namespace MLData
                     {
                         Directory.CreateDirectory(downloadpath);
                     }
+                    
                     item.downloadAll(downloadpath);
 
                     Console.WriteLine("finished download");
