@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.ML.TensorFlow" Version="1.6.0" />
     <PackageReference Include="Microsoft.ML.Vision" Version="1.6.0" />
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.5.0" />
+    <ProjectReference Include="..\HTMLTools\HTMLTools.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@ namespace HTMLTools
     {
         string GetLabel();
         string GetFilePath();
+        IHtmldata GetHtmldata();
     }
     public interface IHtmlable
     {
@@ -22,9 +23,8 @@ namespace HTMLTools
             return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}/>";
         }
 
-        public static void Result(List<IHtmlable> images,string filepath,string filename)
+        public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
         {
-            string links = "";
             StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename, ".html"));
             sw.WriteLine("<!DOCTYPE html>");
             sw.WriteLine("<html>");

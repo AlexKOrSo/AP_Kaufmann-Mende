@@ -50,7 +50,7 @@ namespace MLData
             {
 
                 filename = Path.Combine(path,(temp +".jpg"));
-                Console.WriteLine(ids.Count.ToString());
+               // Console.WriteLine(ids.Count.ToString());
 
               
                try{
@@ -58,6 +58,7 @@ namespace MLData
                     
                     await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
                     int currentCounter=Interlocked.Decrement(ref counter.Value);
+                    System.Console.WriteLine(currentCounter);
                     if (currentCounter<=0)
                     {
                         break;

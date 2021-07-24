@@ -80,7 +80,7 @@ namespace Classes
 
         public static ITransformer GenerateModel(MLContext mlContext)
         {
-            string ModelLocation=Path.Combine(PathFinder.FindOrigin(), "Classes", "Model", "tensorflow_inception_graph.pb");
+            string ModelLocation=Path.Combine(PathFinder.FindOrigin(), "Tensorflow", "tensorflow_inception_graph.pb");
             string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
             string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData); 
             Console.WriteLine(nameof(Image.Path));

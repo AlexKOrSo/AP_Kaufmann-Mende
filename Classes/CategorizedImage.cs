@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using HTMLTools;
 namespace Classes
 {
     
-    public class CategorizedImage : Image
+    public class CategorizedImage : Image, IHtmlable, IHtmldata
     {
         public string PredictedImageLabel { get; private set; }
-
+        
         public float[] Score; 
-
+        
+        public string GetLabel() =>PredictedImageLabel;
+        public string GetFilePath() => Path;
+        public IHtmldata GetHtmldata()=> this;
         public CategorizedImage(string LabeledAs)
         {
             this.LabeledAs = LabeledAs;
@@ -23,4 +26,8 @@ namespace Classes
         }
         public CategorizedImage() { }
     }
+
+
+
+    
 }

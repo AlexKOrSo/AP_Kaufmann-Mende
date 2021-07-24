@@ -14,14 +14,15 @@ namespace Classes
             Console.WriteLine($"Image: {Prediction.Path} | Actual Label: {Prediction.LabeledAs} | Predicted Label: { Prediction.Path}");
         }
 
-        public static void ClassifySingleImg(MLContext mlContext, IDataView data, ITransformer trainedModel)
+        public static CategorizedImage ClassifySingleImg(MLContext mlContext, Image data, ITransformer trainedModel)
         {
             PredictionEngine<Image, CategorizedImage> predEngine = mlContext.Model.CreatePredictionEngine<Image, CategorizedImage>(trainedModel);
-            Image image = mlContext.Data.CreateEnumerable<Image>(data, reuseRowObject: true).First();
-            CategorizedImage Prediction = predEngine.Predict(image);
+            //Image image = mlContext.Data.CreateEnumerable<Image>(data, reuseRowObject: true).First();
+            CategorizedImage Prediction = predEngine.Predict(data);
             //print predicted value
             Console.WriteLine("Prediction for single image");
-            OutputPrediction(Prediction);
+            return Prediction;
+           // OutputPrediction(Prediction);
         }
 
         public static void ClassifyMultiple(MLContext myContext, IDataView data, ITransformer trainedModel)

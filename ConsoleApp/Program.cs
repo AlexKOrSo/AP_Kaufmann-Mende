@@ -10,6 +10,7 @@ using Microsoft.ML.Data;
 using static Microsoft.ML.DataOperationsCatalog;
 using Microsoft.ML.Transforms;
 using Microsoft.ML.Vision;
+using CategorizingImages;
 
 
 namespace ConsoleApp
@@ -17,7 +18,11 @@ namespace ConsoleApp
     class Program
     {
 
-
+        public static void CategorizeChoice(){
+            List<Image> input=ImageCategorizer.Initialization();
+            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input);
+            HTMLCreator.Result(prediction,@"%temp%",@"Website");
+        }
         public static void TrainingChoice(MLContext mlContext)
         {
 
@@ -79,13 +84,12 @@ namespace ConsoleApp
             }
 
             if (PressedKey == '1') {
-
+                CategorizeChoice();
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
             } //Überleitung zum Training
 
-        Exit:
             Console.WriteLine("Beende Programm");
         }
     }
