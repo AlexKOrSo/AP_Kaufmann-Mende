@@ -30,10 +30,14 @@ namespace ConsoleApp
             
 
         }
-        public static void DeleteDirectory(string target_dir)
+        public static void ClassificationChoice(MLContext mlContext)
         {
-            string[] files = Directory.GetFiles(target_dir);
-            string[] dirs = Directory.GetDirectories(target_dir);
+            DataViewSchema modelSchema; model = mlContext.Model.Load(@"R:\model.zip", out modelSchema);
+        }
+        public static void ForceDeleteDirectory(string Dir)
+        {
+            string[] files = Directory.GetFiles(Dir);
+            string[] dirs = Directory.GetDirectories(Dir);
 
             foreach (string file in files)
             {
@@ -43,10 +47,10 @@ namespace ConsoleApp
 
             foreach (string dir in dirs)
             {
-                DeleteDirectory(dir);
+                ForceDeleteDirectory(dir);
             }
 
-            Directory.Delete(target_dir, false);
+            Directory.Delete(Dir, false);
         }
 
 
@@ -56,12 +60,11 @@ namespace ConsoleApp
             
             try
             {
-                DeleteDirectory(PathFinder.ImageDir);
+                ForceDeleteDirectory(PathFinder.ImageDir);
             }
             catch (Exception) { }
 
             MLContext myContext = new MLContext(); 
-            Console.WriteLine("Before Exceptiom");
        
             string OriginPath = null ;
             try { 

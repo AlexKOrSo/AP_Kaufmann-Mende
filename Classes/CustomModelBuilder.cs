@@ -74,13 +74,12 @@ namespace Classes
                     Console.WriteLine("Alles auf Anfang");
                 }
             }
-            //Löschen der Temporäeren Dateien fehlt noch, implementiere ich erst, wenn wir ganz sicher sind, dass auch der richtige dateipfad bei tools rauskommt ;)
-            //Kommt raus :D
         }
 
         public static ITransformer GenerateModel(MLContext mlContext)
         {
-            string ModelLocation=Path.Combine(PathFinder.FindOrigin(), "Classes", "Model", "tensorflow_inception_graph.pb");
+            string ModelFolder = Path.Combine(PathFinder.FindOrigin(), "Classes", "Model"); 
+            string ModelLocation= Path.Combine(ModelFolder, "tensorflow_inception_graph.pb");
             string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
             string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData); 
             Console.WriteLine(nameof(Image.Path));
@@ -119,7 +118,22 @@ namespace Classes
             
             Console.WriteLine($"LogLoss: {metrics.LogLoss}");
             Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
-            mlContext.Model.Save(TrainedModel, TrainingData.Schema, PathFinder.ModelDir); 
+
+            Console.WriteLine("Sie können das Modell jetzt speichern. Unter welchem Namen sol das Modell gespeichert werden? (Ohne Extension)");
+            bool CorrectName = false;
+            string Input = ""; 
+            do
+            {
+                Input = Console.ReadLine();
+                CorrectName = ConsoleTools.FileNameInput(Input); 
+                
+            }
+            while(!CorrectName);
+
+            string NewModelPath = Path.Combine(ModelFolder, Input + ".model"); 
+            mlContext.Model.Save(TrainedModel, TrainingData.Schema, NewModelPath);
+            Console.WriteLine($"Das Modell ist unter {NewModelPath} gespeichert"); 
+            
 
             return TrainedModel;
         }

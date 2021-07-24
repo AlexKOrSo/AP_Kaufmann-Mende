@@ -110,6 +110,17 @@ namespace Tools
             
             return input;
         }
+        public static bool FileNameInput(string FileName)
+        {
+            //Prüft, ob der FileName verwendet werden darf. 
+            
+            if(FileName.Contains(' ') || FileName.Contains('/') || FileName.Contains('\\'))
+            {
+                Console.WriteLine("Bitte Name ohne Leerzeichen oder (Back-)Slash eingeben");
+                return false; 
+            }
+            return true; 
+        }
     }
 
     public static class PathFinder
