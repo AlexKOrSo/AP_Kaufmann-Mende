@@ -25,13 +25,13 @@ namespace HTMLTools
         public static void Result(List<IHtmlable> images,string filepath,string filename)
         {
             string links = "";
-            StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename, ".html");
+            StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename, ".html"));
             sw.WriteLine("<!DOCTYPE html>");
             sw.WriteLine("<html>");
             sw.WriteLine("<body>");
             foreach (var item in images)
             {
-                sw.WriteLine(GenerateHref(item.GetHtmldata());
+                sw.WriteLine(GenerateHref(item.GetHtmldata()));
             }
 
             sw.WriteLine("</html>");
