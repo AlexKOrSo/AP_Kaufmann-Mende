@@ -6,30 +6,63 @@ using Classes.Properties;
 using MLData; 
 using System.Text;
 using System.Net;
+using System.Collections.Generic; 
 
 
 namespace Tools
 {
     public static class TSVMaker
     {
-        public static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
+        public static string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv"); 
+        static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
         public static string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
-        public static string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv"); 
-        public static void LogAllData(string LogPath, DataCollection Data)
+        public static string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv");
+        public static string[] LabelNames; 
+        public static int TestDataNumber;
+        public static int TrainDataNumber; 
+
+     
+        public static void LogAllData(string LogPath, List<Dataset> Labels)
         {
-            //Erstellt Log-tsv für alle heruntergeladenen Bilder
-            string[] Labels = new string[Data.Labels.Count];
+
+            LabelNames = new string[Labels.Count];
             int Counter = 0; 
-            foreach(var Label in Data.Labels)
+            foreach(var Element in Labels)
             {
-                Labels[Counter] = Label.ToString();
+                LabelNames[Counter] = Element.Label;
                 Counter++; 
             }
-            File.Create(AllData); 
-            File.WriteAllLines(AllData, Labels); 
-           string Log = "";
+            //Jetzt befinden sich alle Label-Namen als String-Array in "LabelNames"
+            if(File.Exists(AllData)) File.Delete(AllData);
+            if (File.Exists(TestData)) File.Delete(TestData);
+            if (File.Exists(TrainData)) File.Delete(TrainData);
 
 
+            int FileCounter = 0; 
+            using (StreamWriter AllWriter = new StreamWriter(AllData))
+            using (StreamWriter TestWriter = new StreamWriter(TestData)) 
+            using(StreamWriter TrainWriter=new StreamWriter(TrainData))
+            
+       
+            foreach (string Name in LabelNames)
+            {
+                    string[] FilesInDir = Directory.GetFiles(Path.Combine(PathFinder.ImageDir, Name));
+                    FileCounter = 0;
+                    foreach(string File in FilesInDir)
+                    {
+                        string Output = File + ';' + Name;
+                        if ((double)FileCounter < (double) 0.4 * FilesInDir.Length) TrainWriter.WriteLine(Output);
+                        else TestWriter.WriteLine(Output);
+                        FileCounter++; 
+                        AllWriter.WriteLine(Output);
+                    }
+            }
+            
+
+        }
+        public static void TransferAllData()
+        {
+            
         }
     }
 
@@ -81,6 +114,7 @@ namespace Tools
 
     public static class PathFinder
     {
+        public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
         public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
         public static string FindOrigin()
         {

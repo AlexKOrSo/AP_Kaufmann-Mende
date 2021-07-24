@@ -24,23 +24,41 @@ namespace ConsoleApp
            //DirectoryInfo PreviousData = Directory.CreateDirectory(assets); 
           
             CustomBuilder.Initialization(PathFinder.FindOrigin());
-            //IEnumerable<Image> LoadedImages = CustomBuilder.ImageCollector();
-            StreamWriter sw=new StreamWriter(Path.Combine(PathFinder.FindOrigin(), "Labels.tsv"));
-            sw.WriteLine("Label,ImagePath");
-            //foreach (var item in LoadedImages)
-           // {
-            //    sw.WriteLine(item.Label + "," + item.Path);
-           // }
-            //sw.Dispose();
-
-           
+            ITransformer GeneratedModel = CustomBuilder.GenerateModel(mlContext);
+            Console.WriteLine("Modell erfolgreich trainiert!\nEs wurden folgende Kategorien trainiert: ");
+            foreach (string Label in TSVMaker.LabelNames) Console.WriteLine($"***{Label}");
+            
 
         }
+        public static void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
 
-      
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(target_dir, false);
+        }
+
 
         static void Main(string[] args)
         {
+           
+            
+            try
+            {
+                DeleteDirectory(PathFinder.ImageDir);
+            }
+            catch (Exception) { }
 
             MLContext myContext = new MLContext(); 
             Console.WriteLine("Before Exceptiom");
@@ -67,9 +85,7 @@ namespace ConsoleApp
                 TrainingChoice(myContext);
             } //Überleitung zum Training
 
-            DirectoryInfo TrainingDir=PathFinder.MakeDirectory("TrainingModel");
-            Console.WriteLine(TrainingDir.FullName); 
-            Exit:
+        Exit:
             Console.WriteLine("Beende Programm");
         }
     }

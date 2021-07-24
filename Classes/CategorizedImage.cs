@@ -9,9 +9,9 @@ namespace Classes
     
     public class CategorizedImage : Image
     {
-        public string PredictedLabel { get; private set; }
+        public string PredictedImageLabel { get; private set; }
 
-        public double[] Score; 
+        public float[] Score; 
 
         public CategorizedImage(string LabeledAs)
         {
