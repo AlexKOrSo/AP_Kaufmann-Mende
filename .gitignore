@@ -10,3 +10,4 @@ obj/
 *.csv
 tmp/
 *.csv
+/Classes/Model

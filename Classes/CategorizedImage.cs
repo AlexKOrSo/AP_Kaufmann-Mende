@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace Classes
 {
     
-    public class CategorizedImage
+    public class CategorizedImage : Image
     {
-        public string LabeledAs { get; private set; }
-        public string Path { get; private set; }
-        public string FileName {get; private set; }
+        public string PredictedLabel { get; private set; }
 
-        public CategorizedImage(string LabeledAs, string Path, string FileName)
+        public double[] Score; 
+
+        public CategorizedImage(string LabeledAs)
         {
             this.LabeledAs = LabeledAs;
-            this.Path = Path;
-            this.FileName = FileName;
+            
+            
 
             HTMLTools.ProcessedImages.Add(this); 
         }

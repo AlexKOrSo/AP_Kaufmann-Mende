@@ -20,6 +20,7 @@ namespace MLData
 
         async Task DownloadFilesAsync(string path)
         {
+            
             string bucketName = "open-images-dataset";
             string filename;
             Console.WriteLine(ids.Count.ToString());
@@ -46,9 +47,11 @@ namespace MLData
 
               
                try{
-        
 
-                await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
+                    
+                    await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
+                 
+
                 }
               catch (Exception)
                {

@@ -3,12 +3,37 @@ using System.IO;
 using System.Threading;
 using System.Net.NetworkInformation;
 using Classes.Properties;
+using MLData; 
 using System.Text;
 using System.Net;
 
 
 namespace Tools
 {
+    public static class TSVMaker
+    {
+        public static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
+        public static string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
+        public static string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv"); 
+        public static void LogAllData(string LogPath, DataCollection Data)
+        {
+            //Erstellt Log-tsv für alle heruntergeladenen Bilder
+            string[] Labels = new string[Data.Labels.Count];
+            int Counter = 0; 
+            foreach(var Label in Data.Labels)
+            {
+                Labels[Counter] = Label.ToString();
+                Counter++; 
+            }
+            File.Create(AllData); 
+            File.WriteAllLines(AllData, Labels); 
+           string Log = "";
+
+
+        }
+    }
+
+
     public static class ConsoleTools
     {
         public static bool YesNoInput(string question)
@@ -56,7 +81,7 @@ namespace Tools
 
     public static class PathFinder
     {
-        public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); 
+        public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts

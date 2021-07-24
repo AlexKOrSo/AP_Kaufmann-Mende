@@ -23,10 +23,9 @@ namespace ConsoleApp
            //DirectoryInfo PreviousData = Directory.CreateDirectory(assets); 
           
             CustomBuilder.Initialization(PathFinder.FindOrigin());
-            IEnumerable<Image> LoadedImages = CustomBuilder.ImageCollector();
-            //IDataView LoadedData = mlContext.Data.ShuffleRows(mlContext.Data.LoadFromEnumerable(LoadedImages));
-            //StreamWriter sw=new StreamWriter(Path.Combine(PathFinder.FindOrigin(), "test.tsv"));
-            //sw.WriteLine("Label,ImageSource");
+            //IEnumerable<Image> LoadedImages = CustomBuilder.ImageCollector();
+            StreamWriter sw=new StreamWriter(Path.Combine(PathFinder.FindOrigin(), "Labels.tsv"));
+            sw.WriteLine("Label,ImagePath");
             //foreach (var item in LoadedImages)
            // {
             //    sw.WriteLine(item.Label + "," + item.Path);
