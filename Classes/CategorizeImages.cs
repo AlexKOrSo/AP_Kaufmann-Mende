@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace CategorizingImages{
     public static class ImageCategorizer{
 
-        public static List<CategorizedImage> Categorizer(List<Image> input){
-            MLContext myContext=new MLContext();
-            DataViewSchema modelSchema;
-            string modelName=CustomBuilder.GetModelNames();
-            ITransformer trainedModel = myContext.Model.Load(modelName, out modelSchema);
+        public static List<CategorizedImage> Categorizer(List<Image> input,ITransformer trainedModel, MLContext mycontext){
+           // MLContext myContext=new MLContext();
+            //DataViewSchema modelSchema;
+            //string modelName=CustomBuilder.GetModelNames();
+            //ITransformer trainedModel = myContext.Model.Load(modelName, out modelSchema);
             List<CategorizedImage> predictions=new List<CategorizedImage>();
             foreach (Image item in input)
             {
