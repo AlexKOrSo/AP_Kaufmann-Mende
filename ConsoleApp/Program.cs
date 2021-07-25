@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using Microsoft.ML;
 using Classes;
 using HTMLTools;
-using Microsoft.ML.Data;
-using static Microsoft.ML.DataOperationsCatalog;
-using Microsoft.ML.Transforms;
-using Microsoft.ML.Vision;
 using CategorizingImages;
 
 
@@ -26,15 +22,15 @@ namespace ConsoleApp
         }
         public static void TrainingChoice(MLContext mlContext)
         {
-
-           //DirectoryInfo PreviousData = Directory.CreateDirectory(assets); 
-          
+         
             CustomBuilder.Initialization(PathFinder.FindOrigin());
             ITransformer GeneratedModel = CustomBuilder.GenerateModel(mlContext);
             if (GeneratedModel == null) return; 
             Console.WriteLine("Modell erfolgreich trainiert!\nEs wurden folgende Kategorien trainiert: ");
+
             foreach (string Label in TSVMaker.LabelNames) Console.WriteLine($"***{Label}***");
             if (ConsoleTools.YesNoInput("Möchten Sie das (oder andere) Modelle direkt zur Klassifizierung nutzen?")) ClassificationChoice(new MLContext()); 
+
 
         }
         public static void ClassificationChoice(MLContext mlContext)

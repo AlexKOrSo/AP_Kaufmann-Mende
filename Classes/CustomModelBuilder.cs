@@ -26,11 +26,12 @@ namespace Classes
 
                 try
                 {
-                    
+                    Console.WriteLine("Auswahl der Kategorien, bitte insgesamt mindestens zwei Auswählen! ");
                     bool run = true;
-                    Data = new DataCollection(path, 500);
+                    Data = new DataCollection(path, 500); //Hier noch fragen nach der Anzahl an Items
                     while (run)
                     {
+
                         //List<Dataset> labels;
 
                         while (Labels.Count == 0)
@@ -72,6 +73,7 @@ namespace Classes
                                 //labels.TryGetValue(item, out Dataset temp);
                                 //Data.Labels.Add(temp);
                             }
+
                         }
                             run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
                         
@@ -87,8 +89,7 @@ namespace Classes
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Alles auf Anfang");
+                    throw new Exception(e.Message,e);
                 }
             }
         }
@@ -140,6 +141,7 @@ namespace Classes
                 Console.WriteLine($"LogLoss: {metrics.LogLoss}");
                 Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
 
+
                 Console.WriteLine("Sie können das Modell jetzt speichern. Unter welchem Namen sol das Modell gespeichert werden? (Ohne Extension)");
                 bool CorrectName = false;
                 bool FileExists = true;
@@ -173,6 +175,7 @@ namespace Classes
                 return null; 
             }
         }
+
 
         private static bool AddModelInfo(string ModelPath)
         {

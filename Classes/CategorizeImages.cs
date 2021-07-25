@@ -13,20 +13,17 @@ namespace CategorizingImages{
     public static class ImageCategorizer{
 
         public static List<CategorizedImage> Categorizer(List<Image> input,ITransformer trainedModel, MLContext myContext){
-           // MLContext myContext=new MLContext();
-            //DataViewSchema modelSchema;
-            //string modelName=CustomBuilder.GetModelNames();
-            //ITransformer trainedModel = myContext.Model.Load(modelName, out modelSchema);
-            List<CategorizedImage> predictions=new List<CategorizedImage>();
-            foreach (Image item in input)
+
+            List<CategorizedImage> predictions=new List<CategorizedImage>();//Liste an CategorizedImages
+            foreach (Image item in input)//für jedes element der input-Liste wird ClassifySingleImg aufgerufen, Rückgabe in predictions-Liste hinzugefügt.
             {
                 predictions.Add( ModelUser.ClassifySingleImg(myContext,item,trainedModel));
             }
-            return predictions;
+            return predictions; //Rückgabe der Predictions
         }
-        public static List<Image> Initialization(){
+        public static List<Image> Initialization(){ //Initialisierung
             
-            List<Image> input=new List<Image>();
+            List<Image> input=new List<Image>(); //Liste an zu kategorisierenden Bildern
             System.Console.WriteLine("..... Bilder kategorisieren");
             while (!ConsoleTools.YesNoInput("Eigene Bilder in den Unterordner OwnImages eingefügt?"))
             {
@@ -41,7 +38,7 @@ namespace CategorizingImages{
                 }
 
             }
-            // Parsen der Bilder, rückgabe als Image
+            //Rückgabe der Bilder
             return input;
            
         }
