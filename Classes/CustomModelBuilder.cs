@@ -74,13 +74,15 @@ namespace Classes
                     Console.WriteLine("Alles auf Anfang");
                 }
             }
-            //Löschen der Temporäeren Dateien fehlt noch, implementiere ich erst, wenn wir ganz sicher sind, dass auch der richtige dateipfad bei tools rauskommt ;)
-            //Kommt raus :D
         }
 
         public static ITransformer GenerateModel(MLContext mlContext)
         {
-            string ModelLocation=Path.Combine(PathFinder.FindOrigin(), "Tensorflow", "tensorflow_inception_graph.pb");
+
+
+            string ModelFolder = PathFinder.ModelDir;  
+            string ModelLocation= Path.Combine(ModelFolder, "tensorflow_inception_graph.pb");
+
             string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
             string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData); 
             Console.WriteLine(nameof(Image.Path));
@@ -99,7 +101,7 @@ namespace Classes
 
 
             
-            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, hasHeader: false, separatorChar: ';');
+            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, separatorChar: ';');
 
             Console.WriteLine("Training Gestartet\nDies kann je nach Anzahl der Bilder einige Zeit dauern!");
             ITransformer TrainedModel = pipeline.Fit(TrainingData);
@@ -119,10 +121,106 @@ namespace Classes
             
             Console.WriteLine($"LogLoss: {metrics.LogLoss}");
             Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
-            mlContext.Model.Save(TrainedModel, TrainingData.Schema, PathFinder.ModelDir); 
+
+            Console.WriteLine("Sie können das Modell jetzt speichern. Unter welchem Namen sol das Modell gespeichert werden? (Ohne Extension)");
+            bool CorrectName = false;
+            bool FileExists = true; 
+            string Input = ""; 
+            do
+            {
+                Input = Console.ReadLine();
+                CorrectName = ConsoleTools.FileNameInput(Input);
+                FileExists = File.Exists(Path.Combine(ModelFolder, Input + ".model")) ? true : false;
+                if (FileExists) Console.WriteLine("File existiert schon, bitte neuen Namen ausdenken"); 
+            }
+            while(!CorrectName || FileExists);
+
+            string ModelName = Input + ".model"; 
+            string NewModelPath = Path.Combine(ModelFolder, ModelName); 
+            mlContext.Model.Save(TrainedModel, TrainingData.Schema, NewModelPath);
+            Console.WriteLine($"Das Modell ist unter {NewModelPath} gespeichert");
+            AddModelInfo(NewModelPath); 
+            
 
             return TrainedModel;
         }
+
+        /*public static bool RetrieveModelInfo(string ModelPath) ***Wahrscheinlich obsolet***
+        {
+            string ModelName = Path.GetFileName(ModelPath); 
+            string line = "";
+            List<string> Lines = new List<string>(); 
+            using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir,".Info")))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    Lines.Add(line); 
+                }
+            }
+            foreach(var Line in Lines)
+            {
+                string[] Parts = Line.Split(';'); 
+                if(Equals(Parts[0], ModelName))
+                {
+                    Console.WriteLine($"Modell {ModelName} mit Trainierten Klassen {Parts[1]} gefunden!");
+                    return true; 
+                } 
+            }
+            return false; 
+
+
+        }
+        */
+        private static bool AddModelInfo(string ModelPath)
+        {
+            string ModelName = Path.GetFileName(ModelPath);
+            string SingleLabels = "";
+            foreach (var SingleLabel in TSVMaker.LabelNames) SingleLabels += SingleLabel + "-";
+            try
+            {
+                using (StreamWriter sw = File.AppendText(Path.Combine(PathFinder.ModelDir, ".Info")))
+                {
+                    sw.WriteLine(ModelName + ';' + SingleLabels);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Speichern des Modells nicht möglich. Existiert Zugriff auf {Path.Combine(PathFinder.ModelDir, ".Info")}?");
+                return false; 
+            }
+            return true; 
+        }
+        public static string GetModelNames()
+        {
+            string line = null;
+            List<string> ModelNames = new List<string>();
+            Console.WriteLine("Folgende Modelle sind vorhanden:\n "); 
+            using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir, ".Info")))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] Parts = line.Split(';');
+                    ModelNames.Add(Parts[0]);
+                    Console.WriteLine($"Modell: **{Parts[0].Split('.')[0]}** mit den trainierten Kategorien: **{Parts[1]} (Nr. {ModelNames.IndexOf(Parts[0]) })**");
+                }
+            }
+
+            Console.WriteLine("Bitte Entscheidung für ein Modell durch Eingabe der jeweiligen Nummer treffen und mit Enter bestätigen\nEingabe muss wiederholt werden, wenn inkorrekt"); 
+            bool IsNumber = false;
+            int Choice=-1;
+            bool IsValidNumber = false;
+            while (!IsNumber || !IsValidNumber)
+            {
+                IsNumber = int.TryParse(Console.ReadLine(), out Choice);
+                IsValidNumber = (Choice >= 0 && Choice <= ModelNames.Count) ? true : false;
+            }
+
+            Console.WriteLine($"Sie haben sich für {ModelNames[Choice].Split('.')[0]} entschieden"); 
+            return ModelNames[Choice]; 
+
+
+        }
+            
 
         private static void DisplayResults(IEnumerable<CategorizedImage> PredictedData)
         {

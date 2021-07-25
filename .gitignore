@@ -12,3 +12,4 @@ tmp/
 *.csv
 /Classes/Model
 /Tensorflow
+/TensorFlow

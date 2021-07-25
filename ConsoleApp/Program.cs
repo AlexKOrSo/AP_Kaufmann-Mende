@@ -18,10 +18,10 @@ namespace ConsoleApp
     class Program
     {
 
-        public static void CategorizeChoice(){
+        public static void CategorizeChoice(ITransformer trainedModel, MLContext mlcontext){
 
             List<Image> input=ImageCategorizer.Initialization();
-            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input);
+            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input,mlcontext,trainedModel);
             HTMLCreator.Result(prediction,@"%temp%",@"Website");
         }
         public static void TrainingChoice(MLContext mlContext)
@@ -36,10 +36,28 @@ namespace ConsoleApp
             
 
         }
-        public static void DeleteDirectory(string target_dir)
+        public static void ClassificationChoice(MLContext mlContext)
         {
-            string[] files = Directory.GetFiles(target_dir);
-            string[] dirs = Directory.GetDirectories(target_dir);
+            if(!File.Exists(Path.Combine(PathFinder.ModelDir, ".Info")))
+            {
+                Console.WriteLine("Die .Info-Datei mit Informationen über trainierte Modelle ist nicht vorhanden. Haben Sie bereits Modelle trainiert?");
+                Console.WriteLine("Programm beendet"); 
+                return; 
+            }
+            Console.WriteLine("Wählen Sie bitte unter den folgenden Modellen aus: ");
+            string ChosenModel=CustomBuilder.GetModelNames();
+            string ModelPath = Path.Combine(PathFinder.ModelDir, ChosenModel); 
+
+
+
+            DataViewSchema TrainedModelSchema; 
+            ITransformer TrainedModel = mlContext.Model.Load(ModelPath, out TrainedModelSchema);
+            CategorizeChoice(TrainedModel,mlcontext);
+        }
+        public static void ForceDeleteDirectory(string Dir)
+        {
+            string[] files = Directory.GetFiles(Dir);
+            string[] dirs = Directory.GetDirectories(Dir);
 
             foreach (string file in files)
             {
@@ -49,10 +67,10 @@ namespace ConsoleApp
 
             foreach (string dir in dirs)
             {
-                DeleteDirectory(dir);
+                ForceDeleteDirectory(dir);
             }
 
-            Directory.Delete(target_dir, false);
+            Directory.Delete(Dir, false);
         }
 
 
@@ -62,12 +80,11 @@ namespace ConsoleApp
             
             try
             {
-                DeleteDirectory(PathFinder.ImageDir);
+                ForceDeleteDirectory(PathFinder.ImageDir);
             }
             catch (Exception) { }
 
             MLContext myContext = new MLContext(); 
-            Console.WriteLine("Before Exceptiom");
        
             string OriginPath = null ;
             try { 
@@ -85,7 +102,9 @@ namespace ConsoleApp
             }
 
             if (PressedKey == '1') {
-                CategorizeChoice();
+
+                ClassificationChoice(myContext); 
+
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
