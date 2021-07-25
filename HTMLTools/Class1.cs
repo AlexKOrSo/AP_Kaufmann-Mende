@@ -34,8 +34,8 @@ namespace HTMLTools
                 sw.WriteLine(GenerateHref(item.GetHtmldata()));
             }
 
-            sw.WriteLine("</html>");
             sw.WriteLine("</body>");
+            sw.WriteLine("</html>");
             sw.Dispose();
 
 
