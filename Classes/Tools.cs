@@ -69,6 +69,16 @@ namespace Tools
 
     public static class ConsoleTools
     {
+        public static string NonEmptyInput()
+        {//Fängt leere Eingaben (d.h. die nur aus Enter bestehen) ab
+            string Input = null;
+            while ((string.IsNullOrEmpty(Input)) ? true : false)
+            {
+                Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
+                Input = Console.ReadLine();
+            }
+            return Input;
+        }
         public static bool YesNoInput(string question)
         {
             ConsoleKeyInfo pressedKey;

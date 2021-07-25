@@ -25,9 +25,12 @@ namespace ConsoleApp
          
             CustomBuilder.Initialization(PathFinder.FindOrigin());
             ITransformer GeneratedModel = CustomBuilder.GenerateModel(mlContext);
+            if (GeneratedModel == null) return; 
             Console.WriteLine("Modell erfolgreich trainiert!\nEs wurden folgende Kategorien trainiert: ");
-            foreach (string Label in TSVMaker.LabelNames) Console.WriteLine($"***{Label}");
-         
+
+            foreach (string Label in TSVMaker.LabelNames) Console.WriteLine($"***{Label}***");
+            if (ConsoleTools.YesNoInput("Möchten Sie das (oder andere) Modelle direkt zur Klassifizierung nutzen?")) ClassificationChoice(new MLContext()); 
+
 
         }
         public static void ClassificationChoice(MLContext mlContext)
