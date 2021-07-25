@@ -179,8 +179,9 @@ namespace Classes
             while (!IsNumber || !IsValidNumber)
             {
                 IsNumber = int.TryParse(Console.ReadLine(), out Choice);
-                IsValidNumber = (Choice >= 0 && Choice <= ModelNames.Count) ? true : false;
+                IsValidNumber = (Choice >= 0 && Choice < ModelNames.Count) ? true : false;
             }
+
 
             Console.WriteLine($"Sie haben sich für {ModelNames[Choice].Split('.')[0]} entschieden"); 
             return ModelNames[Choice]; 
