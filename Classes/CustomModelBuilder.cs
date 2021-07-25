@@ -32,32 +32,49 @@ namespace Classes
                     while (run)
                     {
                         //List<Dataset> labels;
-                        Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
-                        Labels = Data.FindLables(Console.ReadLine());
-                        foreach (Dataset item in Labels)
+
+                        while (Labels.Count == 0)
                         {
-                            Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
-                        }
-                        int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
-                        Console.WriteLine(index.Length);
-
-
-                        foreach (var item in index)
-                        {
-                            if (item == -1)
+                            string Input = ConsoleTools.NonEmptyInput();
+                            Labels = Data.FindLables(Input);
+                            foreach (Dataset item in Labels)
                             {
-                                break;
+                                Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
                             }
-                            else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))
-                            {
-                                Data.Labels.Add(Labels[item]);
-                            }
-
-                            //labels.TryGetValue(item, out Dataset temp);
-                            //Data.Labels.Add(temp);
+                            if (Labels.Count == 0) Console.WriteLine("Leider keine passenden Einträge gefunden.\nBitte neuen Suchbegriff eingeben"); 
                         }
 
-                        run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
+                        bool ValidIndexes = false;
+                        while (!ValidIndexes)
+                        {
+                            ValidIndexes = true;
+                            int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
+
+
+                            foreach (var item in index)
+                            {
+                                if (item == -1)
+                                {
+                                    break;
+                                }
+                                if (item < -1 || item >= Labels.Count)
+                                {
+                                    Console.WriteLine("Mindestens ein Index ist zu groß/klein!");
+                                    Data.Labels = new List<Dataset>();
+                                    ValidIndexes = false;
+                                    break; 
+                                }
+                                else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))
+                                {
+                                    Data.Labels.Add(Labels[item]);
+                                }
+
+                                //labels.TryGetValue(item, out Dataset temp);
+                                //Data.Labels.Add(temp);
+                            }
+                        }
+                            run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
+                        
 
                     }
                     if (Data.Labels.Count < 2)
@@ -78,99 +95,85 @@ namespace Classes
 
         public static ITransformer GenerateModel(MLContext mlContext)
         {
-
-
-            string ModelFolder = PathFinder.ModelDir;  
-            string ModelLocation= Path.Combine(ModelFolder, "tensorflow_inception_graph.pb");
-
-            string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
-            string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData); 
-            Console.WriteLine(nameof(Image.Path));
-
-            //Tranformationen der Eingaben für nachfolgende Verarbeitungsschritte
-            IEstimator<ITransformer> pipeline = mlContext.Transforms.LoadImages(outputColumnName: "input", imageFolder: null, inputColumnName: nameof(Image.Path)) //_imagesFolder
-                                                                                                                                                                            // The image transforms transform the images into the model's expected format.
-                            .Append(mlContext.Transforms.ResizeImages(outputColumnName: "input", imageWidth: InceptionSettings.ImageWidth, imageHeight: InceptionSettings.ImageHeight, inputColumnName: "input"))
-                            .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "input", interleavePixelColors: InceptionSettings.ChannelsLast, offsetImage: InceptionSettings.Mean))
-                            .Append(mlContext.Model.LoadTensorFlowModel(ModelLocation).
-                            ScoreTensorFlowModel(outputColumnNames: new[] { "softmax2_pre_activation" }, inputColumnNames: new[] { "input" }, addBatchDimensionInput: true))
-                            .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "LabelKey", inputColumnName: "LabeledAs"))
-                            .Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy(labelColumnName: "LabelKey", featureColumnName: "softmax2_pre_activation"))
-                            .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedImageLabel", "PredictedLabel"))
-                            .AppendCacheCheckpoint(mlContext);
-
-
-            
-            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, separatorChar: ';');
-
-            Console.WriteLine("Training Gestartet\nDies kann je nach Anzahl der Bilder einige Zeit dauern!");
-            ITransformer TrainedModel = pipeline.Fit(TrainingData);
-
-            Console.WriteLine("Trainiertes Modell testen"); 
-            IDataView TestData = mlContext.Data.LoadFromTextFile<Image>(path: TestTags, separatorChar: ';');
-            IDataView TestPredictions = TrainedModel.Transform(TestData);
-
-            IEnumerable<CategorizedImage> ImagePredictionData = mlContext.Data.CreateEnumerable<CategorizedImage>(TestPredictions, true);
-            DisplayResults(ImagePredictionData);
-
-            Console.WriteLine("Statistiken zum Training: ");
-            MulticlassClassificationMetrics metrics =
-                mlContext.MulticlassClassification.Evaluate(TestPredictions,
-                  labelColumnName: "LabelKey",
-                  predictedLabelColumnName: "PredictedImageLabel");
-            
-            Console.WriteLine($"LogLoss: {metrics.LogLoss}");
-            Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
-
-            Console.WriteLine("Sie können das Modell jetzt speichern. Unter welchem Namen sol das Modell gespeichert werden? (Ohne Extension)");
-            bool CorrectName = false;
-            bool FileExists = true; 
-            string Input = ""; 
-            do
+            try
             {
-                Input = Console.ReadLine();
-                CorrectName = ConsoleTools.FileNameInput(Input);
-                FileExists = File.Exists(Path.Combine(ModelFolder, Input + ".model")) ? true : false;
-                if (FileExists) Console.WriteLine("File existiert schon, bitte neuen Namen ausdenken"); 
-            }
-            while(!CorrectName || FileExists);
 
-            string ModelName = Input + ".model"; 
-            string NewModelPath = Path.Combine(ModelFolder, ModelName); 
-            mlContext.Model.Save(TrainedModel, TrainingData.Schema, NewModelPath);
-            Console.WriteLine($"Das Modell ist unter {NewModelPath} gespeichert");
-            AddModelInfo(NewModelPath); 
-            
+                string ModelFolder = PathFinder.ModelDir;
+                string ModelLocation = Path.Combine(ModelFolder, "tensorflow_inception_graph.pb");
 
-            return TrainedModel;
-        }
+                string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
+                string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData);
+                Console.WriteLine(nameof(Image.Path));
 
-        /*public static bool RetrieveModelInfo(string ModelPath) ***Wahrscheinlich obsolet***
-        {
-            string ModelName = Path.GetFileName(ModelPath); 
-            string line = "";
-            List<string> Lines = new List<string>(); 
-            using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir,".Info")))
-            {
-                while ((line = sr.ReadLine()) != null)
+                //Tranformationen der Eingaben für nachfolgende Verarbeitungsschritte
+                IEstimator<ITransformer> pipeline = mlContext.Transforms.LoadImages(outputColumnName: "input", imageFolder: null, inputColumnName: nameof(Image.Path)) //_imagesFolder
+                                                                                                                                                                       // The image transforms transform the images into the model's expected format.
+                                .Append(mlContext.Transforms.ResizeImages(outputColumnName: "input", imageWidth: InceptionSettings.ImageWidth, imageHeight: InceptionSettings.ImageHeight, inputColumnName: "input"))
+                                .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "input", interleavePixelColors: InceptionSettings.ChannelsLast, offsetImage: InceptionSettings.Mean))
+                                .Append(mlContext.Model.LoadTensorFlowModel(ModelLocation).
+                                ScoreTensorFlowModel(outputColumnNames: new[] { "softmax2_pre_activation" }, inputColumnNames: new[] { "input" }, addBatchDimensionInput: true))
+                                .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "LabelKey", inputColumnName: "LabeledAs"))
+                                .Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy(labelColumnName: "LabelKey", featureColumnName: "softmax2_pre_activation"))
+                                .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedImageLabel", "PredictedLabel"))
+                                .AppendCacheCheckpoint(mlContext);
+
+
+
+                IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, separatorChar: ';');
+
+                Console.WriteLine("Training Gestartet\nDies kann je nach Anzahl der Bilder einige Zeit dauern!");
+                ITransformer TrainedModel = pipeline.Fit(TrainingData);
+
+                Console.WriteLine("Trainiertes Modell testen");
+                IDataView TestData = mlContext.Data.LoadFromTextFile<Image>(path: TestTags, separatorChar: ';');
+                IDataView TestPredictions = TrainedModel.Transform(TestData);
+
+                IEnumerable<CategorizedImage> ImagePredictionData = mlContext.Data.CreateEnumerable<CategorizedImage>(TestPredictions, true);
+                DisplayResults(ImagePredictionData);
+
+                Console.WriteLine("Statistiken zum Training: ");
+                MulticlassClassificationMetrics metrics =
+                    mlContext.MulticlassClassification.Evaluate(TestPredictions,
+                      labelColumnName: "LabelKey",
+                      predictedLabelColumnName: "PredictedImageLabel");
+
+                Console.WriteLine($"LogLoss: {metrics.LogLoss}");
+                Console.WriteLine($"PerClassLogLoss: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
+
+                Console.WriteLine("Sie können das Modell jetzt speichern. Unter welchem Namen sol das Modell gespeichert werden? (Ohne Extension)");
+                bool CorrectName = false;
+                bool FileExists = true;
+                string Input = "";
+                do
                 {
-                    Lines.Add(line); 
+                    Input = Console.ReadLine();
+                    CorrectName = ConsoleTools.FileNameInput(Input);
+                    FileExists = File.Exists(Path.Combine(ModelFolder, Input + ".model")) ? true : false;
+                    if (FileExists) Console.WriteLine("File existiert schon, bitte neuen Namen ausdenken");
                 }
+                while (!CorrectName || FileExists);
+
+                string ModelName = Input + ".model";
+                string NewModelPath = Path.Combine(ModelFolder, ModelName);
+                mlContext.Model.Save(TrainedModel, TrainingData.Schema, NewModelPath);
+                Console.WriteLine($"Das Modell ist unter {NewModelPath} gespeichert");
+                AddModelInfo(NewModelPath);
+
+
+                return TrainedModel;
             }
-            foreach(var Line in Lines)
+            catch (ArgumentOutOfRangeException)
             {
-                string[] Parts = Line.Split(';'); 
-                if(Equals(Parts[0], ModelName))
-                {
-                    Console.WriteLine($"Modell {ModelName} mit Trainierten Klassen {Parts[1]} gefunden!");
-                    return true; 
-                } 
+                Console.WriteLine("Fehler beim Training. Die Trainingsdaten sind korrumpiert.");
+                return null; 
             }
-            return false; 
-
-
+            catch (Exception)
+            {
+                Console.WriteLine("Allgemeiner Fehler beim Training.");
+                return null; 
+            }
         }
-        */
+
         private static bool AddModelInfo(string ModelPath)
         {
             string ModelName = Path.GetFileName(ModelPath);
@@ -185,7 +188,7 @@ namespace Classes
             }
             catch (Exception)
             {
-                Console.WriteLine($"Speichern des Modells nicht möglich. Existiert Zugriff auf {Path.Combine(PathFinder.ModelDir, ".Info")}?");
+                Console.WriteLine($"Indizieren des Modells nicht möglich. Existiert Zugriff auf {Path.Combine(PathFinder.ModelDir, ".Info")}?");
                 return false; 
             }
             return true; 
@@ -201,7 +204,7 @@ namespace Classes
                 {
                     string[] Parts = line.Split(';');
                     ModelNames.Add(Parts[0]);
-                    Console.WriteLine($"Modell: **{Parts[0].Split('.')[0]}** mit den trainierten Kategorien: **{Parts[1]} (Nr. {ModelNames.IndexOf(Parts[0]) })**");
+                    Console.WriteLine($"Modell: *{Parts[0].Split('.')[0]}* mit Kategorien: *{Parts[1]} (Nr. {ModelNames.IndexOf(Parts[0]) })*");
                 }
             }
 
@@ -234,7 +237,7 @@ namespace Classes
                     if (Result.Score.Max() == Result.Score[i]) Category = TSVMaker.LabelNames[i]; 
                 }
 
-                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()} ");
+                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()*100:F1} ");
             }
            
         }
