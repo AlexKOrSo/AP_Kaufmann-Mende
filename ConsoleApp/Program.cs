@@ -10,6 +10,7 @@ using Microsoft.ML.Data;
 using static Microsoft.ML.DataOperationsCatalog;
 using Microsoft.ML.Transforms;
 using Microsoft.ML.Vision;
+using CategorizingImages;
 
 
 namespace ConsoleApp
@@ -17,7 +18,12 @@ namespace ConsoleApp
     class Program
     {
 
+        public static void CategorizeChoice(ITransformer trainedModel, MLContext mlcontext){
 
+            List<Image> input=ImageCategorizer.Initialization();
+            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input,mlcontext,trainedModel);
+            HTMLCreator.Result(prediction,@"%temp%",@"Website");
+        }
         public static void TrainingChoice(MLContext mlContext)
         {
 
@@ -46,6 +52,7 @@ namespace ConsoleApp
 
             DataViewSchema TrainedModelSchema; 
             ITransformer TrainedModel = mlContext.Model.Load(ModelPath, out TrainedModelSchema);
+            CategorizeChoice(TrainedModel,mlcontext);
         }
         public static void ForceDeleteDirectory(string Dir)
         {
@@ -95,13 +102,14 @@ namespace ConsoleApp
             }
 
             if (PressedKey == '1') {
+
                 ClassificationChoice(myContext); 
+
             } //Überleitung zur Bildklassifizierung
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
             } //Überleitung zum Training
 
-        Exit:
             Console.WriteLine("Beende Programm");
         }
     }

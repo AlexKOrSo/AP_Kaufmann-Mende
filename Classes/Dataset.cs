@@ -33,16 +33,17 @@ namespace MLData
             Console.WriteLine(ids.Count.ToString());
             RegionEndpoint reg = RegionEndpoint.USEast1;
             AmazonS3Client s3Client = null;
+            int timeout=30;
             try
             {
-                s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(30) });
+                s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(timeout) });
             }
             catch (AmazonClientException)
             {
                 Console.WriteLine("AWS-Config-Fehler");
                 throw;
             }
-            Console.WriteLine("Download wird gestartet, Timeout beträgt 180 Sekunden.");
+            Console.WriteLine($"Download wird gestartet, Timeout beträgt {timeout} Sekunden");
             var fileTransferUtility = new TransferUtility(s3Client);
 
             string temp;
@@ -50,7 +51,7 @@ namespace MLData
             {
 
                 filename = Path.Combine(path,(temp +".jpg"));
-                Console.WriteLine(ids.Count.ToString());
+                Console.WriteLine($"Bilder in Queue: {ids.Count.ToString()}");
 
               
                try{
@@ -58,6 +59,7 @@ namespace MLData
                     
                     await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
                     int currentCounter=Interlocked.Decrement(ref counter.Value);
+                    System.Console.WriteLine($"Zahl herunterzuladender Bilder: {currentCounter}");
                     if (currentCounter<=0)
                     {
                         break;
@@ -66,7 +68,7 @@ namespace MLData
                 }
               catch (Exception)
                {
-                Console.WriteLine($"{temp} not found");
+                Console.WriteLine($"Bild {temp} not found");
 
               }
                 //await Task.Delay(100);

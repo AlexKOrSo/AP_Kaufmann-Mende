@@ -51,7 +51,7 @@ namespace Tools
                     foreach(string File in FilesInDir)
                     {
                         string Output = File + ';' + Name;
-                        if ((double)FileCounter < (double) 0.4 * FilesInDir.Length) TrainWriter.WriteLine(Output);
+                        if ((double)FileCounter < (double) 0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output);
                         else TestWriter.WriteLine(Output);
                         FileCounter++; 
                         AllWriter.WriteLine(Output);
@@ -125,9 +125,13 @@ namespace Tools
 
     public static class PathFinder
     {
+
         public static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
         //public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
+
         public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
+
+        public static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts
