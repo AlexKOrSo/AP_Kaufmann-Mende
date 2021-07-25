@@ -9,7 +9,6 @@ namespace HTMLTools
     {
         string GetLabel();
         string GetFilePath();
-        IHtmldata GetHtmldata();
     }
     public interface IHtmlable
     {
@@ -25,6 +24,7 @@ namespace HTMLTools
 
         public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
         {
+
             string htmlPath = Path.Combine(filepath, filename + ".html"); 
             try
             {

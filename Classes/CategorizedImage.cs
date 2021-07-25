@@ -19,10 +19,6 @@ namespace Classes
         public CategorizedImage(string LabeledAs)
         {
             this.LabeledAs = LabeledAs;
-            
-            
-
-            HTMLTools.ProcessedImages.Add(this); 
         }
         public CategorizedImage() { }
     }

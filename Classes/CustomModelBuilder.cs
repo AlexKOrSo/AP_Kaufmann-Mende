@@ -26,35 +26,35 @@ namespace Classes
 
                 try
                 {
-                    
+                    Console.WriteLine("Auswahl der Kategorien, bitte insgesamt mindestens zwei Auswählen! ");
                     bool run = true;
-                    Data = new DataCollection(path, 500);
+                    Data = new DataCollection(path, 500); //Hier noch fragen nach der Anzahl an Items
                     while (run)
                     {
-                        //List<Dataset> labels;
                         Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
-                        Labels = Data.FindLables(Console.ReadLine());
-                        foreach (Dataset item in Labels)
+                        Labels = Data.FindLables(Console.ReadLine()); //Auslösen der Fkt. zum Finden der Übereinstimungen in labels.csv
+                        if (Labels.Count>0)
                         {
-                            Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
-                        }
-                        int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
-                        Console.WriteLine(index.Length);
+                            foreach (Dataset item in Labels) //Ausgabe der gefundenen Ergebnisse
+                            {
+                                Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
+                            }
+                            int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
 
-
-                        foreach (var item in index)
+                            foreach (var item in index)
+                            {
+                                if (item < 0 || item > index.Length - 1)
+                                {
+                                    break;
+                                }
+                                else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))//prüft, ob Dataset bereits in der DataCollection vorhanden ist (Deswegen IEquatable<T> auf Dataset vererbt)
+                                {
+                                    Data.Labels.Add(Labels[item]);
+                                }
+                            } 
+                        }else
                         {
-                            if (item == -1)
-                            {
-                                break;
-                            }
-                            else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))
-                            {
-                                Data.Labels.Add(Labels[item]);
-                            }
-
-                            //labels.TryGetValue(item, out Dataset temp);
-                            //Data.Labels.Add(temp);
+                            Console.WriteLine("Keine Kategorien gefunden!");
                         }
 
                         run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
@@ -70,8 +70,7 @@ namespace Classes
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Alles auf Anfang");
+                    throw new Exception(e.Message,e);
                 }
             }
         }
@@ -145,32 +144,6 @@ namespace Classes
             return TrainedModel;
         }
 
-        /*public static bool RetrieveModelInfo(string ModelPath) ***Wahrscheinlich obsolet***
-        {
-            string ModelName = Path.GetFileName(ModelPath); 
-            string line = "";
-            List<string> Lines = new List<string>(); 
-            using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir,".Info")))
-            {
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Lines.Add(line); 
-                }
-            }
-            foreach(var Line in Lines)
-            {
-                string[] Parts = Line.Split(';'); 
-                if(Equals(Parts[0], ModelName))
-                {
-                    Console.WriteLine($"Modell {ModelName} mit Trainierten Klassen {Parts[1]} gefunden!");
-                    return true; 
-                } 
-            }
-            return false; 
-
-
-        }
-        */
         private static bool AddModelInfo(string ModelPath)
         {
             string ModelName = Path.GetFileName(ModelPath);
