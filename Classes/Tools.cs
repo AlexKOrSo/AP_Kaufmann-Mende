@@ -110,11 +110,23 @@ namespace Tools
             
             return input;
         }
+        public static bool FileNameInput(string FileName)
+        {
+            //Prüft, ob der FileName verwendet werden darf. 
+            
+            if(FileName.Contains(' ') || FileName.Contains('/') || FileName.Contains('\\'))
+            {
+                Console.WriteLine("Bitte Name ohne Leerzeichen oder (Back-)Slash eingeben");
+                return false; 
+            }
+            return true; 
+        }
     }
 
     public static class PathFinder
     {
-        public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
+        public static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
+        //public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
         public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
         public static string FindOrigin()
         {
