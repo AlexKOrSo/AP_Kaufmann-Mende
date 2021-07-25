@@ -9,7 +9,7 @@ namespace Classes
     
     public class CategorizedImage : Image, IHtmlable, IHtmldata
     {
-        public string PredictedImageLabel { get; set; }
+        public string PredictedImageLabel; 
         
         public float[] Score;
 
