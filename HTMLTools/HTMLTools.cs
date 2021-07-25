@@ -25,20 +25,30 @@ namespace HTMLTools
 
         public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
         {
-            StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename+".html"));
-            sw.WriteLine("<!DOCTYPE html>");
-            sw.WriteLine("<html>");
-            sw.WriteLine("<body>");
-            foreach (var item in images)
+
+            string htmlPath = Path.Combine(filepath, filename + ".html"); 
+            try
             {
-                sw.WriteLine(GenerateHref(item.GetHtmldata()));
+                using (StreamWriter sw = new StreamWriter(htmlPath))
+                {
+                    sw.WriteLine("<!DOCTYPE html>");
+                    sw.WriteLine("<html>");
+                    sw.WriteLine("<body>");
+                    foreach (var item in images)
+                    {
+                        sw.WriteLine(GenerateHref(item.GetHtmldata()));
+                    }
+
+                    sw.WriteLine("</body>");
+                    sw.WriteLine("</html>");
+                    sw.Dispose();
+                    Console.WriteLine($"Ergebnis-Datei unter {htmlPath} gespeichert!"); 
+                }
             }
-
-            sw.WriteLine("</body>");
-            sw.WriteLine("</html>");
-            sw.Dispose();
-
-
+            catch (Exception)
+            {
+                Console.WriteLine($"{htmlPath} konnte nicht geschrieben werden"); 
+            }
 
         }
     }
