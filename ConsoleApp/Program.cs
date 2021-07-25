@@ -32,6 +32,12 @@ namespace ConsoleApp
         }
         public static void ClassificationChoice(MLContext mlContext)
         {
+            if(!File.Exists(Path.Combine(PathFinder.ModelDir, ".Info")))
+            {
+                Console.WriteLine("Die .Info-Datei mit Informationen über trainierte Modelle ist nicht vorhanden. Haben Sie bereits Modelle trainiert?");
+                Console.WriteLine("Programm beendet"); 
+                return; 
+            }
             Console.WriteLine("Wählen Sie bitte unter den folgenden Modellen aus: ");
             string ChosenModel=CustomBuilder.GetModelNames();
             string ModelPath = Path.Combine(PathFinder.ModelDir, ChosenModel); 

@@ -99,7 +99,7 @@ namespace Classes
 
 
             
-            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, hasHeader: false, separatorChar: ';');
+            IDataView TrainingData = mlContext.Data.LoadFromTextFile<Image>(path: TrainingTags, separatorChar: ';');
 
             Console.WriteLine("Training Gestartet\nDies kann je nach Anzahl der Bilder einige Zeit dauern!");
             ITransformer TrainedModel = pipeline.Fit(TrainingData);
@@ -192,14 +192,14 @@ namespace Classes
         {
             string line = null;
             List<string> ModelNames = new List<string>();
-            Console.WriteLine("Folgende Modelle sind vorhanden: "); 
+            Console.WriteLine("Folgende Modelle sind vorhanden:\n "); 
             using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir, ".Info")))
             {
                 while ((line = sr.ReadLine()) != null)
                 {
                     string[] Parts = line.Split(';');
                     ModelNames.Add(Parts[0]);
-                    Console.WriteLine($"Modell: {Parts[0].Split('.')[0]} mit den trainierten Kategorien: {Parts[1]} (Nr. {ModelNames.IndexOf(Parts[0]) })");
+                    Console.WriteLine($"Modell: **{Parts[0].Split('.')[0]}** mit den trainierten Kategorien: **{Parts[1]} (Nr. {ModelNames.IndexOf(Parts[0]) })**");
                 }
             }
 
