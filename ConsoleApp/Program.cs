@@ -21,8 +21,8 @@ namespace ConsoleApp
         public static void CategorizeChoice(ITransformer trainedModel, MLContext mlcontext){
 
             List<Image> input=ImageCategorizer.Initialization();
-            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input,mlcontext,trainedModel);
-            HTMLCreator.Result(prediction,@"%temp%",@"Website");
+            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input, trainedModel,mlcontext);
+            HTMLCreator.Result(prediction,PathFinder.OwnImagesDir,@"Website");
         }
         public static void TrainingChoice(MLContext mlContext)
         {
@@ -52,7 +52,7 @@ namespace ConsoleApp
 
             DataViewSchema TrainedModelSchema; 
             ITransformer TrainedModel = mlContext.Model.Load(ModelPath, out TrainedModelSchema);
-            CategorizeChoice(TrainedModel,mlcontext);
+            CategorizeChoice(TrainedModel,mlContext);
         }
         public static void ForceDeleteDirectory(string Dir)
         {

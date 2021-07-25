@@ -9,6 +9,7 @@ obj/
 .vscode/
 *.csv
 tmp/
+OwnImages
 *.csv
 /Classes/Model
 /Tensorflow
