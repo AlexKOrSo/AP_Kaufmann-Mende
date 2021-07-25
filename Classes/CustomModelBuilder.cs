@@ -33,22 +33,28 @@ namespace Classes
                     {
                         Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
                         Labels = Data.FindLables(Console.ReadLine()); //Auslösen der Fkt. zum Finden der Übereinstimungen in labels.csv
-                        foreach (Dataset item in Labels) //Ausgabe der gefundenen Ergebnisse
+                        if (Labels.Count>0)
                         {
-                            Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
-                        }
-                        int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
+                            foreach (Dataset item in Labels) //Ausgabe der gefundenen Ergebnisse
+                            {
+                                Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
+                            }
+                            int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
 
-                        foreach (var item in index)
+                            foreach (var item in index)
+                            {
+                                if (item < 0 || item > index.Length - 1)
+                                {
+                                    break;
+                                }
+                                else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))//prüft, ob Dataset bereits in der DataCollection vorhanden ist (Deswegen IEquatable<T> auf Dataset vererbt)
+                                {
+                                    Data.Labels.Add(Labels[item]);
+                                }
+                            } 
+                        }else
                         {
-                            if (item < 0||item>index.Length-1)
-                            {
-                                break;
-                            }
-                            else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))//prüft, ob Dataset bereits in der DataCollection vorhanden ist (Deswegen IEquatable<T> auf Dataset vererbt)
-                            {
-                                Data.Labels.Add(Labels[item]);
-                            }
+                            Console.WriteLine("Keine Kategorien gefunden!");
                         }
 
                         run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
