@@ -9,7 +9,6 @@ namespace HTMLTools
     {
         string GetLabel();
         string GetFilePath();
-        IHtmldata GetHtmldata();
     }
     public interface IHtmlable
     {
