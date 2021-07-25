@@ -19,6 +19,7 @@ namespace ConsoleApp
     {
 
         public static void CategorizeChoice(){
+
             List<Image> input=ImageCategorizer.Initialization();
             IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input);
             HTMLCreator.Result(prediction,@"%temp%",@"Website");
