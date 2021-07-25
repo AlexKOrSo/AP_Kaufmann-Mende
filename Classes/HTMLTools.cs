@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Classes
 {
-    public static class HTMLTools
+ /*   public static class HTMLTools
     {
         public static List<CategorizedImage> ProcessedImages; 
         static HTMLTools()
@@ -36,5 +36,5 @@ namespace Classes
             
         }
 
-    }
+    }*/
 }
