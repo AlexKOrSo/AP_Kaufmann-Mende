@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CategorizingImages{
     public static class ImageCategorizer{
 
-        public static List<CategorizedImage> Categorizer(List<Image> input,ITransformer trainedModel, MLContext mycontext){
+        public static List<CategorizedImage> Categorizer(List<Image> input,ITransformer trainedModel, MLContext myContext){
            // MLContext myContext=new MLContext();
             //DataViewSchema modelSchema;
             //string modelName=CustomBuilder.GetModelNames();

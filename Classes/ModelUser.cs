@@ -19,6 +19,7 @@ namespace Classes
             PredictionEngine<Image, CategorizedImage> predEngine = mlContext.Model.CreatePredictionEngine<Image, CategorizedImage>(trainedModel);
             //Image image = mlContext.Data.CreateEnumerable<Image>(data, reuseRowObject: true).First();
             CategorizedImage Prediction = predEngine.Predict(data);
+            Console.WriteLine(Prediction.LabeledAs+" "+Prediction.PredictedImageLabel+" "+Prediction.Score);
             //print predicted value
             Console.WriteLine("Prediction for single image");
             return Prediction;

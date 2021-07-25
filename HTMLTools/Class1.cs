@@ -20,12 +20,12 @@ namespace HTMLTools
     {
         public static string GenerateHref(IHtmldata image)
         {
-            return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}/>";
+            return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}</a><br>";
         }
 
         public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
         {
-            StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename, ".html"));
+            StreamWriter sw = new StreamWriter(Path.Combine(filepath, filename+".html"));
             sw.WriteLine("<!DOCTYPE html>");
             sw.WriteLine("<html>");
             sw.WriteLine("<body>");

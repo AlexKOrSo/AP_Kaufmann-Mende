@@ -9,11 +9,11 @@ namespace Classes
     
     public class CategorizedImage : Image, IHtmlable, IHtmldata
     {
-        public string PredictedImageLabel { get; private set; }
+        public string PredictedImageLabel { get; set; }
         
-        public float[] Score; 
-        
-        public string GetLabel() =>PredictedImageLabel;
+        public float[] Score;
+
+        public string GetLabel() => PredictedImageLabel;
         public string GetFilePath() => Path;
         public IHtmldata GetHtmldata()=> this;
         public CategorizedImage(string LabeledAs)
