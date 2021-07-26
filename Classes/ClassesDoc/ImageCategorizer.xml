@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ImageCategorizer>
+  <Member name="ImageCategorizer">
+    <summary>
+      Dient zur Erstellung und Klassifizierung von Eingabe-Daten
+    </summary>
+  </Member>
+  <Member name="Categorizer">
+    <summary>
+      Gibt anhand eines trainierten Modells Vorhersagen über die Kategorien von ungelabelten Bildern ab
+    </summary>
+    <param name="input">
+      Liste der Bilder, die klassifiziert werden
+    </param>
+    <param name="trainedModel">
+      Das trainierte Modell, mit dem die Klassifizierung durchgeführt wird
+    </param>
+    <param name="mlContext">
+      Machine-Learning Kontext, in dem die Klassifizierung stattfindet
+    </param>
+    <returns>
+      Eine Liste von kategorisierten Daten
+    </returns>
+  </Member>
+  <Member name="Initialization">
+    <summary>
+      Erzeugt eine List von Input-Daten für die Bildklassifizierung
+    </summary>
+    <returns>
+      Die Liste miot Input-Daten
+    </returns> 
+  </Member>
+    
+</ImageCategorizer>

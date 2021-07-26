@@ -11,17 +11,21 @@ using System.Collections.Generic;
 
 namespace Tools
 {
+    ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="TSVMaker"]/*'/>
     public static class TSVMaker
     {
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="LabelsData"]/*'/>
         public static readonly string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv"); 
         static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="TestData"]/*'/>
         public static readonly string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="TrainData"]/*'/>
         public static readonly string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv");
-        public static string[] LabelNames; 
-        public static int TestDataNumber;
-        public static int TrainDataNumber; 
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="LabelNames"]/*'/>
+        public static string[] LabelNames;
 
-     
+
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="LogAllData"]/*'/>
         public static void LogAllData(string LogPath, List<Dataset> Labels)
         {
 
@@ -53,7 +57,7 @@ namespace Tools
                         foreach (string File in FilesInDir)
                         {
                             string Output = File + ';' + Name;
-                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output);
+                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output); //80% der gelabelten Daten gelangen ins Trainingsset
                             else TestWriter.WriteLine(Output);
                             FileCounter++;
                             AllWriter.WriteLine(Output);
@@ -71,9 +75,10 @@ namespace Tools
         
     }
 
-
+    ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ConsoleTools"]/*'/>
     public static class ConsoleTools
     {
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="NonEmptyInput"]/*'/>
         public static string NonEmptyInput()
         {//Fängt leere Eingaben (d.h. die nur aus Enter bestehen) ab
             string Input = null;
@@ -84,6 +89,7 @@ namespace Tools
             }
             return Input;
         }
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="YesNoInput"]/*'/>
         public static bool YesNoInput(string question)
         {
             ConsoleKeyInfo pressedKey;
@@ -98,6 +104,7 @@ namespace Tools
 
             return (pressedKey.Key == ConsoleKey.Y); //Rückgabe Ergebnis
         }
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="IsValidKey"]/*'/>
         public static bool IsValidKey(ref char PressedKey, byte Option)
         {
             ConsoleKeyInfo Choice = Console.ReadKey(true);
@@ -111,7 +118,7 @@ namespace Tools
             }
             return false; //äquivalent zu entsprechender default-Verzweigung im Switch-Block
         }
-    
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="VarInput"]/*'/>
         public static int[] VarInput(string question)
         {
             Console.WriteLine(question);
@@ -132,6 +139,7 @@ namespace Tools
 
             return input;
         }
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FileNameInput"]/*'/>
         public static bool FileNameInput(string FileName)
         {
             //Prüft, ob der FileName verwendet werden darf. 

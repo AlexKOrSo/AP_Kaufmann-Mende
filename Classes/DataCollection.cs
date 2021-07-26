@@ -5,14 +5,19 @@ using Tools;
 
 namespace MLData
 {
+    ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="DataCollection"]/*'/>
     public class DataCollection
     {
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="PathIDs"]/*'/>
         string PathIDs { get; set; } //Dateipfad zu CSV mit Bilder-IDs
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="PathLabels"]/*'/>
         string PathLabels { get; set; } //Dateipfad zu CSV mit Schlüsseln für entsprechende Labels
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="MaxItems"]/*'/>
         int MaxItems { get; set; } //Maximale Anzahl an Items, die je Dataset heruntergeladen werden soll
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="Labels"]/*'/>
         public List<Dataset> Labels { get; set; } //Liste der DataSet (ein Dataset entspricht einer Kategorie)
-        
 
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="FindLables"]/*'/>
         public List<Dataset> FindLables(string searchstring) //Durchsucht labels.csv nach übereinstimmungen mit searchstring
         {
             //neue Liste, die Suchergebnisse als jeweils eine neue Dataset-instanz enthält
@@ -37,7 +42,7 @@ namespace MLData
             }
             return results;
         }
-
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="findImageIds"]/*'/>
         public void findImageIds() //DurchsuchT imageIDs.csv nach übereinstimmungen mit dem Label-Key
         {
             try
@@ -62,6 +67,7 @@ namespace MLData
                 throw new Exception($"Fehler in {nameof(findImageIds)}: "+ e.Message);
             }
         }
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="DownloadAllDatasets"]/*'/>
         public void DownloadAllDatasets(string path) //Übergeordnete Steuerungsmethode der Datasets, bekommt Programmpfad übergeben
         {
             Console.WriteLine("Durchsuchen der ImageIDs......");
@@ -99,7 +105,7 @@ namespace MLData
             Labels = new List<Dataset>(); //Die Liste der Datasets, die heruntergeladen werden sollen
             CheckFiles();
         }
-
+        ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="CheckFiles"]/*'/>
         private void CheckFiles()
         {       //Überprüfen der csv-Dateien:  
             try

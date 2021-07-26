@@ -11,15 +11,19 @@ using Microsoft.ML.Data;
 
 namespace Classes
 {
+    ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="CustomBuilder"]/*'/>
     public class CustomBuilder
     {
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Labels"]/*'/>
         public static List<Dataset> Labels { get; private set; }
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Data"]/*'/>
         public static DataCollection Data { get; private set; } 
         static CustomBuilder()
         {
             Labels = new List<Dataset>();
             
         }
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Initialization"]/*'/>
         public static void Initialization(string path)
         {
             {
@@ -111,7 +115,7 @@ namespace Classes
                 }
             }
         }
-
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="GenerateModel"]/*'/>
         public static ITransformer GenerateModel(MLContext mlContext)
         {
             try
@@ -195,7 +199,7 @@ namespace Classes
             }
         }
 
-
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="AddModelInfo"]/*'/>
         public static bool AddModelInfo(string ModelPath)
         {
             string ModelName = Path.GetFileName(ModelPath);
@@ -215,6 +219,7 @@ namespace Classes
             }
             return true; 
         }
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="GetModelNames"]/*'/>
         public static string GetModelNames()
         {
             string line = null;
@@ -246,8 +251,8 @@ namespace Classes
 
 
         }
-            
 
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="DisplayResults"]/*'/>
         private static void DisplayResults(IEnumerable<CategorizedImage> PredictedData)
         {
             foreach (CategorizedImage Result in PredictedData)
@@ -259,11 +264,11 @@ namespace Classes
                     if (Result.Score.Max() == Result.Score[i]) Category = TSVMaker.LabelNames[i]; 
                 }
 
-                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()*100:F1} ");
+                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()*100:F1}% ");
             }
            
         }
-
+        ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="InceptionSettings"]/*'/>
         private struct InceptionSettings
         {
             public const int ImageHeight = 224;

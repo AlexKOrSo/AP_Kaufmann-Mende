@@ -11,17 +11,21 @@ using Amazon.S3.Transfer;
 
 namespace MLData
 {
+    ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Dataset"]/*'/>
     public class Dataset: IEquatable<Dataset>  //Für vergleichsoperationen wird IEquatable implementiert
     {
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Label"]/*'/>
         public string Label { get; set; } //Bezeichnung des Labels
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Key"]/*'/>
         public string Key { get; set; } //Schlüssel, der Label zugeordnet ist
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="ids"]/*'/>
         public ConcurrentQueue<string> ids; //Asynchrone Queue
-
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="counterHolder"]/*'/>
         public class counterHolder //Zähler heruntergeladener Bilder, extra-class, da async-Taks darauf zugreifen müssen und diese z. B. keine ref int counter als Parameter übernehmen
         {
             public int Value;
         }
-
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="DownloadFilesAsync"]/*'/>
         async Task DownloadFilesAsync(string path, counterHolder counter)
         {
             
@@ -81,7 +85,7 @@ namespace MLData
             
 
         }
-
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="downloadAll"]/*'/>
         public void downloadAll(string path,int maxItems) //Diese Methode wird aus Datacollection aufgerufen, löst alle DownloadTasks aus und wartet auf Beendigung
         {
             counterHolder counter = new counterHolder() { Value = maxItems };
@@ -107,6 +111,7 @@ namespace MLData
 
             return ("Key: " + Key + "Label: " + Label);
         }
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="CustomEquals"]/*'/>
         public bool Equals(Dataset compare)
         {
             if (compare == null) return false;

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Dataset>
+  <Member name="Dataset">
+    <summary>
+      Stellt Member zum Download von Trainingsdaten
+    </summary>
+    <remarks>
+      Für vergleichsoperationen wird IEquatable implementiert
+    </remarks>
+  </Member>
+  <Member name="Label">
+    <value>
+      Bezeichnung des Labels
+    </value>
+  </Member>
+  <Member name="Key">
+    <value>
+      Schlüssel, der Label zugeordnet ist
+    </value>
+  </Member>
+  <Member name="ids">
+    <summary>
+      Asynchrone Queue, in der sich die Daten der herunterzuladenden Bilder befinden
+    </summary>
+  </Member>
+  <Member name="counterHolder">
+    <summary>
+      Klasse für Zähler heruntergeladener Bilder
+    </summary>
+    <remarks>
+      Nötig, da async-Taks darauf zugreifen müssen und diese z. B. keine ref int counter als Parameter übernehmen
+    </remarks>
+  </Member>
+  <Member name="DownloadFilesAsync">
+    <summary>
+      Dient zur Bereitstellung paralleler Downloads von gelabelten Bildern
+    </summary>
+    <param name="path">
+      Pfad, in dem der temporäre Ordner mit den gelabelten Trainingsdaten angelegt wird
+    </param>
+    <param name="counter">
+      Zähler zur Kontrolle der maximal pro Label herunterzuladenden Bilder
+    </param>
+    <returns>
+      Task für parallele Downloads
+    </returns>
+    <Amazon.S3.AmazonS3Exception>
+      Wird geworfen, wenn Bild trotz Indizierung in csv-Tabelle nicht gefunden wird. Nicht fatal.
+    </Amazon.S3.AmazonS3Exception>
+    <Amazon.Runtime.AmazonServiceException>
+      Wird geworfen, wenn keine Verbindung zum Amazon-Server besteht. Führt zum Programmabbruch.
+    </Amazon.Runtime.AmazonServiceException>
+  </Member>
+  <Member name="downloadAll">
+    <summary>
+      Diese Methode wird aus Datacollection aufgerufen, löst alle DownloadTasks aus und wartet auf Beendigung
+    </summary>
+    <param name="path">
+      Pfad, in dem der temporäre Ordner mit den gelabelten Trainingsdaten angelegt wird
+    </param>
+    <param name="maxItems">
+      Maximal herunterzuladende Bilder pro Label
+    </param>
+  </Member>
+  <Member name="CustomEquals">
+    <summary>
+      Prüft auf Gleichheit zwischen zwei Dataset-Instanzen
+    </summary>
+    <param name="compare">
+      Vergleichs-Dataset-Instanz
+    </param>
+    <returns>
+      true wenn Gleichheit besteht, andernfalls false
+    </returns>
+  </Member>
+  
+</Dataset>

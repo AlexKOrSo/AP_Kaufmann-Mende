@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Tools>
+  <Member name="TSVMaker">
+    <summary>
+      Stellt eine Methode sowie die nötigen Felder bereit, um die Bilder in Test- und Trainingsdaten zu unterteilen
+    </summary>
+  </Member>
+  <Member name="LabelsData">
+    <value>
+      Pfad zu einer Datei, die alle Labels enthält
+    </value>
+  </Member>
+  <Member name="TestData">
+    <value>
+      Datei mit allen Bildern, die in das Testset gelangen
+    </value>
+  </Member>
+  <Member name="TrainData">
+    <value>
+      Datei mit allen Bildern, die in das Trainingsset gelangen
+    </value>
+  </Member>
+  <Member name="LabelNames">
+    <value>
+      Enthält alle Labels, für die ein Training durchgeführt wird
+    </value>
+  </Member>
+  <Member name="LogAllData">
+    <summary>
+      Unterteilt die gelabelten Daten in Trainings- und Testdatensatz
+    </summary>
+    <param name="LogPath">
+      Ordner, in den die Dateien mit den Informationen über die Aufteilung in Trainings- und Testdatensatz geschrieben werden
+    </param>
+    <param name="Labels">
+      Kategorien, die trainiert werden
+    </param>
+  </Member>
+  
+  
+    <Member name="ConsoleTools">
+      <summary>
+        Stellt diverse Werkzeuge zur Interaktion mit dem Nutzer über die Konsole bereit
+      </summary>
+    </Member>
+  <Member name="NonEmptyInput">
+    <summary>
+      Verhindert, dass Eingaben, die nur aus Betätigen der Enter-Taste bestehen, als legitim verstanden werden
+    </summary>
+  </Member>
+  <Member name="YesNoInput">
+    <summary>
+      Bildet binäre Nutzerinteraktion auf das Drücken einer Taste ab
+    </summary>
+    <param name="question">
+      Frage, die auf der Konsole ausgegeben wird
+    </param>
+    <returns>
+      true, wenn "y" gedrückt wird, sonst false
+    </returns>
+  </Member>
+  <Member name="IsValidKey">
+    <summary>
+      Prüft, ob die Taste "1" oder "2" angeschlagen wurde
+    </summary>
+    <param name="PressedKey">
+      Gibt den char-Wert der gedrückten Taste zurück
+    </param>
+    <param name="Option">
+      Auswahlmöglichkeit für switch-Verzweigung
+    </param>
+    <returns>
+      true, wenn "1" oder "2" angeschlagen wurde, sonst false
+    </returns>
+  </Member>
+  <Member name="VarInput">
+    <summary>
+      Dient zum Parsen von mehreren Ganzzahlen in einer Zeile
+    </summary>
+    <remarks>
+      Wird zum Auswählen der zu trainierenden Kategorien genutzt
+    </remarks>
+    <param name="question">
+      Frage, die auf der Konsole ausgegeben wird
+    </param>
+    <returns>
+      Den geparsten Vektor der Ganzzahlen
+    </returns>
+  </Member>
+  <Member name="FileNameInput">
+    <summary>
+      Prüft, ob ein potenzieller Datei-Name unzulässige Zeichen enthält
+    </summary>
+    <param name="FileName">
+      Potenzieller Datei-Name
+    </param>
+    <returns>
+      true, wenn zulässig, sonst false
+    </returns>
+  </Member>
+  
+</Tools>

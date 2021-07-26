@@ -11,12 +11,16 @@ using Tools;
 
 namespace Classes
 {
+    ///<include file='ClassesDoc/Image.xml' path='Image/Member[@name="Image"]/*'/>
     public class Image
     {
+        
         [LoadColumn(0)]
+        ///<include file='ClassesDoc/Image.xml' path='Image/Member[@name="Path"]/*'/>
         public string Path;
 
         [LoadColumn(1)]
+        ///<include file='ClassesDoc/Image.xml' path='Image/Member[@name="LabeledAs"]/*'/>
         public string LabeledAs;
 
         public Image(string Path, string Label)
@@ -26,6 +30,7 @@ namespace Classes
         }
 
         public Image() { }
+        ///<include file='ClassesDoc' path='Image/Member[@name="GetLabelFromPath"]/*'/>
         public string GetLabelFromPath()
         {
             string Category = null;

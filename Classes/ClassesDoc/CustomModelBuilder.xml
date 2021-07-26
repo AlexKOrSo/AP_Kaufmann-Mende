@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CustomModelBuilder>
+  <Member name="CustomBuilder">
+    <summary>
+      Stellt Methoden zum Training von Modellen, deren Aufruf und Speicherung sowie Nutzung bereit
+    </summary>
+  </Member>
+  <Member name="Labels">
+    <summary>
+      Nimmt Namen aller nutzbaren Kategorien auf, deren Name den Suchbegriff enthält
+    </summary>
+  </Member>
+  <Member name="Data">
+    <summary>
+      Wird zur Speicherung der tatsächlich genutzten Kategorien genutzt
+    </summary>
+  </Member>
+  <Member name="Initialization">
+    <summary>
+      Hier werden die zu klassifizierenden Labels ermittelt
+    </summary>
+    <param name="path">
+      Pfad zur temporären Speicherung der heruntergeladenen Bilder
+    </param>
+  </Member>
+  <Member name="GenerateModel">
+    <summary>
+      Nutzt eine Pipeline zur Tranformation der Eingabedaten in nutzbare Trainingsdaten
+    </summary>
+    <param name="mlContext">
+      MachineLearning Kontext, in dem die Transformationen stattfinden
+    </param>
+    <exception>
+      Wenn Bilder in sehr seltenen Fällen in einer Kategorie kein Score zugeordnet werden kann, erfolgt Programmabbruch
+    </exception>
+  </Member>
+  <Member name="AddModelInfo">
+    <summary>
+      Wird nach Abschluss eines Trainings aufgerufen, um Name und trainierte Labels des soeben erstellten Modells zu vermerken
+    </summary>
+    <remarks>
+      Speichert die Information in einer .Info-Datei
+    </remarks>
+    <param name="ModelPath">
+      Pfad, in den das Modell gespeichert wird
+    </param>
+    <returns>
+      true im Falle eines erfolgreichen Vermerks in der .Info-Datei, andernfalls false
+    </returns>
+  </Member>
+  <Member name="GetModelNames">
+    <summary>
+      Liest Modell-Namen trainierter Modelle und lässt den Nutzer eines davon auswählen
+    </summary>
+    <returns>
+      Den Namen des gewählten Modells
+    </returns>
+  </Member>
+  <Member name="DisplayResults">
+    <summary>
+      Gibt Ergebnisse von zuvor klassifizierten Bildern aus
+    </summary>
+    <remarks>
+      Aus MS-Dokumentation adaptiert
+    </remarks>
+    <param name="PredictedData">
+      Behälter für klassifiziertes Bild
+    </param>
+    
+  </Member>
+  <Member name="InceptionSettings">
+    <summary>
+      Zur Transformation der Eingabebilder nötige Werte
+    </summary>
+    <remarks>
+      Aus MS-Dokumentation adaptiert
+    </remarks>
+  </Member>
+  
+</CustomModelBuilder>
