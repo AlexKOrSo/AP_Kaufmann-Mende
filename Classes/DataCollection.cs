@@ -22,7 +22,6 @@ namespace MLData
             {
                 StreamReader sr = new StreamReader(PathLabels);
                 string line = sr.ReadLine(); //Erste Zeile enthält Kopf, ist deshalb irrelevant
-                Console.WriteLine("Test");
                 while ((line = sr.ReadLine()) != null) //Abbruch wenn Dateiende
                 {
                     if (line.Split(',')[1].ToUpper().Contains(searchstring.ToUpper()))

@@ -13,10 +13,10 @@ namespace Tools
 {
     public static class TSVMaker
     {
-        public static string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv"); 
+        public static readonly string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv"); 
         static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
-        public static string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
-        public static string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv");
+        public static readonly string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
+        public static readonly string TrainData = Path.Combine(PathFinder.ImageDir, "TrainData.tsv");
         public static string[] LabelNames; 
         public static int TestDataNumber;
         public static int TrainDataNumber; 
@@ -38,32 +38,37 @@ namespace Tools
             if (File.Exists(TrainData)) File.Delete(TrainData);
 
 
-            int FileCounter = 0; 
-            using (StreamWriter AllWriter = new StreamWriter(AllData))
-            using (StreamWriter TestWriter = new StreamWriter(TestData)) 
-            using(StreamWriter TrainWriter=new StreamWriter(TrainData))
-            
-       
-            foreach (string Name in LabelNames)
+            int FileCounter = 0;
+            try
             {
-                    string[] FilesInDir = Directory.GetFiles(Path.Combine(PathFinder.ImageDir, Name));
-                    FileCounter = 0;
-                    foreach(string File in FilesInDir)
+                using (StreamWriter AllWriter = new StreamWriter(AllData))
+                using (StreamWriter TestWriter = new StreamWriter(TestData))
+                using (StreamWriter TrainWriter = new StreamWriter(TrainData))
+
+
+                    foreach (string Name in LabelNames)
                     {
-                        string Output = File + ';' + Name;
-                        if ((double)FileCounter < (double) 0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output);
-                        else TestWriter.WriteLine(Output);
-                        FileCounter++; 
-                        AllWriter.WriteLine(Output);
+                        string[] FilesInDir = Directory.GetFiles(Path.Combine(PathFinder.ImageDir, Name));
+                        FileCounter = 0;
+                        foreach (string File in FilesInDir)
+                        {
+                            string Output = File + ';' + Name;
+                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output);
+                            else TestWriter.WriteLine(Output);
+                            FileCounter++;
+                            AllWriter.WriteLine(Output);
+                        }
                     }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Es konnte mindestens eins der Files \n{AllData}\n{TestData}\n{TrainData}\n nicht geschrieben werden. Programmabbruch!");
+                throw; 
             }
             
 
         }
-        public static void TransferAllData()
-        {
-            
-        }
+        
     }
 
 
@@ -143,12 +148,12 @@ namespace Tools
     public static class PathFinder
     {
 
-        public static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
+        public readonly static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
         //public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
 
-        public static string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
+        public readonly static  string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
 
-        public static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
+        public readonly static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts
