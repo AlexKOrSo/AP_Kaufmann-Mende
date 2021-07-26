@@ -191,7 +191,7 @@ namespace Classes
         }
 
 
-        private static bool AddModelInfo(string ModelPath)
+        public static bool AddModelInfo(string ModelPath)
         {
             string ModelName = Path.GetFileName(ModelPath);
             string SingleLabels = "";

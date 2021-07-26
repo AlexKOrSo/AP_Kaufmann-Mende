@@ -13,7 +13,7 @@ namespace MLData
 {
     public class Dataset: IEquatable<Dataset>  //Für vergleichsoperationen wird IEquatable implementiert
     {
-        public string Label { get; set; } //Bezeichnung der kategorie
+        public string Label { get; set; } //Bezeichnung des Labels
         public string Key { get; set; } //Schlüssel, der Label zugeordnet ist
         public ConcurrentQueue<string> ids; //Asynchrone Queue
 
