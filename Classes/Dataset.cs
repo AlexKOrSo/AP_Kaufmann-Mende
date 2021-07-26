@@ -86,17 +86,6 @@ namespace MLData
         {
             counterHolder counter = new counterHolder() { Value = maxItems };
 
-            try
-            {
-                if (CheckNetwork.PingAWS() == false)
-                {
-                    throw new Exception("Kontakt zum ENDPOINT USEAST1 nicht moeglich.");
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Fehler in {nameof(downloadAll)}: "+ e.Message);
-            }
             Task[] downloadtasks = new Task[5];
 
             for (int i = 0; i < downloadtasks.Length; i++)

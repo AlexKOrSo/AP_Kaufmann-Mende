@@ -23,10 +23,15 @@ namespace Classes
         public static void Initialization(string path)
         {
             {
-
+                
                 try
                 {
-                    Data = new DataCollection(path, 500);
+                    int[] maxitems = null;
+                    while (maxitems==null||maxitems[0]<1)
+                    {
+                        maxitems = ConsoleTools.VarInput("Wie viele Bilder sollen pro Kategorie heruntergeladen werden? (min. 1)");
+                    }
+                    Data = new DataCollection(path, maxitems[0]);
                     bool MinLabels = false;
                     while (!MinLabels)
                     {
