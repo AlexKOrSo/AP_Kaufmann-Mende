@@ -57,7 +57,7 @@
       Frage, die auf der Konsole ausgegeben wird
     </param>
     <returns>
-      true, wenn "y" gedrückt wird, sonst false
+      langword="true", wenn "y" gedrückt wird, sonst langword="false"
     </returns>
   </Member>
   <Member name="IsValidKey">
@@ -71,7 +71,7 @@
       Auswahlmöglichkeit für switch-Verzweigung
     </param>
     <returns>
-      true, wenn "1" oder "2" angeschlagen wurde, sonst false
+      langword="true", wenn "1" oder "2" angeschlagen wurde, sonst langword="false"
     </returns>
   </Member>
   <Member name="VarInput">
@@ -96,7 +96,36 @@
       Potenzieller Datei-Name
     </param>
     <returns>
-      true, wenn zulässig, sonst false
+      langword="true", wenn zulässig, sonst langword="false"
+    </returns>
+  </Member>
+
+  <Member name="PathFinder">
+    <summary>
+      Stellt Methoden und Felder zur Navigation in der Ordnerstruktur
+    </summary>
+  </Member>
+  <Member name="ModelDir">
+    <value>
+      Pfad, in dem das Modell liegt
+    </value>
+  </Member>
+  <Member name="ImageDir">
+    <value>
+      Pfad, in dem sich temporär die Trainingsbilder befinden
+    </value>
+  </Member>
+  <Member name="OwnImagesDir">
+    <value>
+      Pfad, in dem sich die zu klassifizierenden Bilder befinden
+    </value>
+  </Member>
+  <Member name="FindOrigin">
+    <summary>
+      Findet den Ordner, in dem sich die Datei ".Index" befindet
+    </summary>
+    <returns>
+      Pfad zur Datei
     </returns>
   </Member>
   

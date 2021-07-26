@@ -15,13 +15,15 @@ namespace HTMLTools
         public IHtmldata GetHtmldata();
     }
 
+    ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="HTMLCreator"]/*'/>
     public static class HTMLCreator
     {
+        ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="GenerateHref"]/*'/>
         public static string GenerateHref(IHtmldata image)
         {
             return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}</a><br>";
         }
-
+        ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="Result"]/*'/>
         public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
         {
 

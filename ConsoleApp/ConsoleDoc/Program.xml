@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Program>
+  <Member name="Program">
+    <summary>
+      Konsolenprogramm zur Bildklassifizierung
+    </summary>
+  </Member>
+  <Member name="CategorizeChoice">
+    <summary>
+      Hier werden ungelabelte Bilder klassifiziert 
+    </summary>
+    <param name="trainedModel">
+      Das trainierte Modell, anhand dessen die Klassifizierung erfolgt
+    </param>
+    <param name="mlContext">
+      Machine-Learing Kontext, in dem die Klassifizierung stattfindet
+    </param>
+  </Member>
+  <Member name="TrainingChoice">
+    <summary>
+      Der Menüpunkt zum Training eines neuen Modells
+    </summary>
+    <param name="mlContext">
+      Machine-Learing Kontext, in dem die Klassifizierung stattfindet
+    </param>
+  </Member>
+  <Member name="ClassificationChoice">
+    <summary>
+      Wird von CategorizeChoice aufgerufen
+    </summary>
+    <remarks>
+      Zur besseren Übersicht als eigenständige Funktion ausgelegt
+    </remarks>
+    <param name="mlContext">
+      Machine-Learing Kontext, in dem die Klassifizierung stattfindet
+    </param>
+  </Member>
+  <Member name="ForceDeleteDirectory">
+    <summary>
+      Löscht Ordner, auch wenn sich darin Dateien befinden
+    </summary>
+    <remarks>
+      Adaptiert aus <seealso href="https://stackoverflow.com/questions/329355/cannot-delete-directory-with-directory-deletepath-true">Stackoverflow</seealso>
+    </remarks>
+    <param name="Dir">
+      Zu löschender Ordner
+    </param>
+  </Member>
+</Program>

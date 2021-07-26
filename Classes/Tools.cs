@@ -155,13 +155,14 @@ namespace Tools
 
     public static class PathFinder
     {
-
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ModelDir"]/*'/>
         public readonly static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
         //public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
-
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ImageDir"]/*'/>
         public readonly static  string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
-
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="OwnImagesDir"]/*'/>
         public readonly static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
+        ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FindOrigin"]/*'/>
         public static string FindOrigin()
         {
             //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts
@@ -188,14 +189,7 @@ namespace Tools
             return Path.GetDirectoryName(SearchPath); 
         }
 
-        public  static DirectoryInfo  MakeDirectory(string DirName) { 
-            ///Erstellt Directory relativ zu Verzeichnis der .Index-Datei
-            ///
-
-            string FinalPath=Path.Combine(FindOrigin(), DirName);
-            DirectoryInfo NewDir=Directory.CreateDirectory(FinalPath); 
-            return NewDir; 
-            }
+        
     }
 
     

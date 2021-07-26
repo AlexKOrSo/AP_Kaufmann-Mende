@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<HTMLTools>
+  <Member name="HTMLCreator">
+    <summary>
+      Stellt Tools zur Erstellung von HTML-Dateien zur Ausgabe von Klassifizierungsergebnissen bereit
+    </summary>
+  </Member>
+  <Member name="GenerateHref">
+    <summary>
+      Erzeugt Informationen für HTML-Datei
+    </summary>
+    <param name="image">
+      Bild, für das die Information erstellt wird
+    </param>
+    <returns>
+      Information für HTML-Datei
+    </returns>
+  </Member>
+  <Member name="Result">
+    <summary>
+      Dient zur Bereitstellung von Klassifizierungsergebnissen mittels HTML
+    </summary>
+    <param name="images">
+      Ausgewertete Bilder 
+    </param>
+    <param name="filepath">
+      Pfad zur Ergebnis-Datei
+    </param>
+    <param name="filename">
+      Name der Ergebnis-Datei
+    </param>
+  </Member>
+</HTMLTools>
