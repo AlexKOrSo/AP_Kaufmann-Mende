@@ -19,7 +19,7 @@
 \usepackage{amsmath}							% mehr Mathe
 \usepackage{tabularx}							% Tabellen auf Textbreite ausdehnen
 \usepackage{float}						       	% H-Paramter für floats
-
+\usepackage{lscape}
 \usepackage{icomma}
 \usepackage{amsfonts}
 \usepackage{subfiles}
@@ -113,7 +113,7 @@ Zum Trainieren neuer Modelle können Bilder aus einem AWS Bucket heruntergeladen
 	\caption{Ordnerstruktur für den Release-Build}
 	\label{fig:release}
 \end{figure}
-\subsection{Build von Sourcecode}
+\subsubsection{Build von Sourcecode}
 Die Quellcode ist über Github download verfügbar und kann über die \texttt{.Net-SDK} kompiliert werden. Die zusätzliche \texttt{.csv}-Datei ist analog dem Releasebuild herunterzuladen und auf einer Ebene mit der \texttt{.Index}-Datei zu speichern. Das Programm kann durch das erstellen eines Builds der \texttt{ConsoleApp} gestartet werden. Die Ordnerstruktur sollte Abb. \ref{fig:github} entsprechen. Wenn der Ordner \texttt{TensorFlow} fehlt, muss dieser von Hand erstellt werden und das \href{https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip}{neuronale Netz} von Hand direkt dort eingefügt werden (\texttt{.pb-Datei}). Sollte die vorhandene \texttt{tensorflow\_inception\_graph.pb}-Datei im Ordner \texttt{TensorFlow} korumpiert sein, befindet sich im \texttt{zip}-Verzeichnis \texttt{inception5h.bac} ein Backup.
 \begin{figure}
 	\centering
@@ -158,6 +158,8 @@ Im Falle verschiedener Fehler wird das Programm beendet:
 Außerdem bricht das Programm ab, wenn nur unzureichende Schreib-/Leserechte vorliegen.  
 \section{Known Issues}
 Die Download-API von AWS friert teilweise das Programm ein, in dem Falle muss das Programm neugestartet werden. Leider konnten dazu keine weiteren Information gefunden werden. 
+\section{Umsetzung}
+Die Programmierung erfolgte von Alexander Kaufmann und Robert Mende. Die Grundstruktur des Training des Tensorflow-Abschnittes stammt aus \href{https://docs.microsoft.com/de-de/dotnet/machine-learning/tutorials/image-classification}{Dokumentationsbeispiel} von ML.Net
 \section{Links}
 \begin{itemize}
 	\item Dokumentationsbeispiel ML.Net Bildklassifizierung: \url{https://docs.microsoft.com/de-de/dotnet/machine-learning/tutorials/image-classification}
@@ -166,4 +168,14 @@ Die Download-API von AWS friert teilweise das Programm ein, in dem Falle muss da
 	\item Image-IDs der Open Images Dataset V6-Datenbank \url{https://storage.googleapis.com/openimages/v6/oidv6-train-annotations-human-imagelabels.csv}
 	\item neuronales Netz Inceptionv1 \url{https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip}
 \end{itemize}
+\addsec{Anhang}
+\begin{landscape}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\linewidth]{Bilder/Classdiagramm}
+		\caption{Klassendiagramm des finalen Programms}
+		\label{fig:classdiagramm}
+	\end{figure}
+	
+\end{landscape}
 \end{document}
