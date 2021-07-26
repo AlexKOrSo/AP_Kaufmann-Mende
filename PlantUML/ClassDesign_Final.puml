@@ -1,0 +1,138 @@
+@startuml
+
+package "Tools" {
+
+
+    class ConsoleTools{
+        + {static} FileNameInput(string FileName) : bool
+        + {static} IsValidKey(ref char PressedKey, byte Option) : bool
+        + {static} NonEmptyInput() : string
+        + {static} VarInput(string question) : int[]
+        + {static} YesNoInput(string question) : bool       
+
+    }
+
+    class PathFinder{
+        + {static} ImageDir : string
+        + {static} ModelDir : string
+        + {static} OwnImagesDir : string
+        + {static} FindOrigin() : string
+        + {static} MakeDirectory (string DirName) : DirectoryInfo
+    }
+
+    class TSVMaker{
+        - {static} AllData: string
+        + {static} Labelnames : string[]
+        + {static} LabelsData : string[]
+        + {static} TestData : string
+        + {static} TestDataNumber : int
+        + {static} TrainData : string
+        + {static} TrainDataNumber : int
+        + {static} LogAllData(string LogPath, List<Dataset> Labels) : void
+    }
+}
+
+package "Classes" {
+    class Image {
+        + LabeldAs : string
+        + Path : string    
+        + GetLabelFromPath() : string
+        + Image()
+        + Image(string Path, string Label)
+    }
+
+    class CategorizedImage {
+       + PredictedImageLabel : string
+       + Score : float[] 
+       + CategorizedImage()
+       + CategorizedImage(string LabeledAs)
+       + GetFilePath() : string
+       + GetHtmldata(): IHtmldata
+       + GetLabel() : string
+    }
+
+    class CustomBuilder {
+        + {static} Data { get; set; } : DataCollection
+        + {static} labels { get; set; } : List<Dataset>
+        + {static} AddModelInfo(string ModelPath) : bool
+        - {static} CustomBuilder()
+        - {static} DisplayResults(IEnumerable<CategorizedImage> PredictetData) : void
+        + {static} GenerateModel(MLContext mlContext) : ITransformer
+        + {static} GetModelNames() : string
+        + {static} Initialization(string path) : void
+        - InceptionSettings {struct}
+    
+    }   
+    class ModelUser {
+        + {static} ClassifyMultiple(MLContext myContext, IDataView data, ITransformer trainedModel) : void
+       + {static} ClassifySingleImg(MLContext, Image data, ITransformer trainedModel) : CategorizedImage
+        + {static} OutputPrediction(CategorizedImage Prediction) : void
+    }
+    Image <|-- CategorizedImage
+}
+
+package MLData {
+    class DataCollection {
+        + Labels { get; set; } : List<Dataset>
+        - MaxItems {get; set; } : int
+        - PathIDs { get; set; } : string
+        - PathLabels { get; set; } : string
+        - CheckFiles() : void
+        + DataCollection(string path, int maxItems)
+        + DownloadAllDataset(string path) : void
+        + findImageIds() : void
+        + FindLables(string searchstring) : List<Dataset>
+    }
+    class Dataset {
+        + ids : ConcurrentQueue<string>
+        + Key {get; set; } : string
+        + Label {get ; set; } : string
+        + Dataset(string key, string label)
+        + downloadAll(string path, int maxItems) : void
+        - DownloadFilesAsync(string path, counterHolder counter) : Task
+        + Equals(Dataset compare) : bool
+        + Equals(object obj) : bool
+        + ToString() : string
+    
+    }
+    class counterHolder{
+        + Value : int
+    }
+    Dataset +-- counterHolder
+    
+}
+IEquatable <|-- Dataset
+interface IEquatable<Dataset>{
+
+}
+
+package Program{
+    class Program {
+        + CategorizeChoice(ITransformer trainedModel, MLContext mlcontext) : void
+        + ClassificationChoice(MLContext mlContext) : void
+        + ForceDeleteDirectory(string Dir) : void
+        - Main(string[] args) : void
+        + TrainingChoice(MLContxet mlContext) : void
+    }
+    
+}
+
+package HTMLTools {
+    interface IHtmlable{
+        GetHtmldata(): IHtmldata
+    }
+    interface IHtmldata{
+        GetFilePath() : string
+        GetLabel() : string
+    }
+    class HTMLCreator {
+        + {static} GenerateHref(IHtmldata image) : string
+        + {static} Result(IEnumerable<IHtmlable> images, string filepath, string filename) : void
+    }
+}
+
+CategorizedImage ..|> IHtmlable
+CategorizedImage ..|> IHtmldata
+DataCollection o-- Dataset
+CustomBuilder *-- DataCollection
+@enduml
