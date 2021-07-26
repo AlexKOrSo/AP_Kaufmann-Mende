@@ -135,4 +135,7 @@ CategorizedImage ..|> IHtmlable
 CategorizedImage ..|> IHtmldata
 DataCollection o-- Dataset
 CustomBuilder *-- DataCollection
+DataCollection <-[hidden]- ModelUser
+counterHolder <-[hidden]- TSVMaker
+HTMLCreator -[hidden]-> Program
 @enduml
