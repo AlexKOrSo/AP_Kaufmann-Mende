@@ -74,8 +74,8 @@ namespace Tools
             string Input = null;
             while ((string.IsNullOrEmpty(Input)) ? true : false)
             {
-                Console.WriteLine("Bitte Text eingeben, der in der Kategoriebezeichnung enthalten sein soll: ");
                 Input = Console.ReadLine();
+                if(string.IsNullOrEmpty(Input)) Console.WriteLine("Enter ist keine gültige Eingabe!");
             }
             return Input;
         }
@@ -110,14 +110,21 @@ namespace Tools
         public static int[] VarInput(string question)
         {
             Console.WriteLine(question);
-            string[] line = Console.ReadLine().Split(' ');
-            int[] input = new int[line.Length];
-            for (int i = 0; i < line.Length; i++)
-            {
-                string item = line[i];
-                int.TryParse(item, out input[i]);
-            }
+            string temp = ConsoleTools.NonEmptyInput(); 
             
+
+            
+                string[] line = temp.Split(' ');
+                int[] input = new int[line.Length];
+                bool ValidInput = true; 
+                for (int i = 0; i < line.Length; i++)
+                {
+                    string item = line[i];
+                    ValidInput=int.TryParse(item, out input[i]);
+                if (!ValidInput) return null; 
+                }
+            
+
             return input;
         }
         public static bool FileNameInput(string FileName)

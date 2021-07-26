@@ -26,66 +26,79 @@ namespace Classes
 
                 try
                 {
-                    Console.WriteLine("Auswahl der Kategorien, bitte insgesamt mindestens zwei Auswählen! ");
-                    bool run = true;
-                    Data = new DataCollection(path, 500); //Hier noch fragen nach der Anzahl an Items
-                    while (run)
+                    Data = new DataCollection(path, 500);
+                    bool MinLabels = false;
+                    while (!MinLabels)
                     {
+                        Console.WriteLine("Auswahl der Kategorien, bitte insgesamt mindestens zwei Auswählen! ");
+                        bool run = true;
+                        
 
-                        //List<Dataset> labels;
-                        Labels.Clear();
-                        while (Labels.Count == 0)
+
+                        while (run)
                         {
-                            string Input = ConsoleTools.NonEmptyInput();
-                            Labels = Data.FindLables(Input);
-                            foreach (Dataset item in Labels)
+
+                            //List<Dataset> labels;
+                            Labels.Clear();
+                            while (Labels.Count == 0)
                             {
-                                Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
-                            }
-                            if (Labels.Count == 0) Console.WriteLine("Leider keine passenden Einträge gefunden.\nBitte neuen Suchbegriff eingeben"); 
-                        }
-
-                        bool ValidIndexes = false;
-                        while (!ValidIndexes)
-                        {
-                            ValidIndexes = true;
-                            int[] index = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt");
-
-
-                            foreach (var item in index)
-                            {
-                                if (item == -1)
+                                Console.WriteLine("Bitte eingeben, was in der Kategoriebezeichnung enthalten sein soll!");
+                                string Input = ConsoleTools.NonEmptyInput();
+                                Labels = Data.FindLables(Input);
+                                foreach (Dataset item in Labels)
                                 {
-                                    break;
+                                    Console.WriteLine("{0}: {1}: {2}", Labels.IndexOf(item), item.Key, item.Label);
                                 }
-                                if (item < -1 || item >= Labels.Count)
-                                {
-                                    Console.WriteLine("Mindestens ein Index ist zu groß/klein!");
-                                    Data.Labels = new List<Dataset>();
-                                    ValidIndexes = false;
-                                    break; 
-                                }
-                                else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))
-                                {
-                                    Data.Labels.Add(Labels[item]);
-                                }
-
-                                //labels.TryGetValue(item, out Dataset temp);
-                                //Data.Labels.Add(temp);
+                                if (Labels.Count == 0) Console.WriteLine("Leider keine passenden Einträge gefunden.\nBitte neuen Suchbegriff eingeben");
                             }
 
+                            bool ValidIndexes = false;
+
+                            while (!ValidIndexes)
+                            {
+                                ValidIndexes = true;
+                                int[] ReturnedVal = null;
+                                while ((ReturnedVal = ConsoleTools.VarInput("Bitte Kategorienummer eingeben  oder -1, um Eingabe neuzustarten, bei mehreren mit Leerzeichen getrennt")) == null)
+                                {
+                                    Console.WriteLine("Bitte gültigen Input tätigen");
+                                }
+
+                                int[] index = ReturnedVal;
+
+
+                                foreach (var item in index)
+                                {
+                                    if (item == -1)
+                                    {
+                                        break;
+                                    }
+                                    if (item < -1 || item >= Labels.Count)
+                                    {
+                                        Console.WriteLine("Mindestens ein Index ist zu groß/klein!");
+                                        //Data.Labels = new List<Dataset>();
+                                        ValidIndexes = false;
+                                        break;
+                                    }
+                                    else if (!Data.Labels.Contains(new Dataset(Labels[item].Key, Labels[item].Label)))
+                                    {
+                                        Data.Labels.Add(Labels[item]);
+                                        if (Data.Labels.Count >= 2) MinLabels = true;
+                                    }
+
+                                    //labels.TryGetValue(item, out Dataset temp);
+                                    //Data.Labels.Add(temp);
+                                }
+
+                            }
+
+                            run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
+
                         }
 
-                        run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
-
                     }
-                    if (Data.Labels.Count < 2)
-                    {
-                        throw new Exception("Zu wenig Kategorien ausgewählt");
-                    }
-
-                    Data.DownloadAllDatasets(path);
-                    TSVMaker.LogAllData(PathFinder.ImageDir, Data.Labels); 
+                        Data.DownloadAllDatasets(path);
+                        TSVMaker.LogAllData(PathFinder.ImageDir, Data.Labels);
+                    
                 }
                 catch (Exception e)
                 {
@@ -101,6 +114,7 @@ namespace Classes
 
                 string ModelFolder = PathFinder.ModelDir;
                 string ModelLocation = Path.Combine(ModelFolder, "tensorflow_inception_graph.pb");
+                if (!File.Exists(ModelLocation)) { Console.WriteLine($"Modell unter {ModelLocation} nicht gefunden! Programmabbruch!"); throw new FileNotFoundException(); }
 
                 string TrainingTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TrainData);
                 string TestTags = Path.Combine(PathFinder.ImageDir, TSVMaker.TestData);
