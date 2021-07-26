@@ -33,7 +33,7 @@ namespace Classes
                     {
 
                         //List<Dataset> labels;
-
+                        Labels.Clear();
                         while (Labels.Count == 0)
                         {
                             string Input = ConsoleTools.NonEmptyInput();
@@ -75,8 +75,8 @@ namespace Classes
                             }
 
                         }
-                            run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
-                        
+
+                        run = ConsoleTools.YesNoInput("Nach neuer Kategorie suchen");
 
                     }
                     if (Data.Labels.Count < 2)

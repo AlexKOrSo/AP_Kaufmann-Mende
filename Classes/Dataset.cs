@@ -28,7 +28,6 @@ namespace MLData
             string bucketName = "open-images-dataset";      //Cloudspeicher(Bucket) von AWS, Zugriff mit Bucket-Namen
             string filename;
 
-            Console.WriteLine(ids.Count.ToString());
             RegionEndpoint reg = RegionEndpoint.USEast1; //Regionendpoint von AWS, Einstiegspunkt für AWS-Service
             AmazonS3Client s3Client = null;
             int timeout=30;
@@ -64,15 +63,20 @@ namespace MLData
                     }
 
                 }
+              catch (Amazon.S3.AmazonS3Exception e) {
+                    Console.WriteLine($"Bild {temp} not found: " + e.Message);
+                }
+
               catch (Amazon.Runtime.AmazonServiceException e)
                 {
+                    Console.WriteLine(e.Message+" "+e.GetType());
                     throw new Exception($"Schwerwiegender Fehler in {nameof(DownloadFilesAsync)}: " + e.GetType() + " " + e.Message);
                 }
               catch (Exception e) 
                {
                 Console.WriteLine($"Bild {temp} not found: "+e.Message);
 
-              }
+              } 
             }
             
 
