@@ -13,21 +13,21 @@ namespace MLData
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="PathLabels"]/*'/>
         string PathLabels { get; set; } //Dateipfad zu CSV mit Schlüsseln für entsprechende Labels
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="MaxItems"]/*'/>
-        int MaxItems { get; set; } //Maximale Anzahl an Items, die je Dataset heruntergeladen werden soll
+        int MaxItems { get; set; } 
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="Labels"]/*'/>
-        public List<Dataset> Labels { get; set; } //Liste der DataSet (ein Dataset entspricht einer Kategorie)
+        public List<Dataset> Labels { get; set; } 
 
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="FindLables"]/*'/>
-        public List<Dataset> FindLables(string searchstring) //Durchsucht labels.csv nach übereinstimmungen mit searchstring
+        public List<Dataset> FindLables(string searchstring) 
         {
-            //neue Liste, die Suchergebnisse als jeweils eine neue Dataset-instanz enthält
+           
             List<Dataset> results = new List<Dataset>(); 
 
             try
             {
                 StreamReader sr = new StreamReader(PathLabels);
-                string line = sr.ReadLine(); //Erste Zeile enthält Kopf, ist deshalb irrelevant
-                while ((line = sr.ReadLine()) != null) //Abbruch wenn Dateiende
+                string line = sr.ReadLine(); 
+                while ((line = sr.ReadLine()) != null) 
                 {
                     if (line.Split(',')[1].ToUpper().Contains(searchstring.ToUpper()))
                     {
@@ -43,19 +43,19 @@ namespace MLData
             return results;
         }
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="findImageIds"]/*'/>
-        public void findImageIds() //DurchsuchT imageIDs.csv nach übereinstimmungen mit dem Label-Key
+        public void findImageIds() 
         {
             try
             {
                 StreamReader sr = new StreamReader(this.PathIDs);
-                string line = sr.ReadLine(); //Erste Zeile enthält Kopf, ist deshalb irrelevant
-                while ((line = sr.ReadLine()) != null)//Lesen einer Zeile, Abbruch wenn dateiende
+                string line = sr.ReadLine(); 
+                while ((line = sr.ReadLine()) != null)
                 {
-                    foreach (Dataset item in Labels)//gelesene Zeile wird für jedes Dataset auf übereinstimmung überprüft, und ob Confidence für das Label==1
+                    foreach (Dataset item in Labels)
                     {
                         if (line.Split(',')[2].Contains(item.Key)&&line.Split(',')[3]=="1")
                         {
-                            item.ids.Enqueue(line.Split(',')[0]); //Enqueuen der ID in die Queue des zugehörigen Datasets
+                            item.ids.Enqueue(line.Split(',')[0]); 
                         } 
                     }
                 }
@@ -68,11 +68,11 @@ namespace MLData
             }
         }
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="DownloadAllDatasets"]/*'/>
-        public void DownloadAllDatasets(string path) //Übergeordnete Steuerungsmethode der Datasets, bekommt Programmpfad übergeben
+        public void DownloadAllDatasets(string path) 
         {
             Console.WriteLine("Durchsuchen der ImageIDs......");
             findImageIds();
-            foreach (Dataset item in Labels) //Jedes Dataset wird einzeln der Download aufgerufen
+            foreach (Dataset item in Labels) 
             {
                 try
                 {
@@ -84,7 +84,7 @@ namespace MLData
                         Directory.CreateDirectory(downloadpath);
                     }
 
-                    item.downloadAll(downloadpath,MaxItems); //Starten des Downloads eines Datasets
+                    item.downloadAll(downloadpath,MaxItems); 
 
                     Console.WriteLine($"Download abgeschlossen für Dataset {item.Label}");
                 }
@@ -97,23 +97,23 @@ namespace MLData
 
            
         }
-        public DataCollection(string path, int maxItems) //Constructor
+        public DataCollection(string path, int maxItems) 
         {
             this.PathIDs = Path.Combine(path, @"imageIDs.csv");
             this.PathLabels = Path.Combine(path, @"labels.csv");
             MaxItems = maxItems;
-            Labels = new List<Dataset>(); //Die Liste der Datasets, die heruntergeladen werden sollen
+            Labels = new List<Dataset>(); 
             CheckFiles();
         }
         ///<include file='ClassesDoc/DataCollection.xml' path='DataCollection/Member[@name="CheckFiles"]/*'/>
         private void CheckFiles()
-        {       //Überprüfen der csv-Dateien:  
+        {         
             try
             {
-                StreamReader labels = new StreamReader(this.PathLabels); //a) wenn sie nicht vorhanden sind, wirft StreamReader eine Exception,
+                StreamReader labels = new StreamReader(this.PathLabels); 
                 StreamReader ids = new StreamReader(this.PathIDs);
                 
-                if (labels.ReadLine() != "LabelName,DisplayName"||ids.ReadLine()!= "ImageID,Source,LabelName,Confidence") //b) Wenn sie vorhanden sind, aber der Header falsch ist, wird eine exception geworfen
+                if (labels.ReadLine() != "LabelName,DisplayName"||ids.ReadLine()!= "ImageID,Source,LabelName,Confidence") 
                 {
                     Console.WriteLine("");
                     throw new Exception("CSV-Dateien nicht gültig!");

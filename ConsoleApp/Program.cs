@@ -89,7 +89,7 @@ namespace ConsoleApp
        
             string OriginPath = null ;
             try { 
-            OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
+            OriginPath = PathFinder.FindOrigin(); 
                 }
             catch(Exception) {Console.WriteLine(@"Couldn't find .Index-File"); }
             Console.WriteLine("Willkommen in der Konsolen-App zur Bildklassifizierung auf Grundlage von Machine Learning");
@@ -106,10 +106,10 @@ namespace ConsoleApp
 
                 ClassificationChoice(myContext); 
 
-            } //Überleitung zur Bildklassifizierung
+            } 
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
-            } //Überleitung zum Training
+            } 
 
             Console.WriteLine("Beende Programm");
         }

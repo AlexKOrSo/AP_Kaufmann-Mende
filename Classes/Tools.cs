@@ -36,7 +36,7 @@ namespace Tools
                 LabelNames[Counter] = Element.Label;
                 Counter++; 
             }
-            //Jetzt befinden sich alle Label-Namen als String-Array in "LabelNames"
+            
             if(File.Exists(AllData)) File.Delete(AllData);
             if (File.Exists(TestData)) File.Delete(TestData);
             if (File.Exists(TrainData)) File.Delete(TrainData);
@@ -57,7 +57,7 @@ namespace Tools
                         foreach (string File in FilesInDir)
                         {
                             string Output = File + ';' + Name;
-                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output); //80% der gelabelten Daten gelangen ins Trainingsset
+                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output); 
                             else TestWriter.WriteLine(Output);
                             FileCounter++;
                             AllWriter.WriteLine(Output);
@@ -80,7 +80,7 @@ namespace Tools
     {
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="NonEmptyInput"]/*'/>
         public static string NonEmptyInput()
-        {//Fängt leere Eingaben (d.h. die nur aus Enter bestehen) ab
+        {
             string Input = null;
             while ((string.IsNullOrEmpty(Input)) ? true : false)
             {
@@ -96,13 +96,13 @@ namespace Tools
             do
             {
                 Console.Write(question + @" [y/n]: ");
-                //Abfangen des Keys, der angeschlagen wurden und Ausgabe auf Console.
+               
                 pressedKey = Console.ReadKey(false); 
-                //Leerzeile
+                
                 Console.WriteLine();
-            } while (pressedKey.Key!= ConsoleKey.Y && pressedKey.Key!=ConsoleKey.N); //So oft nachgefragt, bis y oder n (bzw. Y oder N)
+            } while (pressedKey.Key!= ConsoleKey.Y && pressedKey.Key!=ConsoleKey.N);
 
-            return (pressedKey.Key == ConsoleKey.Y); //Rückgabe Ergebnis
+            return (pressedKey.Key == ConsoleKey.Y);
         }
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="IsValidKey"]/*'/>
         public static bool IsValidKey(ref char PressedKey, byte Option)
@@ -112,11 +112,11 @@ namespace Tools
             switch (Option)
             {
                 case 1: if (PressedKey == '1' || PressedKey == '2') return true; break; 
-                //weitere mögliche Cases
+                
                 
 
             }
-            return false; //äquivalent zu entsprechender default-Verzweigung im Switch-Block
+            return false; 
         }
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="VarInput"]/*'/>
         public static int[] VarInput(string question)
@@ -142,7 +142,7 @@ namespace Tools
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FileNameInput"]/*'/>
         public static bool FileNameInput(string FileName)
         {
-            //Prüft, ob der FileName verwendet werden darf. 
+            
             
             if(FileName.Contains(' ') || FileName.Contains('/') || FileName.Contains('\\'))
             {
@@ -157,15 +157,15 @@ namespace Tools
     {
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ModelDir"]/*'/>
         public readonly static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
-        //public static string ModelDir = Path.Combine(FindOrigin(), "Classes", "Model", "NewModel.pb"); //Platzhalter, soll durch User-Eingabe spezifiziert werden
+        
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ImageDir"]/*'/>
-        public readonly static  string ImageDir = Path.Combine(FindOrigin(), "tmp"); //Ordner, in dem die Bilder gespeichert werden
+        public readonly static  string ImageDir = Path.Combine(FindOrigin(), "tmp"); 
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="OwnImagesDir"]/*'/>
         public readonly static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FindOrigin"]/*'/>
         public static string FindOrigin()
         {
-            //string FileName = ".Index"; //.Index File ist im hierarchisch höchsten Ordner des Projekts
+            
             string FileName = Resources.IndexFileName; 
             string SearchPath = "";
             bool FileFound = false;
@@ -174,15 +174,15 @@ namespace Tools
             while (!FileFound)
             {
                 SearchPath = Path.Combine(CurrentDir, FileName);
-                //Console.WriteLine($"Searching For: {SearchPath}");
+               
                 if (File.Exists(SearchPath))
                 {
-                    //Console.WriteLine($"Index-File gefunden in {SearchPath}");
+                   
                     FileFound = true; 
                 }
                 else
                 {
-                    //Thread.Sleep(1000);
+                    
                     CurrentDir = Directory.GetParent(CurrentDir).ToString();
                 }
             }

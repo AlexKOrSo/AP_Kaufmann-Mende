@@ -47,7 +47,7 @@ namespace Classes
                         while (run)
                         {
 
-                            //List<Dataset> labels;
+                            
                             Labels.Clear();
                             while (Labels.Count == 0)
                             {
@@ -84,7 +84,7 @@ namespace Classes
                                     if (item < -1 || item >= Labels.Count)
                                     {
                                         Console.WriteLine("Mindestens ein Index ist zu groß/klein!");
-                                        //Data.Labels = new List<Dataset>();
+                                        
                                         ValidIndexes = false;
                                         break;
                                     }
@@ -94,8 +94,7 @@ namespace Classes
                                         if (Data.Labels.Count >= 2) MinLabels = true;
                                     }
 
-                                    //labels.TryGetValue(item, out Dataset temp);
-                                    //Data.Labels.Add(temp);
+                                    
                                 }
 
                             }

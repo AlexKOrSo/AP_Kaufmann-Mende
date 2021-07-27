@@ -16,17 +16,17 @@ namespace CategorizingImages{
         ///<include file='ClassesDoc/ImageCategorizer.xml' path='ImageCategorizer/Member[@name="Categorizer"]/*'/>
         public static List<CategorizedImage> Categorizer(List<Image> input,ITransformer trainedModel, MLContext myContext){
 
-            List<CategorizedImage> predictions=new List<CategorizedImage>();//Liste an CategorizedImages
-            foreach (Image item in input)//für jedes Element der input-Liste wird ClassifySingleImg aufgerufen, Rückgabe in predictions-Liste hinzugefügt.
+            List<CategorizedImage> predictions=new List<CategorizedImage>();
+            foreach (Image item in input)
             {
                 predictions.Add( ModelUser.ClassifySingleImg(myContext,item,trainedModel));
             }
             return predictions;
         }
         ///<include file='ClassesDoc/ImageCategorizer.xml' path='ImageCategorizer/Member[@name="Initialization"]/*'/>
-        public static List<Image> Initialization(){ //Initialisierung
+        public static List<Image> Initialization(){ 
             
-            List<Image> input=new List<Image>(); //Liste an zu kategorisierenden Bildern
+            List<Image> input=new List<Image>(); 
             System.Console.WriteLine("..... Bilder kategorisieren");
             while (!ConsoleTools.YesNoInput("Eigene Bilder in den Unterordner OwnImages eingefügt?"))
             {
@@ -52,7 +52,7 @@ namespace CategorizingImages{
                 Console.WriteLine($"Es befinden sich allerdings keine Bilder im Ordner {SourceDir}!\nProgrammabbruch!");
                 throw new FileNotFoundException(null);
             }
-            //Rückgabe der Bilder
+            
             return input;
            
         }
