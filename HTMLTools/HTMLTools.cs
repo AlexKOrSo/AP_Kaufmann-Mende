@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 
 namespace HTMLTools
@@ -21,13 +20,14 @@ namespace HTMLTools
         ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="GenerateHref"]/*'/>
         public static string GenerateHref(IHtmldata image)
         {
-            return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}</a><br>";
+            string[] subpath = image.GetFilePath().Split(Path.DirectorySeparatorChar);
+            return $"<a href=\"{image.GetFilePath()}\">{subpath[subpath.Length - 1]}: {image.GetLabel()} </a><br>";
         }
         ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="Result"]/*'/>
-        public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
+        public static void Result(IEnumerable<IHtmlable> images, string filepath, string filename)
         {
 
-            string htmlPath = Path.Combine(filepath, filename + ".html"); 
+            string htmlPath = Path.Combine(filepath, filename + ".html");
             try
             {
                 using (StreamWriter sw = new StreamWriter(htmlPath))
@@ -43,12 +43,12 @@ namespace HTMLTools
                     sw.WriteLine("</body>");
                     sw.WriteLine("</html>");
                     sw.Dispose();
-                    Console.WriteLine($"Ergebnis-Datei unter {htmlPath} gespeichert!"); 
+                    Console.WriteLine($"Ergebnis-Datei unter {htmlPath} gespeichert!");
                 }
             }
             catch (Exception)
             {
-                Console.WriteLine($"{htmlPath} konnte nicht geschrieben werden"); 
+                Console.WriteLine($"{htmlPath} konnte nicht geschrieben werden");
             }
 
         }

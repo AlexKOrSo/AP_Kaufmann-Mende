@@ -1,11 +1,4 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HTMLTools;
+﻿using HTMLTools;
 
 
 
@@ -22,10 +15,10 @@ namespace Classes
 
         public string GetLabel() => PredictedImageLabel;
 
-        
+
         public string GetFilePath() => Path;
         ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="GetHTMLData"]/*' />
-        public IHtmldata GetHtmldata()=> this;
+        public IHtmldata GetHtmldata() => this;
         public CategorizedImage(string LabeledAs)
         {
             this.LabeledAs = LabeledAs;
@@ -35,5 +28,5 @@ namespace Classes
 
 
 
-    
+
 }

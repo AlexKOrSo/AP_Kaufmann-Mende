@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.ML;
+using Microsoft.ML.Data;
 using MLData;
 using Tools;
-using System.IO;
-using Microsoft.ML.Data;
 
 namespace Classes
 {
@@ -17,21 +15,21 @@ namespace Classes
         ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Labels"]/*'/>
         public static List<Dataset> Labels { get; private set; }
         ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Data"]/*'/>
-        public static DataCollection Data { get; private set; } 
+        public static DataCollection Data { get; private set; }
         static CustomBuilder()
         {
             Labels = new List<Dataset>();
-            
+
         }
         ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="Initialization"]/*'/>
         public static void Initialization(string path)
         {
             {
-                
+
                 try
                 {
                     int[] maxitems = null;
-                    while (maxitems==null||maxitems[0]<1)
+                    while (maxitems == null || maxitems[0] < 1)
                     {
                         maxitems = ConsoleTools.VarInput("Wie viele Bilder sollen pro Kategorie heruntergeladen werden? (min. 1)");
                     }
@@ -41,13 +39,13 @@ namespace Classes
                     {
                         Console.WriteLine("Auswahl der Kategorien, bitte insgesamt mindestens zwei Auswählen! ");
                         bool run = true;
-                        
+
 
 
                         while (run)
                         {
 
-                            
+
                             Labels.Clear();
                             while (Labels.Count == 0)
                             {
@@ -84,7 +82,7 @@ namespace Classes
                                     if (item < -1 || item >= Labels.Count)
                                     {
                                         Console.WriteLine("Mindestens ein Index ist zu groß/klein!");
-                                        
+
                                         ValidIndexes = false;
                                         break;
                                     }
@@ -94,7 +92,7 @@ namespace Classes
                                         if (Data.Labels.Count >= 2) MinLabels = true;
                                     }
 
-                                    
+
                                 }
 
                             }
@@ -104,13 +102,13 @@ namespace Classes
                         }
 
                     }
-                        Data.DownloadAllDatasets(path);
-                        TSVMaker.LogAllData(PathFinder.ImageDir, Data.Labels);
-                    
+                    Data.DownloadAllDatasets(path);
+                    TSVMaker.LogAllData(PathFinder.ImageDir, Data.Labels);
+
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(e.Message,e);
+                    throw new Exception(e.Message, e);
                 }
             }
         }
@@ -189,12 +187,12 @@ namespace Classes
             catch (ArgumentOutOfRangeException)
             {
                 Console.WriteLine("Fehler beim Training. Die Trainingsdaten sind korrumpiert.");
-                return null; 
+                return null;
             }
             catch (Exception)
             {
                 Console.WriteLine("Allgemeiner Fehler beim Training.");
-                return null; 
+                return null;
             }
         }
 
@@ -214,16 +212,16 @@ namespace Classes
             catch (Exception)
             {
                 Console.WriteLine($"Indizieren des Modells nicht möglich. Existiert Zugriff auf {Path.Combine(PathFinder.ModelDir, ".Info")}?");
-                return false; 
+                return false;
             }
-            return true; 
+            return true;
         }
         ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="GetModelNames"]/*'/>
         public static string GetModelNames()
         {
             string line = null;
             List<string> ModelNames = new List<string>();
-            Console.WriteLine("Folgende Modelle sind vorhanden:\n "); 
+            Console.WriteLine("Folgende Modelle sind vorhanden:\n ");
             using (StreamReader sr = new StreamReader(Path.Combine(PathFinder.ModelDir, ".Info")))
             {
                 while ((line = sr.ReadLine()) != null)
@@ -234,9 +232,9 @@ namespace Classes
                 }
             }
 
-            Console.WriteLine("Bitte Entscheidung für ein Modell durch Eingabe der jeweiligen Nummer treffen und mit Enter bestätigen\nEingabe muss wiederholt werden, wenn inkorrekt"); 
+            Console.WriteLine("Bitte Entscheidung für ein Modell durch Eingabe der jeweiligen Nummer treffen und mit Enter bestätigen\nEingabe muss wiederholt werden, wenn inkorrekt");
             bool IsNumber = false;
-            int Choice=-1;
+            int Choice = -1;
             bool IsValidNumber = false;
             while (!IsNumber || !IsValidNumber)
             {
@@ -245,8 +243,8 @@ namespace Classes
             }
 
 
-            Console.WriteLine($"Sie haben sich für {ModelNames[Choice].Split('.')[0]} entschieden"); 
-            return ModelNames[Choice]; 
+            Console.WriteLine($"Sie haben sich für {ModelNames[Choice].Split('.')[0]} entschieden");
+            return ModelNames[Choice];
 
 
         }
@@ -257,15 +255,15 @@ namespace Classes
             foreach (CategorizedImage Result in PredictedData)
             {
 
-                string Category = null ; 
-                for (int i=0; i < TSVMaker.LabelNames.Length; i++)
-                { 
-                    if (Result.Score.Max() == Result.Score[i]) Category = TSVMaker.LabelNames[i]; 
+                string Category = null;
+                for (int i = 0; i < TSVMaker.LabelNames.Length; i++)
+                {
+                    if (Result.Score.Max() == Result.Score[i]) Category = TSVMaker.LabelNames[i];
                 }
 
-                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max()*100:F1}% ");
+                Console.WriteLine($"Bild: {Path.GetFileName(Result.Path)} Gelabelt Als: {Result.GetLabelFromPath()} Bestimmt Als: {Category} Sicherheit: {Result.Score.Max() * 100:F1}% ");
             }
-           
+
         }
         ///<include file='ClassesDoc/CustomModelBuilder.xml' path='CustomModelBuilder/Member[@name="InceptionSettings"]/*'/>
         private struct InceptionSettings

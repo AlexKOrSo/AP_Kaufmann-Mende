@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tools;
 using Xunit;
-using Tools; 
 
 namespace Tests
 {
@@ -18,8 +13,8 @@ namespace Tests
         [InlineData("Model/", false)]
         [InlineData("Model ", false)]
         public void TestFileNameInput(string ProposedFileName, bool Expected)
-        { 
-            Assert.Equal(Expected, ConsoleTools.FileNameInput(ProposedFileName)); 
+        {
+            Assert.Equal(Expected, ConsoleTools.FileNameInput(ProposedFileName));
         }
     }
 }
