@@ -21,9 +21,9 @@ namespace Classes
             PredictionEngine<Image, CategorizedImage> predEngine = mlContext.Model.CreatePredictionEngine<Image, CategorizedImage>(trainedModel);
             
             CategorizedImage Prediction = predEngine.Predict(data);
-            Console.WriteLine(Prediction.LabeledAs+" "+Prediction.PredictedImageLabel+" "+Prediction.Score);
+            Console.WriteLine(Prediction.LabeledAs+" "+Prediction.PredictedImageLabel+" "+Prediction.Path);
             
-            Console.WriteLine("Prediction for single image");
+            Console.WriteLine("Vorhersage für ein Bild");
             return Prediction;
           
         }
@@ -32,7 +32,7 @@ namespace Classes
         {
             IDataView predictionData = trainedModel.Transform(data);
             IEnumerable<CategorizedImage> predictions = mlContext.Data.CreateEnumerable<CategorizedImage>(predictionData, reuseRowObject: true).Take(20);
-            Console.WriteLine("Prediction for multiple images");
+            Console.WriteLine("Vorhersage für mehrere Bilder");
             foreach (var p in predictions)
             {
                 OutputPrediction(p); 
