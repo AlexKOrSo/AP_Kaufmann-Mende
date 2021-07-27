@@ -97,7 +97,7 @@ citecolor = black] {hyperref}
 Machine Learning stellt eine Möglichkeit dar, Computer analog zum menschlichen Lernen anhand von Erfahrungen lernen zu lassen. Dabei umfasst das Machine Learning ein weites Feld möglicher Anwendungsbereiche, wobei die Bildklassifizierung ein solches darstellt. Mit der vorliegenden Software können Bilder mittels eines zuvor in der Software trainierten Modells klassifiziert werden. 
 Zum Einsatz kommt dazu ein von Google erstelltes neuronales Netz „Inception v1“ nach dem Vorbild des \href{https://docs.microsoft.com/de-de/dotnet/machine-learning/tutorials/image-classification}{Dokumentationsbeispieles} von ML.Net.
 \section{Anwendungsfeld der Software}
-Die Software kann prinzipiell zur Kategorisierung von Bildern der Typen .jpg und .png verwendet werden. Die Verwendung der mit der Software erzeugten Vorhersagemodelle ist jedoch nur mit ungelabelten Bildern sinnvoll, die tatsächlich zu einem der vorher trainierten Labels gehören. Dementsprechend führen beispielsweise Bilder von Fahrzeugen bei einem Modell, das zur Klassifizierung verschiedener Blumen trainiert wurde, zu willkürlichen Zuweisungen.
+Die Software kann prinzipiell zur Kategorisierung von Bildern der Typen .jpg und .png verwendet werden. Die Verwendung der mit der Software erzeugten Vorhersagemodelle ist jedoch nur mit ungelabelten Bildern sinnvoll, die sich tatsächlich einem der vorher trainierten Labels zuordnen lassen. Dementsprechend führen beispielsweise Bilder von Fahrzeugen bei einem Modell, das zur Klassifizierung verschiedener Blumen trainiert wurde, zu willkürlichen Zuweisungen.
 Im Gegenzug kann die Software je nach Größe der Trainingsdaten, Unterschiedlichkeit zwischen den trainierten Labels etc. durchaus zuverlässig neue Bilder klassifizieren. 
 Weiterhin kann das Modell vom Nutzer auf neue Kategorien trainiert werden. Dazu kommt das Neurale Netz \texttt{InceptionV1} von Google zum Einsatz. Die notwendigen Bilder werden aus der freien Datenbank \href{https://storage.googleapis.com/openimages/web/index.html}{Open Images Dataset V6} heruntergeladen. Auf Basis eines neu trainierten Modells kann die Bildklassifikation wieder aufgerufen werden.
 \section{Benutzung der Software}
@@ -123,6 +123,23 @@ Die Quellcode ist über Github download verfügbar und kann über die \texttt{.N
 \end{figure}
 \subsubsection*{NuGet-Packages}
 Sämtliche benötigten NuGet-Packages werden in der Solution- bzw. Projekt-Datei vermerkt. Die benötigten Pakete müssen im Paketmanager mit \texttt{nuget restore AP\_Kaufmann-Mende.sln} wieder hergestellt werden, \textbf{sollten sie nicht automatisch durch NuGeT heruntergeladen werden}. Achtung: es werden ca. \textbf{2 Gb} des in der \texttt{.NET-SDK} hinterlegten Nutzerverzeichnisses zusätzlich belegt. Hiermit sind die Vorbereitungen abgeschlossen.	
+\subsubsection{Vorbereitungen in Visual Studio}
+Da zur Erstellung der Software Visual Studio genutzt wurde, wird empfohlen, die Kompilierung des Quellcodes ebenfalls in jener IDE durchzuführen. In Visual Studio wird zunächst das Repository geklont. Daraufhin wird das geklonte Repository geöffnet und am rechten Bildschirmrand erscheint der Projektmappenexplorer. Durch einen Doppelklick auf \linebreak \texttt{AP\_Kaufmann-Mende.sln} wird die zugehörige Solution geöffnet. 
+Hier ist standardmäßig \linebreak \texttt{`Classes`} als Startprojekt festgelegt. Da dies jedoch eine Klassenbibliothek darstellt, ist stattdessen \texttt{`ConsoleApp`} als Startprojekt festzulegen. Dies geschieht durch Rechtsklick auf das Projekt und anschließenden Klick auf die Fläche \textbf{Als Startprojekt festlegen}. Dies ist in Abb. \ref{fig:startprojekt} dargestellt. 
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{Bilder/Startprojekt}
+	\caption{Festlegen des Startprojektes in Visual Studio}
+	\label{fig:startprojekt}
+\end{figure}
+Nun kann der Quellcode kompiliert werden. 
+Des Weiteren können, dank der Source-Code-Dokumentation mittels \texttt{xml}-Files, Informationen über Klassen und deren Member durch Bewegen des Cursors über das jeweilige Element erhalten werden (vgl. Abb.~\ref{fig:intellisense}).
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{Bilder/IntelliSense}
+	\caption{IntelliSense in Visual Studio}
+	\label{fig:intellisense}
+\end{figure}
 \section{Nutzung der Software}
 \subsection{Benutzeroberfläche}
 Ausgeführt wird eine Konsolenapp in \texttt{.NET 5}, die dem Nutzer nach Start der Software zwei Möglichkeiten bietet: 
