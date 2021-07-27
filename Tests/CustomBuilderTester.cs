@@ -11,6 +11,7 @@ namespace Tests
 {
     public class CustomModelBuilderTest
     {
+        ///<include file='TestsDoc/Tests.xml' path='Tests/Member[@name="TestGenerateModel"]/*'/>
         [Theory]
         [InlineData(null, null)] //Fehlerhaftes Modell übergeben
         public void TestGenerateModel(MLContext mlContext, ITransformer Expected)
@@ -18,9 +19,10 @@ namespace Tests
             Assert.Equal(Expected, CustomBuilder.GenerateModel(mlContext)); 
         }
 
+        ///<include file='TestsDoc/Tests.xml' path='Tests/Member[@name="TestAddModelInfo"]/*'/>
         [Theory]
         [InlineData(true, true)] //Korrekter Pfad auf .Info-Datei
-        [InlineData(false, true)] //Falscher Pfad
+        [InlineData(false, true)] //Falscher Pfad, trotdem Indeizierung möglich
         public void TestAddModelInfo(bool PathIsValid, bool Expected)
         {
             TSVMaker.LabelNames =new string[]{ "Label1", "Label2"}; 

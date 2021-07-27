@@ -10,15 +10,16 @@ namespace Tests
 {
     public class ToolsTester
     {
+
+        ///<include file='TestsDoc/Tests.xml' path='Tests/Member[@name="TestFileNameInput"]/*'/>
         [Theory]
         [InlineData("Model", true)]
         [InlineData("Model\\", false)]
         [InlineData("Model/", false)]
         [InlineData("Model ", false)]
-
-        public void TestFileNameinput(string ProposedFileName, bool Answer)
-        {//Testet, ob ein String als Modell-Name taugt 
-            Assert.Equal(Answer, ConsoleTools.FileNameInput(ProposedFileName)); 
+        public void TestFileNameInput(string ProposedFileName, bool Expected)
+        { 
+            Assert.Equal(Expected, ConsoleTools.FileNameInput(ProposedFileName)); 
         }
     }
 }
