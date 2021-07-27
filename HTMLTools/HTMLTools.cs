@@ -21,7 +21,8 @@ namespace HTMLTools
         ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="GenerateHref"]/*'/>
         public static string GenerateHref(IHtmldata image)
         {
-            return $"<a href=\"{image.GetFilePath()}\">{image.GetLabel()}</a><br>";
+            string[] subpath = image.GetFilePath().Split(Path.DirectorySeparatorChar);
+            return $"<a href=\"{image.GetFilePath()}\">{subpath[subpath.Length-1]}: {image.GetLabel()} </a><br>";
         }
         ///<include file='HTMLDoc/HTMLTools.xml' path='HTMLTools/Member[@name="Result"]/*'/>
         public static void Result(IEnumerable<IHtmlable> images,string filepath,string filename)
