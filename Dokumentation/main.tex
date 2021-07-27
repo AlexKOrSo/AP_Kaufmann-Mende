@@ -124,15 +124,22 @@ Die Quellcode ist über Github download verfügbar und kann über die \texttt{.N
 \subsubsection*{NuGet-Packages}
 Sämtliche benötigten NuGet-Packages werden in der Solution- bzw. Projekt-Datei vermerkt. Die benötigten Pakete müssen im Paketmanager mit \texttt{nuget restore AP\_Kaufmann-Mende.sln} wieder hergestellt werden, \textbf{sollten sie nicht automatisch durch NuGeT heruntergeladen werden}. Achtung: es werden ca. \textbf{2 Gb} des in der \texttt{.NET-SDK} hinterlegten Nutzerverzeichnisses zusätzlich belegt. Hiermit sind die Vorbereitungen abgeschlossen.	
 \subsubsection{Vorbereitungen in Visual Studio}
-Da zur Erstellung der Software Visual Studio genutzt wurde, wird empfohlen, die Kompilierung des Quellcodes ebenfalls in jener IDE durchzuführen. In Visual Studio wird zunächst das Repository geklont. Daraufhin wird das geklonte Repository geöffnet und am rechten Bildschirmrand erscheint der Projektmappenexplorer. Durch einen Doppelklick auf \texttt{AP\_Kaufmann-Mende.sln} wird die zugehörige Solution geöffnet. 
-Hier ist standardmäßig \texttt{`Classes`} als Startprojekt festgelegt. Da dies jedoch eine Klassenbibliothek darstellt, ist stattdessen \texttt{`ConsoleApp`} als Startprojekt festzulegen. Dies geschieht durch Rechtsklick auf das Projekt und anschließenden Klick auf die Fläche \textbf{Als Startprojekt festlegen}. Dies ist in Abb. \ref{fig:startprojekt} dargestellt. 
+Da zur Erstellung der Software Visual Studio genutzt wurde, wird empfohlen, die Kompilierung des Quellcodes ebenfalls in jener IDE durchzuführen. In Visual Studio wird zunächst das Repository geklont. Daraufhin wird das geklonte Repository geöffnet und am rechten Bildschirmrand erscheint der Projektmappenexplorer. Durch einen Doppelklick auf \linebreak \texttt{AP\_Kaufmann-Mende.sln} wird die zugehörige Solution geöffnet. 
+Hier ist standardmäßig \linebreak \texttt{`Classes`} als Startprojekt festgelegt. Da dies jedoch eine Klassenbibliothek darstellt, ist stattdessen \texttt{`ConsoleApp`} als Startprojekt festzulegen. Dies geschieht durch Rechtsklick auf das Projekt und anschließenden Klick auf die Fläche \textbf{Als Startprojekt festlegen}. Dies ist in Abb. \ref{fig:startprojekt} dargestellt. 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\linewidth]{Bilder/Startprojekt}
 	\caption{Festlegen des Startprojektes in Visual Studio}
 	\label{fig:startprojekt}
 \end{figure}
-
+Nun kann der Quellcode kompiliert werden. 
+Des Weiteren können, dank der Source-Code-Dokumentation mittels \texttt{xml}-Files, Informationen über Klassen und deren Member durch Bewegen des Cursors über das jeweilige Element erhalten werden (vgl. Abb.~\ref{fig:intellisense}).
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{Bilder/IntelliSense}
+	\caption{IntelliSense in Visual Studio}
+	\label{fig:intellisense}
+\end{figure}
 \section{Nutzung der Software}
 \subsection{Benutzeroberfläche}
 Ausgeführt wird eine Konsolenapp in \texttt{.NET 5}, die dem Nutzer nach Start der Software zwei Möglichkeiten bietet: 
