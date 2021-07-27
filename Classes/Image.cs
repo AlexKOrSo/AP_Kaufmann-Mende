@@ -34,10 +34,10 @@ namespace Classes
         public string GetLabelFromPath()
         {
             string Category = null;
-            //Gibt Label eines Bildes zurück
+            
             DirectoryInfo Dir=Directory.GetParent(this.Path);
             DirectoryInfo ParentDir = Directory.GetParent(Dir.FullName);
-            //
+           
             string TempCategory = System.IO.Path.GetRelativePath(ParentDir.FullName, Dir.FullName);
             if (TSVMaker.LabelNames.Contains(TempCategory)) Category = TempCategory; 
             return Category; 
