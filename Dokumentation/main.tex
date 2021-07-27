@@ -19,7 +19,7 @@
 \usepackage{amsmath}							% mehr Mathe
 \usepackage{tabularx}							% Tabellen auf Textbreite ausdehnen
 \usepackage{float}						       	% H-Paramter für floats
-\usepackage{lscape}
+\usepackage{pdflscape}
 \usepackage{icomma}
 \usepackage{amsfonts}
 \usepackage{subfiles}
@@ -160,6 +160,12 @@ Außerdem bricht das Programm ab, wenn nur unzureichende Schreib-/Leserechte vor
 Die Download-API von AWS friert teilweise das Programm ein, in dem Falle muss das Programm neugestartet werden. Leider konnten dazu keine weiteren Information gefunden werden. 
 \section{Umsetzung}
 Die Programmierung erfolgte von Alexander Kaufmann und Robert Mende. Die Grundstruktur des Training des Tensorflow-Abschnittes stammt aus \href{https://docs.microsoft.com/de-de/dotnet/machine-learning/tutorials/image-classification}{Dokumentationsbeispiel} von ML.Net. Die einzelnen Funktionen sind mittels der integrierten XML-Dokumentation von Visual Studio kommentiert.  
+\subsection{Download der Bilder}
+Die Bilder der verschiedenen Kategorien sind in einem AWS-Bucket gespeichert. Die Indizies aller Bilder mit den verknüpften Labels sind in der csv-Datei \texttt{imageIDs.csv} enthalten. Wenn sich der Nutzer für die entsprechende Kategorie entschieden hat, wird die Datei mit der Funktion \texttt{findImageIds()} in \texttt{DataCollection} für alle Zeilen durchlaufen und die entsprechenden Bilder-IDs mit dem richtigen Label werden in die Queue eines \texttt{Datasets} geschrieben (vgl. Abb. \ref{fig:programm01}). Alle \texttt{Datasets} werden von einer \texttt{DataCollection} verwaltet. Nachdem \texttt{findImageIds()} abgeschlossen hat, wird in jedem \texttt{Dataset} der Reihe nach der Download gestartet. Übergeordnet ist dafür die Funktion \texttt{DownloadAllDataSets} in \texttt{Datacollection} verantwortlich. In jedem \texttt{Dataset} wird die Funktion \texttt{downloadAll()} aufgerufen. Diese erzeugt 5 asynchrone Downloadtasks. Die AWSSDK stellt dafür entsprechende asynchrone Methoden bereit. In der asynchronen Task wird ein \texttt{AmazonS3Client} erzeugt, welcher für die Nutzung der AWS-Dienste notwendig ist. Mit den entsprechenden Informationen des Buckets von Open Images kann ein Transferclient erzeugt werden, welcher die API für Uploads und Downloads zur Verfügung stellt. Über diesen werden die Bilder dequeued.
+
+Zwischen allen Tasks wird eine Counter-Instanz geteilt, um zu ermöglichen, eine begrenzte Anzahl an Bildern herunterzuladen. Diese enthälten einen Counter \texttt{value} der threadsicher um 1 verringert wird. Wird 0 unterschritten, brechen die Tasks ab. Dabei muss auf den vollständigen Download gewartet werden, um sicherzugehen, dass die Bilder existieren.
+
+Die Grundidee des Downloadvorganges entstammt dem \href{https://raw.githubusercontent.com/openimages/dataset/master/downloader.py}{Pythonscript} von Open Images Dataset.
 \section{Links}
 \begin{itemize}
 	\item Dokumentationsbeispiel ML.Net Bildklassifizierung: \url{https://docs.microsoft.com/de-de/dotnet/machine-learning/tutorials/image-classification}
@@ -167,8 +173,20 @@ Die Programmierung erfolgte von Alexander Kaufmann und Robert Mende. Die Grundst
 	\item Microsoft \texttt{.Net} \url{https://dotnet.microsoft.com/download}
 	\item Image-IDs der Open Images Dataset V6-Datenbank \url{https://storage.googleapis.com/openimages/v6/oidv6-train-annotations-human-imagelabels.csv}
 	\item neuronales Netz Inceptionv1 \url{https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip}
+	\item Pythonscript Open Images Dataset V6 \url{https://raw.githubusercontent.com/openimages/dataset/master/downloader.py}
 \end{itemize}
 \addsec{Anhang}
+\subsection*{Screenshots des Trainings}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{Bilder/Programm02}
+	\includegraphics[width=0.6\linewidth]{Bilder/Programm03}
+	\includegraphics[width=0.6\linewidth]{Bilder/Programm05}
+	\includegraphics[width=0.6\linewidth]{Bilder/Programm07}
+	\caption{Screenshots des Programmablaufes des Trainings}
+	\label{fig:programm01}
+\end{figure}
+
 \begin{landscape}
 	\begin{figure}
 		\centering
