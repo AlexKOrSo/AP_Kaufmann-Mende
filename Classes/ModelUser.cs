@@ -19,7 +19,7 @@ namespace Classes
             PredictionEngine<Image, CategorizedImage> predEngine = mlContext.Model.CreatePredictionEngine<Image, CategorizedImage>(trainedModel);
 
             CategorizedImage Prediction = predEngine.Predict(data);
-            Console.WriteLine(Prediction.LabeledAs + " " + Prediction.PredictedImageLabel + " " + Prediction.Path);
+            //Console.WriteLine(Prediction.LabeledAs + " " + Prediction.PredictedImageLabel + " " + Prediction.Path);
 
             Console.WriteLine("Vorhersage für ein Bild");
             return Prediction;
