@@ -112,6 +112,7 @@ namespace ConsoleApp
             } 
 
             Console.WriteLine("Beende Programm");
+            Console.ReadKey(true);
         }
     }
 }
