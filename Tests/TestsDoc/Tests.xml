@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Tests>
+  <Member name="TestGenerateModel">
+    <summary>
+      Sollte ein leeres Modell zurückgeben, wenn ein leerer Kontext übergeben wird
+    </summary>
+  <param name="mlContext">
+    Machine-Learning Kontext, in dem das Modell erzeugt wird
+  </param>
+  <param name="Expected">
+    Erwartetes Modell 
+  </param>
+  </Member>
+<Member name="TestAddModelInfo">
+  <summary>
+    Testet, ob die AddModelInfo() in den angegebenen Pfad schreibt
+  </summary>
+<param name="PathIsValid">
+  Bestimmt, ob der Methode der Pfad übergegeben wird, der auch im Programm zur Indizierung von trainierten Modellen genutzt wird
+</param>
+<param name="Expected">
+  Bestimmt den erwarteten Rückgabewert der AddModelInfo()-Methode
+</param>
+</Member>
+  <Member name="TestEmptyFindLables">
+    <summary>
+      Testet die Rückgabe bei Suchstring, der keine Übereinstimmung mit den hinterlegten Labels der Tabelle besitzt
+    </summary>
+    <remarks>
+      Die Rückgabe der zugrundeliegenden Funktion sollte ein leeres langkeyword="string[]" sein
+    </remarks>
+  </Member>
+  <Member name="TestFindLables">
+    <summary>
+      Testet die Anzahl der gefundenen, passenden Labels anhand zweier Suchbegriffe 
+    </summary>
+    <remarks>
+      ExpectedListCount wurde durch manuelle Prüfung der Tabelle erhalten
+    </remarks>
+  <param name="SearchKey">
+    Suchbegriff
+  </param>
+  <param name="ExpectedListCount">
+    Erwartete Länge des erzeugten langkeyword="string[]", welches sämtliche Labels enthält, die den Suchbegriff enthalten
+  </param>
+  </Member>
+<Member name="TestFileNameInput">
+  <summary>
+    Testet, ob ein langkeyword="string" als Modell-Name taugt
+  </summary>
+<param name="ProposedFileName">
+  Auf Zuläsigkeit zu testender, potenzieller Modell-Name
+</param>
+<param name="Answer">
+  Erwartete Rückgabe der zugrundeliegenden Funktion
+</param>
+</Member>
+</Tests>

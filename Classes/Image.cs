@@ -30,7 +30,7 @@ namespace Classes
         }
 
         public Image() { }
-        ///<include file='ClassesDoc' path='Image/Member[@name="GetLabelFromPath"]/*'/>
+        ///<include file='ClassesDoc/Image.xml' path='Image/Member[@name="GetLabelFromPath"]/*'/>
         public string GetLabelFromPath()
         {
             string Category = null;

@@ -22,8 +22,9 @@ namespace Classes
 
         public string GetLabel() => PredictedImageLabel;
 
-        ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="GetHTMLData"]/*' />
+        
         public string GetFilePath() => Path;
+        ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="GetHTMLData"]/*' />
         public IHtmldata GetHtmldata()=> this;
         public CategorizedImage(string LabeledAs)
         {
