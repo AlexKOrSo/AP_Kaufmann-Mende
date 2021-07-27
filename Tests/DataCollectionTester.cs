@@ -1,11 +1,7 @@
-﻿using System;
-using Xunit; 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MLData;
-using Tools; 
+using Tools;
+using Xunit;
 
 namespace Tests
 {
@@ -17,8 +13,8 @@ namespace Tests
         [Fact]
         public void TestEmptyFindLables()
         {
-            
-            Assert.Empty(Data.FindLables("blablabla")); 
+
+            Assert.Empty(Data.FindLables("blablabla"));
         }
 
         ///<include file='TestsDoc/Tests.xml' path='Tests/Member[@name="TestFindLables"]/*'/>
@@ -27,9 +23,9 @@ namespace Tests
         [InlineData("Car", 306)]
         public void TestFindLables(string SearchKey, int ExpectedListCount)
         {
-            
+
             List<Dataset> TestSet = Data.FindLables(SearchKey);
-            Assert.Equal(ExpectedListCount, TestSet.Count); 
+            Assert.Equal(ExpectedListCount, TestSet.Count);
         }
     }
 }

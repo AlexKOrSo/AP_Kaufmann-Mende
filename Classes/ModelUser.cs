@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.ML; 
+using Microsoft.ML;
 
 namespace Classes
 {
@@ -19,13 +17,13 @@ namespace Classes
         public static CategorizedImage ClassifySingleImg(MLContext mlContext, Image data, ITransformer trainedModel)
         {
             PredictionEngine<Image, CategorizedImage> predEngine = mlContext.Model.CreatePredictionEngine<Image, CategorizedImage>(trainedModel);
-            
+
             CategorizedImage Prediction = predEngine.Predict(data);
-            Console.WriteLine(Prediction.LabeledAs+" "+Prediction.PredictedImageLabel+" "+Prediction.Path);
-            
+            Console.WriteLine(Prediction.LabeledAs + " " + Prediction.PredictedImageLabel + " " + Prediction.Path);
+
             Console.WriteLine("Vorhersage für ein Bild");
             return Prediction;
-          
+
         }
         ///<include file='ClassesDoc/ModelUser.xml' path='ModelUser/Member[@name="ClassifyMultiple"]/*'/>
         public static void ClassifyMultiple(MLContext mlContext, IDataView data, ITransformer trainedModel)
@@ -35,7 +33,7 @@ namespace Classes
             Console.WriteLine("Vorhersage für mehrere Bilder");
             foreach (var p in predictions)
             {
-                OutputPrediction(p); 
+                OutputPrediction(p);
             }
         }
     }

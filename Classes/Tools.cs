@@ -1,12 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Net.NetworkInformation;
 using Classes.Properties;
-using MLData; 
-using System.Text;
-using System.Net;
-using System.Collections.Generic; 
+using MLData;
 
 
 namespace Tools
@@ -15,7 +11,7 @@ namespace Tools
     public static class TSVMaker
     {
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="LabelsData"]/*'/>
-        public static readonly string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv"); 
+        public static readonly string LabelsData = Path.Combine(PathFinder.ImageDir, "Labels.tsv");
         static string AllData = Path.Combine(PathFinder.ImageDir, "AllData.tsv");
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="TestData"]/*'/>
         public static readonly string TestData = Path.Combine(PathFinder.ImageDir, "TestData.tsv");
@@ -30,14 +26,14 @@ namespace Tools
         {
 
             LabelNames = new string[Labels.Count];
-            int Counter = 0; 
-            foreach(var Element in Labels)
+            int Counter = 0;
+            foreach (var Element in Labels)
             {
                 LabelNames[Counter] = Element.Label;
-                Counter++; 
+                Counter++;
             }
-            
-            if(File.Exists(AllData)) File.Delete(AllData);
+
+            if (File.Exists(AllData)) File.Delete(AllData);
             if (File.Exists(TestData)) File.Delete(TestData);
             if (File.Exists(TrainData)) File.Delete(TrainData);
 
@@ -57,7 +53,7 @@ namespace Tools
                         foreach (string File in FilesInDir)
                         {
                             string Output = File + ';' + Name;
-                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output); 
+                            if ((double)FileCounter < (double)0.8 * FilesInDir.Length) TrainWriter.WriteLine(Output);
                             else TestWriter.WriteLine(Output);
                             FileCounter++;
                             AllWriter.WriteLine(Output);
@@ -67,12 +63,12 @@ namespace Tools
             catch (Exception)
             {
                 Console.WriteLine($"Es konnte mindestens eins der Files \n{AllData}\n{TestData}\n{TrainData}\n nicht geschrieben werden. Programmabbruch!");
-                throw; 
+                throw;
             }
-            
+
 
         }
-        
+
     }
 
     ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ConsoleTools"]/*'/>
@@ -85,7 +81,7 @@ namespace Tools
             while ((string.IsNullOrEmpty(Input)) ? true : false)
             {
                 Input = Console.ReadLine();
-                if(string.IsNullOrEmpty(Input)) Console.WriteLine("Enter ist keine gültige Eingabe!");
+                if (string.IsNullOrEmpty(Input)) Console.WriteLine("Enter ist keine gültige Eingabe!");
             }
             return Input;
         }
@@ -96,11 +92,11 @@ namespace Tools
             do
             {
                 Console.Write(question + @" [y/n]: ");
-               
-                pressedKey = Console.ReadKey(false); 
-                
+
+                pressedKey = Console.ReadKey(false);
+
                 Console.WriteLine();
-            } while (pressedKey.Key!= ConsoleKey.Y && pressedKey.Key!=ConsoleKey.N);
+            } while (pressedKey.Key != ConsoleKey.Y && pressedKey.Key != ConsoleKey.N);
 
             return (pressedKey.Key == ConsoleKey.Y);
         }
@@ -111,62 +107,62 @@ namespace Tools
             PressedKey = Choice.KeyChar;
             switch (Option)
             {
-                case 1: if (PressedKey == '1' || PressedKey == '2') return true; break; 
-                
-                
+                case 1: if (PressedKey == '1' || PressedKey == '2') return true; break;
+
+
 
             }
-            return false; 
+            return false;
         }
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="VarInput"]/*'/>
         public static int[] VarInput(string question)
         {
             Console.WriteLine(question);
-            string temp = ConsoleTools.NonEmptyInput(); 
-            
+            string temp = ConsoleTools.NonEmptyInput();
 
-            
-                string[] line = temp.Split(' ');
-                int[] input = new int[line.Length];
-                bool ValidInput = true; 
-                for (int i = 0; i < line.Length; i++)
-                {
-                    string item = line[i];
-                    ValidInput=int.TryParse(item, out input[i]);
-                if (!ValidInput) return null; 
-                }
-            
+
+
+            string[] line = temp.Split(' ');
+            int[] input = new int[line.Length];
+            bool ValidInput = true;
+            for (int i = 0; i < line.Length; i++)
+            {
+                string item = line[i];
+                ValidInput = int.TryParse(item, out input[i]);
+                if (!ValidInput) return null;
+            }
+
 
             return input;
         }
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FileNameInput"]/*'/>
         public static bool FileNameInput(string FileName)
         {
-            
-            
-            if(FileName.Contains(' ') || FileName.Contains('/') || FileName.Contains('\\'))
+
+
+            if (FileName.Contains(' ') || FileName.Contains('/') || FileName.Contains('\\'))
             {
                 Console.WriteLine("Bitte Name ohne Leerzeichen oder (Back-)Slash eingeben");
-                return false; 
+                return false;
             }
-            return true; 
+            return true;
         }
     }
 
     public static class PathFinder
     {
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ModelDir"]/*'/>
-        public readonly static string ModelDir=Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
-        
+        public readonly static string ModelDir = Path.Combine(PathFinder.FindOrigin(), "TensorFlow");
+
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="ImageDir"]/*'/>
-        public readonly static  string ImageDir = Path.Combine(FindOrigin(), "tmp"); 
+        public readonly static string ImageDir = Path.Combine(FindOrigin(), "tmp");
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="OwnImagesDir"]/*'/>
         public readonly static string OwnImagesDir = Path.Combine(FindOrigin(), "OwnImages");
         ///<include file='ClassesDoc/Tools.xml' path='Tools/Member[@name="FindOrigin"]/*'/>
         public static string FindOrigin()
         {
-            
-            string FileName = Resources.IndexFileName; 
+
+            string FileName = Resources.IndexFileName;
             string SearchPath = "";
             bool FileFound = false;
             string CurrentDir = AppDomain.CurrentDomain.BaseDirectory.ToString();
@@ -174,23 +170,23 @@ namespace Tools
             while (!FileFound)
             {
                 SearchPath = Path.Combine(CurrentDir, FileName);
-               
+
                 if (File.Exists(SearchPath))
                 {
-                   
-                    FileFound = true; 
+
+                    FileFound = true;
                 }
                 else
                 {
-                    
+
                     CurrentDir = Directory.GetParent(CurrentDir).ToString();
                 }
             }
-            return Path.GetDirectoryName(SearchPath); 
+            return Path.GetDirectoryName(SearchPath);
         }
 
-        
+
     }
 
-    
+
 }
