@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CategorizedImage>
+  <Member name="CategorizedImage">
+    <summary>
+      Dient als Ausgabe-Typ der Bildklassifizierung 
+    </summary>
+  </Member>
+  <Member name="PredictedLabel">
+    <value>
+      Das vom Model vorhergesagte Label des Bildes
+    </value>
+  </Member>
+  <Member name="Score">
+    <value>
+      Vektor, der einen Wert für die Zugehörigkeit zum jeweiligen Label ausdrückt
+    </value>
+  </Member>
+  <Member name="GetHTMLData">
+    <summary>
+      Gibt Daten für die Ausgabe als HTML zurück
+    </summary>
+    <returns>
+      Das Objekt selbst
+    </returns>
+  </Member>
+  
+  
+</CategorizedImage>

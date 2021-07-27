@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DataCollection>
+  <Member name="DataCollection">
+    <summary>
+      Stellt Methoden und Properties zum Identifizieren von Labels sowie zum Download entsprechend gelabelter Bilder bereit
+    </summary>
+  </Member>
+  <Member name="PathIDs">
+    <value>
+      Dateipfad zu CSV mit Bilder-IDs
+    </value>
+  </Member>
+  <Member name="PathLabels">
+    <value>
+      Dateipfad zu CSV mit Schlüsseln für entsprechende Labels
+    </value>
+  </Member>
+  <Member name="MaxItems">
+    <value>
+      Maximale Anzahl an Items, die je Dataset heruntergeladen werden soll
+    </value>
+  </Member>
+  <Member name="Labels">
+    <value>Liste aller Kategorien
+    </value>
+  </Member>
+  <Member name="FindLables">
+    <summary>
+      Durchsucht labels.csv nach übereinstimmungen mit Suchbegriff
+    </summary>
+    <param name="searchstring">
+      Suchbegriff, der in den gesuchten Labels enthalten sein soll
+    </param>
+  </Member>
+  <Member name="results">
+    <summary>
+      Liste, die Suchergebnisse als jeweils eine neue Dataset-Instanz enthält
+    </summary>
+  </Member>
+  <Member name="findImageIds">
+    <summary>
+      DurchsuchT imageIDs.csv nach übereinstimmungen mit dem Label-Key
+    </summary>
+  </Member>
+  <Member name="DownloadAllDatasets">
+    <summary>
+      Übergeordnete Steuerungsmethode der Datasets, bekommt Programmpfad übergeben
+    </summary>
+    <param name="path">
+      Pfad, in dem der temporäre Ordner zur Speicherung gelabelter Bilder angelegt wird
+    </param>
+  </Member>
+  <Member name="CheckFiles">
+    <summary>
+      Überprüft, ob die beiden zur Nutzung des Programms nötigen csv-Dateien vorhanden sind
+    </summary>
+    <exception>
+      Wirft Exception, wenn mindestens eine der beiden Dateien nicht vorhanden ist. Führt zum Programmabbruch.
+    </exception>
+  </Member>
+</DataCollection>

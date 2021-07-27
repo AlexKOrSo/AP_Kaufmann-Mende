@@ -11,43 +11,47 @@ using Amazon.S3.Transfer;
 
 namespace MLData
 {
-    public class Dataset: IEquatable<Dataset>  //Für vergleichsoperationen wird IEquatable implementiert
+    ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Dataset"]/*'/>
+    public class Dataset: IEquatable<Dataset> 
     {
-        public string Label { get; set; } //Bezeichnung des Labels
-        public string Key { get; set; } //Schlüssel, der Label zugeordnet ist
-        public ConcurrentQueue<string> ids; //Asynchrone Queue
-
-        public class counterHolder //Zähler heruntergeladener Bilder, extra-class, da async-Taks darauf zugreifen müssen und diese z. B. keine ref int counter als Parameter übernehmen
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Label"]/*'/>
+        public string Label { get; set; }
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="Key"]/*'/>
+        public string Key { get; set; } 
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="ids"]/*'/>
+        public ConcurrentQueue<string> ids; 
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="counterHolder"]/*'/>
+        public class counterHolder 
         {
             public int Value;
         }
-
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="DownloadFilesAsync"]/*'/>
         async Task DownloadFilesAsync(string path, counterHolder counter)
         {
             
-            string bucketName = "open-images-dataset";      //Cloudspeicher(Bucket) von AWS, Zugriff mit Bucket-Namen
+            string bucketName = "open-images-dataset";     
             string filename;
 
-            RegionEndpoint reg = RegionEndpoint.USEast1; //Regionendpoint von AWS, Einstiegspunkt für AWS-Service
+            RegionEndpoint reg = RegionEndpoint.USEast1; 
             AmazonS3Client s3Client = null;
             int timeout=30;
             try
             {
-                s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(timeout) }); //anonymer AmazonAWSs-Client, der Informationen zum Zugriff aus S3-Dienste beinhaltet
-                                                                                                                                             //im Pythonsript der Datenbank muss kein Regionendpoint angegeben werden...
+                s3Client = new AmazonS3Client(null, new AmazonS3Config() { RegionEndpoint = reg, Timeout = TimeSpan.FromSeconds(timeout) }); 
+                                                                                                                                            
             }
             catch (Exception e )
             {
                 throw new Exception("AWS - Config - Fehler: "+ e.Message);
             }
             Console.WriteLine($"Download wird gestartet, Timeout beträgt {timeout} Sekunden");
-            var fileTransferUtility = new TransferUtility(s3Client); //TransferUtility stellt API für UPload/Download zu S3-Diensten bereit
+            var fileTransferUtility = new TransferUtility(s3Client); 
 
             string temp;
-            while (ids.TryDequeue(out temp)) //Asynchrones dequeuen der ConcurrentQueue ids, gibt false zurück, wenn queue leer
+            while (ids.TryDequeue(out temp)) 
             {
 
-                filename = Path.Combine(path,(temp +".jpg")); //Alle Dateien sind jpgs
+                filename = Path.Combine(path,(temp +".jpg")); 
                 Console.WriteLine($"Bilder in Queue: {ids.Count.ToString()}");
 
               
@@ -55,11 +59,11 @@ namespace MLData
 
                    
                     await fileTransferUtility.DownloadAsync(filename, bucketName, "train/" + temp + ".jpg");
-                    int currentCounter=Interlocked.Decrement(ref counter.Value); //Threadsicher decremenet des Counters
+                    int currentCounter=Interlocked.Decrement(ref counter.Value); 
                     System.Console.WriteLine($"Zahl herunterzuladender Bilder: {currentCounter}");
                     if (currentCounter<=0)
                     {
-                        break;//Beenden der Task, wenn counter 0/negativ ist
+                        break;
                     }
 
                 }
@@ -81,8 +85,8 @@ namespace MLData
             
 
         }
-
-        public void downloadAll(string path,int maxItems) //Diese Methode wird aus Datacollection aufgerufen, löst alle DownloadTasks aus und wartet auf Beendigung
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="downloadAll"]/*'/>
+        public void downloadAll(string path,int maxItems) 
         {
             counterHolder counter = new counterHolder() { Value = maxItems };
 
@@ -90,7 +94,7 @@ namespace MLData
 
             for (int i = 0; i < downloadtasks.Length; i++)
             {
-                downloadtasks[i] = DownloadFilesAsync(path,counter); //Auslösen der Tasks, übergeben wird downloadpfad und counter-Class
+                downloadtasks[i] = DownloadFilesAsync(path,counter); 
             }
             Task.WaitAll(downloadtasks);
 
@@ -107,6 +111,7 @@ namespace MLData
 
             return ("Key: " + Key + "Label: " + Label);
         }
+        ///<include file='ClassesDoc/Dataset.xml' path='Dataset/Member[@name="CustomEquals"]/*'/>
         public bool Equals(Dataset compare)
         {
             if (compare == null) return false;

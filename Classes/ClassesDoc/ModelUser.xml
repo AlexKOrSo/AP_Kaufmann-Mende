@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ModelUser>
+  <Member name="ModelUser">
+    <summary>
+      Stellt Methoden zur Klassifizierung von Bildern sowie zur Ausgabe von deren Ergebnissen bereit
+    </summary>
+    <remarks>
+      Aus MS-Dokumentation adaptiert
+    </remarks>
+  </Member>
+  <Member name="OutputPrediction">
+    <summary>
+      Gibt für kategorisierte Daten deren Ergebnisse auf der Konsole aus
+    </summary>
+    <param name="Prediction">
+      Ausgabe aus einer Klassifizierung
+    </param>
+  </Member>
+  <Member name="ClassifiySingleImg">
+    <summary>
+      Klassifiziert ein einzelnes Bild
+    </summary>
+    <param name="mlContext">
+      Machine-Learning Kontext, in dem die Klassifizierung stattfindet
+    </param>
+    <param name="data">
+      Eingabedaten
+    </param>
+    <param name="trainedModel">
+      Das verwendete, zuvor trainierte Modell zur Klassifizierung
+    </param>
+    <returns>
+      Einen Repräsentanten eines klassifizierten Bildes
+    </returns>
+  </Member>
+  <Member name="ClassifyMultiple">
+    <summary>
+      Klassifiziert mehrere Bilder
+    </summary>
+    <remarks>
+      Ausgabe der Ergebnisse erfolgt über die Konsole
+    </remarks>
+    <param name="mlContext">
+      Machine-Learning Kontext, in dem die Klassifizierung stattfindet
+    </param>
+    <param name="data">
+      Untransformierte Daten
+    </param>
+    <param name="trainedModel">
+      Das verwendete, zuvor trainierte Modell zur Klassifizierung
+    </param>
+  </Member>
+</ModelUser>

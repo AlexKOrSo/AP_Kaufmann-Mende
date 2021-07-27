@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Image>
+  <Member name="Image">
+    <summary>
+      Stellt den Input-Typ des Trainingsmodells dar
+    </summary>
+  </Member>
+  <Member name="Path">
+    <value>
+      Pfad zum Bild
+    </value>
+  </Member>
+  <Member name="LabeledAs">
+    Vorgegebenes Label des Trainingsbildes
+  </Member>
+  <Member name="GetLabelFromPath">
+    <summary>
+      Gibt Label einer Intanz anhand von deren Speicherort zurück
+    </summary>
+    <remarks>
+      Die Property <see cref="LabeledAs"/> kann in diesem Kontext nicht zum gleichen Zweck genutzt werden
+    </remarks>
+  </Member>
+</Image>

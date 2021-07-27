@@ -11,15 +11,17 @@ using CategorizingImages;
 
 namespace ConsoleApp
 {
+    ///<include file='ConsoleDoc/Program.xml' path='Program/Member[@name="Program"]/*'/>
     class Program
     {
-
-        public static void CategorizeChoice(ITransformer trainedModel, MLContext mlcontext){
+        ///<include file='ConsoleDoc/Program.xml' path='Program/Member[@name="CategorizeChoice"]/*'/>
+        public static void CategorizeChoice(ITransformer trainedModel, MLContext mlContext){
 
             List<Image> input=ImageCategorizer.Initialization();
-            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input, trainedModel,mlcontext);
+            IEnumerable<IHtmlable> prediction =ImageCategorizer.Categorizer(input, trainedModel,mlContext);
             HTMLCreator.Result(prediction,PathFinder.OwnImagesDir,@"Website");
         }
+        ///<include file='ConsoleDoc/Program.xml' path='Program/Member[@name="TrainingChoice"]/*'/>
         public static void TrainingChoice(MLContext mlContext)
         {
          
@@ -33,6 +35,7 @@ namespace ConsoleApp
 
 
         }
+        ///<include file='ConsoleDoc/Program.xml' path='Program/Member[@name="ClassificationChoice"]/*'/>
         public static void ClassificationChoice(MLContext mlContext)
         {
             if(!File.Exists(Path.Combine(PathFinder.ModelDir, ".Info")))
@@ -51,6 +54,7 @@ namespace ConsoleApp
             ITransformer TrainedModel = mlContext.Model.Load(ModelPath, out TrainedModelSchema);
             CategorizeChoice(TrainedModel,mlContext);
         }
+        ///<include file='ConsoleDoc/Program.xml' path='Program/Member[@name="ForceDeleteDirectory"]/*'/>
         public static void ForceDeleteDirectory(string Dir)
         {
             string[] files = Directory.GetFiles(Dir);
@@ -85,7 +89,7 @@ namespace ConsoleApp
        
             string OriginPath = null ;
             try { 
-            OriginPath = PathFinder.FindOrigin(); // sucht nach .Index-Datei, speichert deren Pfad
+            OriginPath = PathFinder.FindOrigin(); 
                 }
             catch(Exception) {Console.WriteLine(@"Couldn't find .Index-File"); }
             Console.WriteLine("Willkommen in der Konsolen-App zur Bildklassifizierung auf Grundlage von Machine Learning");
@@ -102,10 +106,10 @@ namespace ConsoleApp
 
                 ClassificationChoice(myContext); 
 
-            } //Überleitung zur Bildklassifizierung
+            } 
             else if (PressedKey == '2') {
                 TrainingChoice(myContext);
-            } //Überleitung zum Training
+            } 
 
             Console.WriteLine("Beende Programm");
         }

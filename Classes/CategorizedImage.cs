@@ -1,19 +1,28 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HTMLTools;
+
+
+
 namespace Classes
 {
-    
+    ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="CategorizedImage"]/*' />
     public class CategorizedImage : Image, IHtmlable, IHtmldata
     {
-        public string PredictedImageLabel; 
-        
-        public float[] Score;
+        ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="PredictedLabel"]/*' />
+        public string PredictedImageLabel { get; set; }
+
+        ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="Score"]/*' />
+        public float[] Score { get; set; }
 
         public string GetLabel() => PredictedImageLabel;
+
+        ///<include file = 'ClassesDoc/CategorizedImage.xml' path = 'CategorizedImage/Member[@name="GetHTMLData"]/*' />
         public string GetFilePath() => Path;
         public IHtmldata GetHtmldata()=> this;
         public CategorizedImage(string LabeledAs)
